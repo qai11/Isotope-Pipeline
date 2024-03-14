@@ -3,12 +3,13 @@
 """
 Created on Mon Mar 11 11:35:17 2024
 
-@author: qai11
+@author: Quin Aicken Davies
 """
-
+#%%
 from astropy.io import fits
 import numpy as np
 from scipy.io import loadmat
+import matplotlib.pyplot as plt
 #%%
 '''For opening the data and showing the arrangement of the headers'''
 
@@ -32,7 +33,7 @@ hdu1=fits.PrimaryHDU()
 new_hudl=fits.HDUList([hdu1])
 
 #%%
-'''do it directly from the unmerged orders'''
+'''directly from the unmerged orders'''
 
 # Load the .mat file
 mat_data = loadmat(path +'J0353028.mat')
@@ -55,22 +56,34 @@ for key in j_data.dtype.names:
 
 # Concatenate the padded arrays along axis 1
 concatenated_data = np.concatenate(padded_arrays[:-9], axis=1)
-
+#%%
+'''Puts the padded arrays (matlab data in a cube form) into two columns per cell'''
 column_list = []
-
-for i in range(94):
+for i in range(len(padded_arrays[:-9])):#this should be 94 when running fully
     array_data = concatenated_data[0, i]
     if array_data.shape[1] >= 2:  # Check if array has at least 2 columns
         # Extract the first two columns
         first_column = array_data[:, 0]
         second_column = array_data[:, 1]
         # Combine the first and second columns into a single array
-        combined_columns = np.column_stack((first_column, second_column))
+        combined_columns = np.column_stack((first_column, second_column)) 
         column_list.append(combined_columns)
+        
+#Takes the column list, find where the spectra overlap and cut them both in between.
+for i, order in enumerate(column_list):
+    try:
+        next_order = column_list[i+1]#Defining the second order
+        wave_max = order[-1,0]
+        wave_min = next_order[0,0]
+        wave_split = (wave_max - wave_min)/2 #Finds the middle of the overlap
+        column_list[i] = order[order[:,0] < wave_min + wave_split]#Cuts the end 
+        column_list[i+1] = next_order[next_order[:,0] > wave_max - wave_split]#Cuts the beginning 
+    except:
+        None
 
+#%%
 # Concatenate all arrays into one long array
 long_array = np.concatenate(column_list)
-
 
 #%%
 
@@ -94,3 +107,4 @@ new_hdul.writeto(split_file_name,overwrite=True)
 
 #%%
 hdul.close()
+# %%
