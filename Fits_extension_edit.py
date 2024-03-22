@@ -97,7 +97,7 @@ for file in reduced_files:
 
     # Create a new table HDU with columns 'col1' and 'col2' to hold the array data
     cols = []
-    cols.append(fits.Column(name='wave', format='D', array=long_array[:, 0]))
+    cols.append(fits.Column(name='wave', format='D', array=long_array[:, 0]/10))
     cols.append(fits.Column(name='flux', format='D', array=long_array[:, 1]))
     coldefs = fits.ColDefs(cols)
     new_table_hdu = fits.BinTableHDU.from_columns(coldefs)
