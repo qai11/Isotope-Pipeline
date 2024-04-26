@@ -17,13 +17,13 @@ import os
 
 # current_path = os.path.dirname(os.path.abspath(__file__))
 
-star_name = 'hd_100407'
+star_name = 'hd_45588'
 if star_name == None:
     star_name = input('Enter the name of the star: ')
 
 '''For opening the data and showing the arrangement of the headers'''
 
-path = '/home/users/qai11/Documents/megara_pipeline/Reduced_Data/' + star_name +'/'
+path = '/home/users/qai11/Documents/megara_pipeline/REDUCED_DATA/' + star_name +'/'
 
 
 # Find all files in the path that match the pattern *_reduced.fits
@@ -94,10 +94,18 @@ for file in reduced_files:
 
     # Concatenate all arrays into one long array
     long_array = np.concatenate(column_list)
+    #Find and add in the barycentric correction into the dataset
+    c_light = 299792  # Speed of light in km/s
+    barycorr = float(padded_arrays[-1])  # Barycentric correction in km/s
+    d_lambda = barycorr * (long_array[:, 0] / c_light)
+    corrected_long_array = long_array[:, 0] + d_lambda
 
+    # Convert the list of corrected wavelengths to a NumPy array
+    corrected_long_array = corrected_long_array.T
+    
     # Create a new table HDU with columns 'col1' and 'col2' to hold the array data
     cols = []
-    cols.append(fits.Column(name='wave', format='D', array=long_array[:, 0]/10))
+    cols.append(fits.Column(name='wave', format='D', array=corrected_long_array))
     cols.append(fits.Column(name='flux', format='D', array=long_array[:, 1]))
     coldefs = fits.ColDefs(cols)
     new_table_hdu = fits.BinTableHDU.from_columns(coldefs)
