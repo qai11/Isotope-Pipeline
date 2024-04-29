@@ -17,7 +17,7 @@ import os
 
 # current_path = os.path.dirname(os.path.abspath(__file__))
 
-star_name = 'hd_45588'
+star_name = 'hd_100407'
 if star_name == None:
     star_name = input('Enter the name of the star: ')
 
