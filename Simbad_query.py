@@ -90,4 +90,3 @@ plt.savefig("plots/Magnitude.pdf")
 plt.show()
 
 # %%
-
