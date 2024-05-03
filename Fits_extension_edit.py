@@ -12,7 +12,8 @@ from scipy.io import loadmat
 import matplotlib.pyplot as plt
 import glob
 import os
-from Barycentric_correction_iSpec import calculate_barycentric_velocity_correction
+import pandas as pd
+#from Barycentric_correction_iSpec import calculate_barycentric_velocity_correction
 #%%
 '''For opening the data and showing the arrangement of the headers'''
 
@@ -62,7 +63,7 @@ for file in reduced_files:
     # Determine the maximum length along axis 1
     max_length = max([j_data[key].shape[1] for key in j_data.dtype.names])
 
-    # Create a list to store the padded arrays
+    # Create a list to store the matlab input for accessing later
     padded_arrays = []
 
     # Pad each array to match the maximum length along axis 1
@@ -71,7 +72,21 @@ for file in reduced_files:
         pad_length = max_length - array.shape[1]
         padded_array = np.pad(array, ((0, 0), (0, pad_length)), mode='constant')
         padded_arrays.append(padded_array)
+        #%%
+        # Extract the names from the .mats for headers later
+        names = [key for key in j_data.dtype.names]
 
+        # Create an empty dictionary to store the arrays along with their names
+        arrays_with_names = {}
+
+        # Iterate over the padded arrays and their corresponding names
+        for array, name in zip(padded_arrays[94:], names[94:]):
+            # Add the array as a value to the dictionary with the name as the key
+            arrays_with_names[name] = array
+
+        # Convert the dictionary to a pandas DataFrame
+        df = pd.DataFrame.from_dict(arrays_with_names)
+#%%
     # Concatenate the padded arrays along axis 1
     concatenated_data = np.concatenate(padded_arrays[0:94], axis=1)
 #%%
@@ -90,90 +105,108 @@ for file in reduced_files:
      
     #Takes the column list, find where the spectra overlap and cut them both in between.
     for i, order in enumerate(column_list):
-    
+        try:
             next_order = column_list[i+1]#Defining the second order
             wave_max = order[-1,0]
             wave_min = next_order[0,0]
             order_1_overlap = order[order[:,0] >= wave_min] #values from Order 1 that overlap order 2
             order_2_overlap = next_order[next_order[:,0] <= wave_max] #values from Order 2 that overlap order 1
+            #Currently this isnt working so comment out for now
+            # # Calculate the signal-to-noise ratio (S/N) in wavelength bins through the overlap region
+            # bin_size = 0.1  # Define the size of each wavelength bin
+            # overlap_bins = np.arange(wave_min, wave_max, bin_size)  # Create an array of bin edges
+            # snr_bins = []  # List to store the S/N values for each bin
+
+            # # Iterate over the wavelength bins
+            # for bin_start in overlap_bins:
+            #     bin_end = bin_start + bin_size
+            #     bin_data = order_1_overlap[(order_1_overlap[:, 0] >= bin_start) & (order_1_overlap[:, 0] < bin_end)]
+            #     if len(bin_data) > 0:
+            #         snr = np.mean(bin_data[:, 1]) / np.std(order_2_overlap[:, 1])
+            #         snr_bins.append(snr)
+
+            # # Print the S/N values for each bin
+            # print("Signal-to-Noise Ratio (S/N) in wavelength bins:")
+            # print(snr_bins)
             
-            # Calculate the signal-to-noise ratio (S/N) in wavelength bins through the overlap region
-            bin_size = 0.1  # Define the size of each wavelength bin
-            overlap_bins = np.arange(wave_min, wave_max, bin_size)  # Create an array of bin edges
-            snr_bins = []  # List to store the S/N values for each bin
+            # # Calculate the weights using the formula
+            # weights = 1 / (np.square(order_1_overlap[:, 1]) * np.square(sigmoid(order_1_overlap[:, 0])))
 
-            # Iterate over the wavelength bins
-            for bin_start in overlap_bins:
-                bin_end = bin_start + bin_size
-                bin_data = order_1_overlap[(order_1_overlap[:, 0] >= bin_start) & (order_1_overlap[:, 0] < bin_end)]
-                if len(bin_data) > 0:
-                    snr = np.mean(bin_data[:, 1]) / np.std(order_2_overlap[:, 1])
-                    snr_bins.append(snr)
+            # # Apply the weights to the intensity values
+            # weighted_intensity = np.multiply(weights, order_1_overlap[:, 1])
 
-            # Print the S/N values for each bin
-            print("Signal-to-Noise Ratio (S/N) in wavelength bins:")
-            print(snr_bins)
-            
-            # Calculate the weights using the formula
-            weights = 1 / (np.square(order_1_overlap[:, 1]) * np.square(sigmoid(order_1_overlap[:, 0])))
+            # # Calculate the weighted average
+            # weighted_average = np.sum(weighted_intensity) / np.sum(weights)
 
-            # Apply the weights to the intensity values
-            weighted_intensity = np.multiply(weights, order_1_overlap[:, 1])
-
-            # Calculate the weighted average
-            weighted_average = np.sum(weighted_intensity) / np.sum(weights)
-
-            # Print the weighted average
-            print("Weighted Average:", weighted_average)
-            
-            
-            # # Calculate the weighted average using sigmoid function of our y values
-            # weighted_average = np.multiply(sigmoid(order_1_overlap[:, 0]), order_1_overlap[:, 1])
-            # column_list[i+1] = next_order[next_order[:,0] > wave_max]
-            # smooth_order = order[order[:,0] < wave_min]
-            # #separates the wavelength and intensity columns for adding onto
-            # smooth_wavelength = smooth_order[:,0]
-            # smooth_intensity = smooth_order[:,1]
-            # #adds on the weighted average and the overlapping region of order 1
-            # smooth_intensity = np.append(smooth_intensity, weighted_average)
-            # smooth_wavelength = np.append(smooth_wavelength, order_1_overlap[0])
-            # #combines them all back into the same file
-            # smooth_order = np.array([smooth_wavelength, smooth_intensity])
-            # #replaces the column list with the new spectrum
-            # column_list[i] = smooth_order
+            # # Print the weighted average
+            # print("Weighted Average:", weighted_average)
             
         
-        
-            
+            # Calculate the weighted average using sigmoid function of our y values
+            weighted_average = np.multiply(sigmoid(order_1_overlap[:, 0]), order_1_overlap[:, 1])
+            column_list[i+1] = next_order[next_order[:,0] > wave_max]
+            smooth_order = order[order[:,0] < wave_min]
+            #separates the wavelength and intensity columns for adding onto
+            smooth_wavelength = smooth_order[:,0]
+            smooth_intensity = smooth_order[:,1]
+            #adds on the weighted average and the overlapping region of order 1
+            smooth_intensity = np.append(smooth_intensity, weighted_average)
+            smooth_wavelength = np.append(smooth_wavelength, order_1_overlap[0])
+            #combines them all back into the same file
+            smooth_order = np.array([smooth_wavelength, smooth_intensity])
+            #replaces the column list with the new spectrum
+            column_list[i] = smooth_order
+        except:
+            None      
    
 #%%
     # Concatenate all arrays into one long array
     long_array = np.concatenate(column_list)
     
-    
-    if not padded_arrays[-1]:
-        'Calls Barycentric correction calculation if not in the .mat file'
-        datetime = padded_array[-11]
-        coordinates = [j for k in [[float(x) for x in padded_array[-3].split()], [float(x) for x in padded_array[-2].split()]] for j in k] #this prob wont work check later lol
-        calculate_barycentric_velocity_correction(datetime, coordinates, deq=0)
-    else:
-        #Find and add in the barycentric correction into the dataset
-        c_light = 299792  # Speed of light in km/s
-        barycorr = float(padded_arrays[-1])  # Barycentric correction in km/s
+    if star_name == "Cal_Dark":
+        """If dark file, no barycentric correction is needed."""
+        barycorr = 0
+        c_light = 299792
         d_lambda = barycorr * (long_array[:, 0] / c_light)
         corrected_long_array = long_array[:, 0] + d_lambda
 
         # Convert the list of corrected wavelengths to a NumPy array
-        corrected_long_array = corrected_long_array.T
-    
+        corrected_long_array = corrected_long_array.T  
+    else:  
+        """Do barycentric correction!!"""
+        if not padded_arrays[-1]:
+            'Calls Barycentric correction calculation if not in the .mat file'             
+            datetime = [padded_arrays[-11][0][0][0][0]]
+            # ra = padded_arrays[-3][0][0][0]
+            # dec = padded_arrays[-2][0][0][0]
+            coordinates = [j for k in [[float(x) for x in ra.split()], [float(x) for x in dec.split()]] for j in k] #this prob wont work check later lol
+            barycorr = calculate_barycentric_velocity_correction(datetime, coordinates, deq=0)
+            print(barycorr)
+            c_light = 299792  # Speed of light in km/s
+            d_lambda = barycorr * (long_array[:, 0] / c_light)
+            corrected_long_array = long_array[:, 0] + d_lambda
+
+            # Convert the list of corrected wavelengths to a NumPy array
+            corrected_long_array = corrected_long_array.T
+        else:
+            """If the barycentric correction is in the .mat file, use that."""
+            #Find and add in the barycentric correction into the dataset
+            c_light = 299792  # Speed of light in km/s
+            barycorr = float(padded_arrays[-1])  # Barycentric correction in km/s
+            d_lambda = barycorr * (long_array[:, 0] / c_light)
+            corrected_long_array = long_array[:, 0] + d_lambda
+
+            # Convert the list of corrected wavelengths to a NumPy array
+            corrected_long_array = corrected_long_array.T
+#%%                
     # Create a new table HDU with columns 'col1' and 'col2' to hold the array data
     cols = []
-    cols.append(fits.Column(name='wave', format='D', array=corrected_long_array))
+    cols.append(fits.Column(name='wave', format='D', array=corrected_long_array/10))
     cols.append(fits.Column(name='flux', format='D', array=long_array[:, 1]))
     coldefs = fits.ColDefs(cols)
     new_table_hdu = fits.BinTableHDU.from_columns(coldefs)
 
-    # Add the new table HDU to the HDUList
+    # Add the new table HDU to the HDUList (This is for adding the table into he secondary header)
     new_hdul.append(new_table_hdu)
     try:
         new_folder = os.mkdir('/home/users/qai11/Documents/Fixed_fits_files/' + star_name)
@@ -182,8 +215,26 @@ for file in reduced_files:
     '''Location to save the file'''
     split_file_name = '/home/users/qai11/Documents/Fixed_fits_files/' + star_name + '/' + file[-12:-4] + '.fits'
 
-    '''Write to file'''
-    new_hdul.writeto(split_file_name,overwrite=True)
+    # Add information to the primary HDU header from the .mat file
+    new_hdul[0].header.set('KEYWORD', 'VALUE', 'Comment')
+    
+    new_hdul[0].header.set('JD',arrays_with_names[0]['array'][0][0][0][0],'Julian Date')
+    new_hdul[0].header.set('signal_to_noise',arrays_with_names[1]['array'][0][0][0][0],'Signal to Noise Ratio')
+    
+    
+    new_hdul[0].header.set('OBJECT', star_name, 'Name of the object')
+    new_hdul[0].header.set('RA', padded_array[-3], 'Right Ascension')
+    new_hdul[0].header.set('DEC', padded_array[-2], 'Declination')
+    new_hdul[0].header.set('DATE-OBS', padded_array[-11], 'Date of observation')
+    new_hdul[0].header.set('EXPTIME', padded_array[-10], 'Exposure time')
+    new_hdul[0].header.set('AIRMASS', padded_array[-9], 'Airmass')
+    
+    
 
-    new_hdul.close()
+    # You can add multiple keywords by calling the `set` method multiple times.
+
+    '''Write to file'''
+    #new_hdul.writeto(split_file_name,overwrite=True)
+
+    #new_hdul.close()
     # %%
