@@ -16,32 +16,6 @@ import logging
 import multiprocessing
 from multiprocessing import Pool
 
-# ################################################################################
-# #--- iSpec directory -------------------------------------------------------------
-# ispec_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
-# #ispec_dir = '/home/virtual/iSpec/'
-# sys.path.insert(0, os.path.abspath(ispec_dir))
-# import ispec
-
-
-# #--- Change LOG level ----------------------------------------------------------
-# #LOG_LEVEL = "warning"
-# LOG_LEVEL = "info"
-# logger = logging.getLogger() # root logger, common for all
-# logger.setLevel(logging.getLevelName(LOG_LEVEL.upper()))
-# ################################################################################
-
-# #Sum and divide to create the average spectrum and save to an output file
-# def merge_spectra():
-#     # WARNING: This example merges spectra from different stars, in a real life situation
-#     #          the logical thing is to merge spectra from the same star/instrument
-#     #          and different wavelength ranges
-#     #--- Mergin spectra ------------------------------------------------------------
-#     logging.info("Mergin spectra...")
-#     left_spectrum = ispec.read_spectrum(ispec_dir + "/input/spectra/examples/NARVAL_Sun_Vesta-1.txt.gz")
-#     right_spectrum = ispec.read_spectrum(ispec_dir + "/input/spectra/examples/NARVAL_muCas.txt.gz")
-#     merged_spectrum = np.hstack((left_spectrum, right_spectrum))
-
 #%%
 #Define the path to the data and star information
 # data_information = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Cool_stars.csv',sep=' ')
