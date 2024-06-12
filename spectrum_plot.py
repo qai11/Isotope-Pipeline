@@ -16,6 +16,7 @@ import logging
 import multiprocessing
 from multiprocessing import Pool
 
+
 #%%
 #Define the path to the data and star information
 # data_information = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Cool_stars.csv',sep=' ')
