@@ -1,9 +1,9 @@
 """
-Title: abundance.py
+Title: Voigt_abundance.py
 Author: Quin Aicken Davies
 Date: 10/06/2024
 
-Description: Tests for calculation of abundance using ispec extensions and a lorentz model.
+Description: Tests for calculation of abundance using ispec extensions using a voight model.
 """
 
 #%%
@@ -20,6 +20,7 @@ import lmfit
 from lmfit.models import LorentzianModel
 from specutils import Spectrum1D
 import astropy.units as u
+from lmfit.models import VoigtModel
 
 #%%
 # #Define the path to the data and star information
@@ -51,8 +52,8 @@ intensity_vector = data['flux'].to_numpy()
 spec = Spectrum1D(spectral_axis=wavelength_vector * u.nm, flux=intensity_vector * u.Jy)
 
 #%%
-def lorentz_model(norm_spec, fit_region, sigma, y_offset=1):
-    '''Defines the lorentzian model for the fit region using limfit. Then fits to the 
+def voigt_model(norm_spec, fit_region, sigma, y_offset=1):
+    '''Defines the voigt model for the fit region using limfit. Then fits to the 
     given spectrum
     
     Parameters
@@ -78,19 +79,19 @@ def lorentz_model(norm_spec, fit_region, sigma, y_offset=1):
     spec_line = Spectrum1D(spectral_axis=norm_spec.spectral_axis[fit_region], flux=norm_spec.flux[fit_region])
     
     #Define the lorentzian model
-    lorentz_mod = LorentzianModel()
+    voigt_mod = VoigtModel()
     
     #Define inital guess from the observed specturm
-    pars = lorentz_mod.guess(y_offset - spec_line.flux.value, x=spec_line.spectral_axis.value)
+    pars = voigt_mod.guess(y_offset - spec_line.flux.value, x=spec_line.spectral_axis.value)
     pars['sigma'].set(value=sigma, vary=True, expr='')
     
     #Fit the model to the spectrum
-    fit_result = lorentz_mod.fit(y_offset - spec_line.flux.value, pars, x=spec_line.spectral_axis.value)
+    fit_result = voigt_mod.fit(y_offset - spec_line.flux.value, pars, x=spec_line.spectral_axis.value)
 
     return fit_result
 
-def lorentz_fit(spec_norm, fit_region, y_fit_offset=1, plot=False):
-    '''Uses the lorentz model to fit a given spectral line using varying sigma values using lmfit
+def voigt_fit(spec_norm, fit_region, y_fit_offset=1, plot=False):
+    '''Uses the voigt model to fit a given spectral line using varying sigma values using lmfit
     
     PARAMETERS
     ----------
@@ -108,7 +109,7 @@ def lorentz_fit(spec_norm, fit_region, y_fit_offset=1, plot=False):
     sigma_vals = np.arange(start=0, stop=1.1, step=0.01)
     chisqr_vals = np.zeros(shape=sigma_vals.shape)
     for j, sigma in enumerate(sigma_vals):
-        fit_init = lorentz_model(norm_spec=spec_norm, fit_region=fit_region, y_offset=y_fit_offset,
+        fit_init = voigt_model(norm_spec=spec_norm, fit_region=fit_region, y_offset=y_fit_offset,
                                sigma=sigma)
 
         # SAVING CHISQR RESULTS TO EMPTY ARRAY
@@ -119,7 +120,7 @@ def lorentz_fit(spec_norm, fit_region, y_fit_offset=1, plot=False):
     best_sigma = sigma_vals[np.where(chisqr_vals == best_chisqr)[0][0]]
 
     # REDOING MODEL-FIT, BUT WITH THE BEST sigma VALUE
-    fit_final = lorentz_model(norm_spec=spec_norm, fit_region=fit_region, y_offset=y_fit_offset,
+    fit_final = voigt_model(norm_spec=spec_norm, fit_region=fit_region, y_offset=y_fit_offset,
                             sigma=best_sigma)
     
     print(fit_final.fit_report())
@@ -144,7 +145,7 @@ xmax_518nm = 518.5
 
 region_518nm = np.where(
         (spec.spectral_axis.value >= xlim_518nm) & (spec.spectral_axis.value <= xmax_518nm))
-fit_518nm = lorentz_fit(spec_norm=spec, fit_region=region_518nm, plot=True)
+fit_518nm = voigt_fit(spec_norm=spec, fit_region=region_518nm, plot=True)
 
 fwhm_518nm = fit_518nm.params['fwhm'].value
  

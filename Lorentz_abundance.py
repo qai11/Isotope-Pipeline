@@ -1,5 +1,5 @@
 """
-Title: abundance.py
+Title: Lorentz_abundance.py
 Author: Quin Aicken Davies
 Date: 10/06/2024
 
