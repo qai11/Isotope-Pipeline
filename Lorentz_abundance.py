@@ -136,17 +136,66 @@ def lorentz_fit(spec_norm, fit_region, y_fit_offset=1, plot=False):
         
     return fit_final
 
+#%%
+#TEST ON MG LINE at 516.73nm    
+wave_5167AA = 516.73
+xmin_5167AA = 516.657
+xmax_5167AA = 516.8
 
+region_5167AA = np.where(
+        (spec.spectral_axis.value >= xmin_5167AA) & (spec.spectral_axis.value <= xmax_5167AA))
+fit_5167AA = lorentz_fit(spec_norm=spec, fit_region=region_5167AA, plot=True)
+
+fwhm_5167AA = fit_5167AA.params['fwhm'].value
+
+#%%
+#TEST ON MG LINE at 516.9nm    
+wave_5169AA = 516.90
+xmin_5169AA = 516.84
+xmax_5169AA = 516.96
+
+region_5169AA = np.where(
+        (spec.spectral_axis.value >= xmin_5169AA) & (spec.spectral_axis.value <= xmax_5169AA))
+fit_5169AA = lorentz_fit(spec_norm=spec, fit_region=region_5169AA, plot=True)
+
+fwhm_5169AA = fit_5169AA.params['fwhm'].value
+
+#%%
+#TEST ON MG LINE at 517.269nm    
+wave_5172AA = 517.269
+xmin_5172AA = 517.18
+xmax_5172AA = 517.35
+
+region_5172AA = np.where(
+        (spec.spectral_axis.value >= xmin_5172AA) & (spec.spectral_axis.value <= xmax_5172AA))
+fit_5172AA = lorentz_fit(spec_norm=spec, fit_region=region_5172AA, plot=True)
+
+fwhm_5172AA = fit_5172AA.params['fwhm'].value
+
+
+#%%
 #TEST ON MG LINE at 518.3nm    
-wave_518nm = 518.3604
-xlim_518nm = 518.2
-xmax_518nm = 518.5
+wave_5183AA = 518.3604
+xmin_5183AA = 518.2
+xmax_5183AA = 518.5
 
-region_518nm = np.where(
-        (spec.spectral_axis.value >= xlim_518nm) & (spec.spectral_axis.value <= xmax_518nm))
-fit_518nm = lorentz_fit(spec_norm=spec, fit_region=region_518nm, plot=True)
+region_5183AA = np.where(
+        (spec.spectral_axis.value >= xmin_5183AA) & (spec.spectral_axis.value <= xmax_5183AA))
+fit_5183AA = lorentz_fit(spec_norm=spec, fit_region=region_5183AA, plot=True)
 
-fwhm_518nm = fit_518nm.params['fwhm'].value
+fwhm_5183AA = fit_5183AA.params['fwhm'].value
+
+#%%
+#TEST ON MG LINE at 513.4nm    
+wave_5134AA = 513.458
+xmin_5134AA = 513.43
+xmax_5134AA = 513.47
+
+region_5134AA = np.where(
+        (spec.spectral_axis.value >= xmin_5134AA) & (spec.spectral_axis.value <= xmax_5134AA))
+fit_5134AA = lorentz_fit(spec_norm=spec, fit_region=region_5134AA, plot=True)
+
+fwhm_5134AA = fit_5134AA.params['fwhm'].value
  
 
 # %%

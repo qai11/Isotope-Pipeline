@@ -128,7 +128,7 @@ def voigt_fit(spec_norm, fit_region, y_fit_offset=1, plot=False):
     if plot == True:
         plt.figure()
         plt.plot(spec_norm.spectral_axis[fit_region], spec_norm.flux[fit_region], label="Observed")
-        plt.plot(spec_norm.spectral_axis[fit_region], 1-fit_final.best_fit, label="Lorentz Fit")
+        plt.plot(spec_norm.spectral_axis[fit_region], 1-fit_final.best_fit, label="Voigt Fit")
         plt.xlabel("Wavelength (Å)", fontsize=11, fontweight="bold")
         plt.ylabel("Normalized Flux", fontsize=11, fontweight="bold")
         plt.minorticks_on()
