@@ -39,10 +39,16 @@ import astropy.units as u
 #%%
 name = 'hd_102870'
 
-#import the data from the .txt files
-path = f'/home/users/qai11/Documents/Fixed_fits_files/{name}/J0354027.txt'  
-# Define the data
-data = pd.read_csv(path, sep='	')
+try:
+        #import the data from the .txt files
+        path = f'/home/users/qai11/Documents/Fixed_fits_files/{name}/J0354027.txt' 
+        # Define the data
+        data = pd.read_csv(path, sep='	') 
+except:
+        #Macbook
+        path = f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{name}/J0354027.txt'
+        # Define the data
+        data = pd.read_csv(path, sep='	')
 
 #Defining the vectors and putting into a spectrum array
 wavelength_vector = data['waveobs'].to_numpy()
@@ -136,6 +142,71 @@ def lorentz_fit(spec_norm, fit_region, y_fit_offset=1, plot=False):
         
     return fit_final
 
+def equivalent_width(spec_norm, fit_final, fit_region):
+        # Generate the Lorentzian profile using the fitted parameters
+        x = spec.spectral_axis[fit_region].value
+        lorentzian_fitted = fit_final.eval(x=x)
+
+        # Calculate the equivalent width
+        equivalent_width = np.trapz(1 - lorentzian_fitted, x)
+
+        # Get the covariance matrix
+        covar = fit_final.covar
+
+        # Calculate the partial derivatives of the equivalent width with respect to each fit parameter
+        # This depends on the specific form of your Lorentzian function and the parameters it uses
+        # Here's an example for a Lorentzian function with parameters 'center' and 'gamma'
+        partial_center = np.trapz(-2 * (x - fit_final.params['center'].value) / ((x - fit_final.params['center'].value)**2 + fit_final.params['sigma'].value**2), x)
+        partial_sigma = np.trapz(-2 * fit_final.params['sigma'].value / ((x - fit_final.params['center'].value)**2 + fit_final.params['sigma'].value**2), x)
+
+        # Use the covariance matrix and the partial derivatives to calculate the uncertainty in the equivalent width
+        uncertainty = np.sqrt(partial_center**2 * covar[0, 0] + partial_sigma**2 * covar[1, 1] + 2 * partial_center * partial_sigma * covar[0, 1])
+
+        print("Equivalent width: ", equivalent_width)
+        print("Uncertainty: ", uncertainty)
+        
+        return equivalent_width, uncertainty
+
+
+def abundance_from_eq_width(eq_width, oscillator_strength, wavelength, number_density):
+    # Calculate the optical depth
+    tau = eq_width / (oscillator_strength * wavelength)
+    
+    # Use the curve of growth to find the abundance
+    # This is a very simplified version and may not be accurate
+    abundance = tau / number_density
+    
+    return abundance
+
+#%%
+
+def calculate_abundance(W_lambda, EW_ref, logN_ref, logN_H_ref):
+    """
+    Calculate the abundance of an element given its equivalent width (W_lambda),
+    the equivalent width of a reference line (EW_ref), the logarithm of the
+    number density of the element for the reference (logN_ref), and the logarithm
+    of the number density of hydrogen for the reference (logN_H_ref).
+
+    Parameters:
+    - W_lambda: Equivalent width of the element's spectral line
+    - EW_ref: Equivalent width of a reference line (for scaling purposes)
+    - logN_ref: Logarithm of the number density of the element for the reference
+    - logN_H_ref: Logarithm of the number density of hydrogen for the reference
+
+    Returns:
+    - logN: Logarithm of the number density of the element
+    - log_epsilon: Logarithm of the absolute abundance relative to hydrogen
+    """
+    # Assuming a linear relationship (simplified example)
+    logN = logN_ref + np.log10(W_lambda / EW_ref)
+
+    # Calculate absolute abundance relative to hydrogen
+    log_epsilon = logN - logN_H_ref + 12.0
+
+    return logN, log_epsilon
+
+
+
 #%%
 #TEST ON MG LINE at 516.73nm    
 wave_5167AA = 516.73
@@ -187,16 +258,63 @@ fwhm_5183AA = fit_5183AA.params['fwhm'].value
 
 #%%
 #TEST ON MG LINE at 513.4nm    
-wave_5134AA = 513.458
-xmin_5134AA = 513.43
-xmax_5134AA = 513.47
+wave_5134AA = 513.45737
+xmin_5134AA = 513.43879
+xmax_5134AA = 513.47826
+
 
 region_5134AA = np.where(
         (spec.spectral_axis.value >= xmin_5134AA) & (spec.spectral_axis.value <= xmax_5134AA))
 fit_5134AA = lorentz_fit(spec_norm=spec, fit_region=region_5134AA, plot=True)
 
 fwhm_5134AA = fit_5134AA.params['fwhm'].value
- 
+
+#%%
+#TEST ON MG LINE at 513.8nm    
+wave_5138AA = 513.86989
+xmin_5138AA = 513.86060
+xmax_5138AA = 513.88304
+
+region_5138AA = np.where(
+        (spec.spectral_axis.value >= xmin_5138AA) & (spec.spectral_axis.value <= xmax_5138AA))
+fit_5138AA = lorentz_fit(spec_norm=spec, fit_region=region_5138AA, plot=True)
+
+fwhm_5138AA = fit_5138AA.params['fwhm'].value
+
+ew5138AA, ewerr5138AA = equivalent_width(spec_norm=spec, fit_final=fit_5138AA, fit_region=region_5138AA)
+
+# Example usage:
+# Given equivalent width of the element's spectral line
+W_lambda = ew5138AA  # Example value in units of wavelength or flux
+
+# Equivalent width of a reference line for scaling purposes
+EW_ref = ew5138AA  # Example value in units of wavelength or flux
+
+# Logarithm of the number density of the element for the reference
+logN_ref = 5.0  # Example value
+
+# Logarithm of the number density of hydrogen for the reference
+logN_H_ref = 12.0  # Example value (assuming solar abundance)
+
+# Calculate the abundance and absolute abundance
+logN, log_epsilon = calculate_abundance(W_lambda, EW_ref, logN_ref, logN_H_ref)
+
+print(f"Logarithm of the number density (logN) = {logN}")
+print(f"Logarithm of the absolute abundance (log_epsilon) = {log_epsilon}")
+
+#%%
+#TEST ON MG LINE at 514.0nm    
+wave_5140AA = 514.01745
+xmin_5140AA = 514.00378
+xmax_5140AA = 514.04635
+
+region_5140AA = np.where(
+        (spec.spectral_axis.value >= xmin_5140AA) & (spec.spectral_axis.value <= xmax_5140AA))
+fit_5140AA = lorentz_fit(spec_norm=spec, fit_region=region_5140AA, plot=True)
+
+fwhm_5140AA = fit_5140AA.params['fwhm'].value
+
+
 
 # %%
 # ---COMBINING DATA INTO ARRAYS--- #
