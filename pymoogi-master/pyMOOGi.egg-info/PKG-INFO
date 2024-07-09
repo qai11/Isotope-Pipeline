@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: pyMOOGi
+Version: 1.0.0
+Summary: Interactive MOOG wrapper
+Home-page: https://github.com/madamow/pymoogi
+Author: Monika Adamow
+Author-email: madamow@icloud.com
+License: MIT

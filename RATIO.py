@@ -153,7 +153,7 @@ def make_model_plots(raw, smooth, output_filename, region, rv):
 
     ax1.plot(wavelength_shifted, raw.model_flux, color ='#E1A4A7', label = 'model')
     #ax1.plot(smooth.wavelength, smooth.flux, color ='#eca1a6', label = 'model')
-    ax1.plot(wavelength_shifted, raw.flux, '.', color ='#2a9d8f', label = 'spectra', marker = '+')
+    ax1.plot(wavelength_shifted, raw.flux, '.', color ='#2a9d8f', label = 'spectra')
     #ax1.plot(smooth.wavelength, smooth.flux, '.', color ='#d6cbd3', label = 'model')
 
     ax2.plot(wavelength_shifted, raw.flux - raw.model_flux, color ='#ada397')
@@ -200,14 +200,20 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     make_temp_file(standard_out)
     make_temp_file(summary_out)
     make_temp_file(out_filename)
-
-  
+    #par inputs the percentage ratios of the isotopes
+    # print(str(par['i_24']))
+    # print(str(par['i_25']))
+    # print(str(par['i_26']))
+    # print(str(par['mg']))
+    # print(str(par['rv']))
+    # print(wavelength_region)
+    #t4070g040m18.newmod
     par_string = "synth\n" +\
     "standard_out   '" + standard_out +"'\n"                    + \
     "summary_out    '" + summary_out +"'\n"                     + \
     "smoothed_out   '" + out_filename +"'\n"                    + \
-    "model_in       't4070g040m18.newmod'\n"                    + \
-    "lines_in       'linelist.MgH'\n"                           + \
+    "model_in       'qaimodel.moog'\n"                          + \
+    "lines_in       'quinlist.MgH'\n"                           + \
     "observed_in    '" + raw_spec_filename +"'\n"               + \
     "atmosphere    1\n"                                         + \
     "molecules     2\n"                                         + \
@@ -351,7 +357,7 @@ def read_smoothed_spectra(filename, rv):
     return smooth
     
 def get_chi_squared(raw, out_filename, region, guess, make_plot = True):
-
+    
     # read in the smoothed data, interpolate spectra
     smooth = read_smoothed_spectra(out_filename, guess['rv'])
     raw = interp_smooth(raw, smooth)
@@ -497,13 +503,12 @@ def model_finder():
     
     data_path = '/home/users/qai11/Documents/Fixed_fits_files/hd_102870/'
     region = 2
-    #os.chdir(data_path+'r'+str(region))
+    os.chdir(data_path)
     os.system('mkdir plots')
-
     # initial guesses as a dictionary
     guess = initial_guess()
 
-    raw_spec_filename = data_path+'J0354027.txt'
+    raw_spec_filename = 'hd_102870_5100-5200.txt'
     raw_spectra       = read_raw_spectra(raw_spec_filename)
     wavelength_region = get_wavelength_region(raw_spectra.wavelength)
 

@@ -1,0 +1,2 @@
+[console_scripts]
+pymoogi = pymoogi.__main__:main

@@ -14,6 +14,7 @@ import logging
 import multiprocessing
 from multiprocessing import Pool
 from matplotlib import pyplot as plt
+import pandas as pd
 
 #--- iSpec directory -------------------------------------------------------------
 #ispec_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
@@ -35,43 +36,15 @@ determine_abundances = ispec.determine_abundances(atmosphere_layers=None, teff=6
 
 
 #%%
-
 '''Code from Heather for generating synthetic spectra and comparing to observed spectra'''
-
-def rv_shift(target_name):
-   star_spectrum = ispec.read_spectrum("/home/users/hsi63/Masters/heather-masters/Test_Fits/ngc_6752/" + target_name + ".txt")
-   template = ispec.read_spectrum(ispec_dir + "/input/spectra/templates/Atlas.Arcturus.372_926nm/template.txt.gz")
-
-
-
-
-   #Cross-correlation with template to find rv
-   models, ccf = ispec.cross_correlate_with_template(star_spectrum, template, \
-                               lower_velocity_limit=-200, upper_velocity_limit=200, \
-                               velocity_step=1.0, fourier=False)
-
-
-
-
-   rv = np.round(models[0].mu(), 2) # km/s
-   # rv_err = np.round(models[0].emu(), 2) # km/s
-   
-   #--- Radial Velocity correction ------------------------------------------------
-   # logging.info("Radial velocity correction... %.2f +/- %.2f" % (rv, rv_err))
-   
-   #Correct spectrum for rv shift
-   star_spectrum = ispec.correct_velocity(star_spectrum, rv)
-   star_spectrum = pd.DataFrame(star_spectrum)
-   star_spectrum.to_csv("/home/users/hsi63/Masters/heather-masters/Test_Fits/ngc_6752/" + target_name + "_rv.txt", index = False, sep = "\t")
-   return(star_spectrum)
 
 def compare_to_synth_spec(target_name, params):
    
-   #star_spectrum = ispec.read_spectrum("/home/users/hsi63/Masters/heather-masters/Test_Fits/ngc_6752/" + target_name + ".txt")
-   star_spectrum = rv_shift(target_name)
+   star_spectrum = ispec.read_spectrum("/home/users/qai11/Documents/Fixed_fits_files/" + target_name + '/hd_102870_25-06_avg.txt')
+   #star_spectrum = rv_shift(target_name)
    wfilter = ispec.create_wavelength_filter(star_spectrum, wave_base=500.0, wave_top=675.0)
    star_spectrum = star_spectrum[wfilter]
-   star_spectrum = star_spectrum.reset_index(drop = True)
+   #star_spectrum = star_spectrum.reset_index(drop = True)
    #--- Synthesizing spectrum -----------------------------------------------------
    # Parameters
    teff = params[0] #5771.0
@@ -82,7 +55,7 @@ def compare_to_synth_spec(target_name, params):
    macroturbulence = params[5]#ispec.estimate_vmac(teff, logg, MH) # 4.21
    vsini = params[6] #1.60 # Sun
    limb_darkening_coeff = 0.6
-   resolution = 41000
+   resolution = 82000
    wave_step = (675 - 500) / len(star_spectrum)
    regions = None
    code = "MOOG"
@@ -96,9 +69,9 @@ def compare_to_synth_spec(target_name, params):
    # Selected model amtosphere, linelist and solar abundances
    model = ispec_dir + "/input/atmospheres/MARCS.GES/"
 
-   atomic_linelist_file = ispec_dir + "/input/linelists/transitions/OPTICAL_LIST2.400_800nm/atomic_lines.tsv"
+   atomic_linelist_file = ispec_dir + "/input/linelists/transitions/GBS_LIST.480_800nm/atomic_lines.tsv"
 
-   isotope_file = ispec_dir + "/input/isotopes/SPECTRUM.lst"
+   isotope_file = ispec_dir + "/input/isotopes/quinlist.MgH"
 
    # Load chemical information and linelist
    atomic_linelist = ispec.read_atomic_linelist(atomic_linelist_file, wave_base=500, wave_top=675)
@@ -132,8 +105,6 @@ def compare_to_synth_spec(target_name, params):
 
    # Prepare atmosphere model
    atmosphere_layers = ispec.interpolate_atmosphere_layers(modeled_layers_pack, {'teff':teff, 'logg':logg, 'MH':MH, 'alpha':alpha}, code=code)
-
-
    
    # Synthesis
    synth_spectrum = ispec.create_spectrum_structure(np.arange(500, 675, wave_step))
@@ -143,8 +114,6 @@ def compare_to_synth_spec(target_name, params):
            macroturbulence=macroturbulence, vsini=vsini, limb_darkening_coeff=limb_darkening_coeff, \
            R=resolution, regions=regions, verbose=1,
            code=code)
-   
-
    
    plt.figure(1)
    plt.plot(star_spectrum["waveobs"], star_spectrum["flux"], label = "Star Spectrum")
@@ -168,9 +137,10 @@ def compare_to_synth_spec(target_name, params):
    print(synth_spectrum["flux"])
    diff_spec["err"] = synth_spectrum["err"][0:-1]
    print(diff_spec["flux"])
-   diff_spec.to_csv("/home/users/hsi63/Masters/heather-masters/Test_Fits/ngc_6752/" + target_name + "_diff.txt", index = False, sep = "\t")
+   diff_spec.to_csv("/home/users/qai11/Documents/quin-masters-code/Test_Fits/" + target_name + "_diff.txt", index = False, sep = "\t")
    
-
+#%%
    
-
-compare_to_synth_spec("star2", [4479, 1.2775, -1.52, 0, 1.0, 4.0, 0])
+'Parameters order: teff, logg, MH, alpha, microturbulence_vel, macroturbulence, vsini'
+output = compare_to_synth_spec('hd_102870', [6083, 4.1, 0.24, 0.0, 1.07, 4.21, 2])
+# %%
