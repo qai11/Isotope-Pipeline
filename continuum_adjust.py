@@ -17,6 +17,7 @@ from matplotlib import pyplot as plt
 import pandas as pd
 from scipy.stats import chisquare
 import scipy.optimize as opt
+from copy import deepcopy
 
 #--- iSpec directory -------------------------------------------------------------
 #ispec_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
@@ -129,9 +130,11 @@ def normalize_whole_spectrum_with_template(star_spectrum, synthetic_spectrum):
     return normalized_star_spectrum, star_continuum_model
 
 #%%
-def determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, logg,MH, vsini, max_iterations, resolution="82000", code="moog",wave_step=0.001):
+def determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, logg,MH, vsini, max_iterations,loop_iteration,wave_base=480, wave_top=680, resolution=82000, code="moog",wave_step=0.001):
     # star_spectrum = ispec.read_spectrum(ispec_dir + "/input/spectra/examples/NARVAL_Sun_Vesta-1.txt.gz")
     star_spectrum = star_spectrum
+    wave_base=wave_base
+    wave_top=wave_top
     # #--- Radial Velocity determination with template -------------------------------
     # logging.info("Radial velocity determination with template...")
     # # - Read synthetic template
@@ -158,26 +161,26 @@ def determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, 
     # to_resolution = 47000
     # star_spectrum = ispec.convolve_spectrum(star_spectrum, to_resolution, from_resolution)
     #--- Continuum fit -------------------------------------------------------------
-    # model = "Splines" # "Polynomy"
-    # degree = 2
-    # nknots = None # Automatic: 1 spline every 5 nm
-    # from_resolution = resolution
+    model = "Fixed value" # "Polynomy"
+    degree = 2
+    nknots = None # Automatic: 1 spline every 5 nm
+    from_resolution = resolution
 
-    # # Strategy: Filter first median values and secondly MAXIMUMs in order to find the continuum
-    # order='median+max'
-    # median_wave_range=0.05
-    # max_wave_range=1.0
+    # Strategy: Filter first median values and secondly MAXIMUMs in order to find the continuum
+    order='median+max'
+    median_wave_range=0.05
+    max_wave_range=1.0
 
-    # star_continuum_model = ispec.fit_continuum(star_spectrum, from_resolution=from_resolution, \
-    #                             nknots=nknots, degree=degree, \
-    #                             median_wave_range=median_wave_range, \
-    #                             max_wave_range=max_wave_range, \
-    #                             model=model, order=order, \
-    #                             automatic_strong_line_detection=True, \
-    #                             strong_line_probability=0.5, \
-    #                             use_errors_for_fitting=True)
-    # #--- Normalize -------------------------------------------------------------
-    # normalized_star_spectrum = ispec.normalize_spectrum(star_spectrum, star_continuum_model, consider_continuum_errors=False)
+    star_continuum_model = ispec.fit_continuum(star_spectrum, from_resolution=from_resolution, \
+                                nknots=nknots, degree=degree, \
+                                median_wave_range=median_wave_range, \
+                                max_wave_range=max_wave_range, \
+                                model=model, order=order, \
+                                automatic_strong_line_detection=True, \
+                                strong_line_probability=0.5, \
+                                use_errors_for_fitting=True,fixed_value=1.0)
+    #--- Normalize -------------------------------------------------------------
+    normalized_star_spectrum = ispec.normalize_spectrum(star_spectrum, star_continuum_model, consider_continuum_errors=False)
     # Use a fixed value because the spectrum is already normalized
     star_continuum_model = ispec.fit_continuum(star_spectrum, fixed_value=1.0, model="Fixed value")
     #--- Model spectra ----------------------------------------------------------
@@ -244,8 +247,12 @@ def determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, 
     #segments = ispec.read_segment_regions(ispec_dir + "/input/regions/fe_lines_segments.txt")
     # ... or we can create the segments on the fly:
     line_regions = None
-    segments = ispec.create_segments_around_lines(line_regions, margin=0.25)
-
+    # segments = ispec.create_segments_around_lines(line_regions, margin=0.25)
+    # segments = None
+    # line_regions = ispec.read_line_regions(ispec_dir + "/input/regions/GBS_optical_list.tsv")
+    # segments = ispec.create_segments_around_lines(line_regions, margin=0.25)
+    segments = ispec.read_segment_regions(ispec_dir + "/input/regions/Quin_segments.txt")
+    
     ### Add also regions from the wings of strong lines:
     ## H beta
     #hbeta_lines = ispec.read_line_regions(ispec_dir + "input/regions/wings_Hbeta.txt")
@@ -276,6 +283,7 @@ def determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, 
             max_iterations=max_iterations, \
             tmp_dir = None, \
             code=code)
+            
     ##--- Save results -------------------------------------------------------------
     # logging.info("Saving results...")
     # dump_file = "example_results_synth_%s.dump" % (code)
@@ -288,7 +296,7 @@ def determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, 
     # synth_filename = "example_modeled_synth_%s.fits" % (code)
     # ispec.write_spectrum(modeled_synth_spectrum, synth_filename)
 
-    return params, errors, abundances_found, loggf_found
+    return obs_spec, modeled_synth_spectrum, params, errors, abundances_found, loggf_found, 
 # %%
 """Read in parameter file for initial parameters"""
 star_params = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv')
@@ -321,47 +329,51 @@ observed_chi_square, p_value = chisquare(star_spectrum['flux'], np.sum(star_spec
 #%%
 """Normalize the star spectrum using the synthetic spectrum as a template"""
 # Perform the normalization iteratively until the chi-squared value is minimized
-
+iteration_number = 0
+obs_spec, modeled_synth_spectrum, params, errors, abundances_found, loggf_found = determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff=6080,logg=4.1,MH=0.24,vsini=2.0, max_iterations=1, loop_iteration=iteration_number,wave_base=480, wave_top=680, resolution=82000, code="moog",wave_step=0.001)
+chi2 = np.sum(((obs_spec['flux'][1:-1] - modeled_synth_spectrum['flux'][1:-1])**2)/ modeled_synth_spectrum['flux'][1:-1])
+#%%
 """New code for normalizing the spectrum"""
 iteration_number = 0
+chi2_df = pd.DataFrame(columns=['iteration_number','chi2'])
+loop_spectrum = deepcopy(star_spectrum)
+errors_df = pd.DataFrame()
+params_df = pd.DataFrame()
+first_loop=True
 while True:
-    if iteration_number == 0:
-        params, errors, abundances_found, loggf_found = determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff=6080,logg=4.1,MH=0.24,vsini=2.0, max_iterations=15, resolution="82000", code="moog",wave_step=0.001)
-        
-        
-        '''Normalise the star spectrum using the template from the synthetic spectrum'''
-        normalized_star_spectrum, star_continuum_model = normalize_whole_spectrum_with_template(star_spectrum, synthetic_spectrum)
-        '''Calculate the chi squared value, which is a measure of how well the synthetic spectrum fits the observed spectrum, by messing with the 
-        scipy chisquare to give a good value. '''
-        # Save the original normalized star spectrum
-        normalized_star_spectrum_original = normalized_star_spectrum
-        # Calculate the initial chi-squared value
-        initial_statistic, p_value = chisquare(normalized_star_spectrum['flux'], np.sum(normalized_star_spectrum['flux'])/np.sum(synthetic_flux)*synthetic_flux)
-        iteration_number += 1
-        
+    # Perform the normalization iteratively until the chi-squared value is minimized
+    loop_spectrum, modeled_synth_spectrum, params, errors, abundances_found, loggf_found = determine_astrophysical_parameters_using_synth_spectra(loop_spectrum, teff=6080,logg=4.1,MH=0.24,vsini=2.0, max_iterations=1, loop_iteration=iteration_number,wave_base=480, wave_top=680, resolution=82000, code="moog",wave_step=0.001)
+    if first_loop:
+        errors_df = pd.DataFrame(errors, index=0)
+        params_df = pd.DataFrame(params, index=0)
     else:
-        # Normalize the star spectrum using the template from the synthetic spectrum
-        normalized_star_spectrum, star_continuum_model = normalize_whole_spectrum_with_template(normalized_star_spectrum, synthetic_spectrum)
+        #Add the errors to a pandas dataframe
+        errors_df = pd.concat([errors_df,pd.DataFrame(errors, index=iteration_number)])
+        #Add the parameters to a pandas dataframe
+        params_df = pd.concat([params_df,pd.DataFrame(params, index=iteration_number)])
     
-        # Calculate the new chi-squared value
-        new_statistic, p_value = chisquare(normalized_star_spectrum['flux'], np.sum(normalized_star_spectrum['flux'])/np.sum(synthetic_flux)*synthetic_flux)
+    #Normalise the star spectrum using the template from the synthetic spectrum
+    loop_spectrum, star_continuum_model = normalize_whole_spectrum_with_template(loop_spectrum, modeled_synth_spectrum)
+    iteration_number += 1
+    
+    #Calculate the chi squared value and add it to a list
+    chi2 = np.sum(((loop_spectrum['flux'][1:-1] - modeled_synth_spectrum['flux'][1:-1])**2)/ modeled_synth_spectrum['flux'][1:-1])
+    chi2_df.loc[len(chi2_df)] = [iteration_number, chi2]
+    
+    if first_loop:
+        first_loop=False
+        continue
         
-        # Check if the new chi-squared value is smaller than the initial value, and if the iteration number is less than 10
-        if (new_statistic < initial_statistic) and (iteration_number < 10):
-            #Sets the new statistic for checking in the next iteration
-            statistic = new_statistic
-            iteration_number += 1 
-            #Prints the new values for the iteration
-            print('iteration_number = %f' % iteration_number)
-            print('statistic = %f' % statistic)
-        else:
-            statistic = new_statistic
-            #Prints the final values for the iteration, or the last values if iteration limit is reached
-            print('iteration_number = %f' % iteration_number)
-            print('statistic = %f' % statistic)
-            #Breaks the loop
-            break
-
+    # Check if the new chi-squared value is smaller than the initial value, and if the iteration number is less than 10
+    if (chi2_df.loc[len(chi2_df)-1,'chi2'] < chi2_df.loc[len(chi2_df)-2,'chi2']) and (iteration_number < 10):
+        #prints the chi2 value for the iteration
+        print(chi2_df.loc[len(chi2_df)-1,'chi2'])
+        continue
+    else:
+        break
+    
+    
+    
 #%%
 """Old code for normalizing the spectrum"""
 # iteration_number = 0
