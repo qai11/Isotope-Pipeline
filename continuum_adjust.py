@@ -342,10 +342,10 @@ params_df = pd.DataFrame()
 first_loop=True
 while True:
     # Perform the normalization iteratively until the chi-squared value is minimized
-    loop_spectrum, modeled_synth_spectrum, params, errors, abundances_found, loggf_found = determine_astrophysical_parameters_using_synth_spectra(loop_spectrum, teff=6080,logg=4.1,MH=0.24,vsini=2.0, max_iterations=15, loop_iteration=iteration_number,wave_base=480, wave_top=680, resolution=82000, code="moog",wave_step=0.001)
+    loop_spectrum, modeled_synth_spectrum, params, errors, abundances_found, loggf_found = determine_astrophysical_parameters_using_synth_spectra(loop_spectrum, teff=6080,logg=4.1,MH=0.24,vsini=2.0, max_iterations=1, loop_iteration=iteration_number,wave_base=480, wave_top=680, resolution=82000, code="moog",wave_step=0.001)
     if first_loop:
-        errors_df = pd.DataFrame(errors, index=0)
-        params_df = pd.DataFrame(params, index=0)
+        errors_df = pd.DataFrame(errors, index=np.arange(0,0,1))
+        params_df = pd.DataFrame(params, index=np.arange(0,0,1))
     else:
         #Add the errors to a pandas dataframe
         errors_df = pd.concat([errors_df,pd.DataFrame(errors, index=iteration_number)])

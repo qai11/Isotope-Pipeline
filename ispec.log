@@ -161,3 +161,17 @@
 [2024-07-25 16:47:22,409] [WARNING] [ssf:model_spectrum:887]: 'enhance_abundances' changed to False because alpha is a free parameter
 [2024-07-25 16:47:22,409] [WARNING] [ssf:model_spectrum:895]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
 [2024-07-25 16:47:22,416] [WARNING] [ssf:model_spectrum:931]: Use of errors has been desactivated because all of them are set to zero.
+[2024-07-26 11:04:21,556] [WARNING] [ssf:model_spectrum:887]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-07-26 11:04:21,557] [WARNING] [ssf:model_spectrum:895]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-07-26 11:04:21,565] [WARNING] [ssf:model_spectrum:931]: Use of errors has been desactivated because all of them are set to zero.
+[2024-07-26 11:08:51,692] [INFO] [<ipython-input-3-efda85952934>:normalize_whole_spectrum_with_template:26]: Continuum normalization...
+[2024-07-26 11:08:52,542] [WARNING] [ssf:model_spectrum:887]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-07-26 11:08:52,542] [WARNING] [ssf:model_spectrum:895]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-07-26 11:08:52,551] [WARNING] [ssf:model_spectrum:931]: Use of errors has been desactivated because all of them are set to zero.
+[2024-07-26 11:14:42,478] [WARNING] [ssf:model_spectrum:887]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-07-26 11:14:42,478] [WARNING] [ssf:model_spectrum:895]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-07-26 11:14:42,487] [WARNING] [ssf:model_spectrum:931]: Use of errors has been desactivated because all of them are set to zero.
+[2024-07-26 11:19:11,749] [INFO] [<ipython-input-3-efda85952934>:normalize_whole_spectrum_with_template:26]: Continuum normalization...
+[2024-07-26 11:19:12,626] [WARNING] [ssf:model_spectrum:887]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-07-26 11:19:12,627] [WARNING] [ssf:model_spectrum:895]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-07-26 11:19:12,634] [WARNING] [ssf:model_spectrum:931]: Use of errors has been desactivated because all of them are set to zero.
