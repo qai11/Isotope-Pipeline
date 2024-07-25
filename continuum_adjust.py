@@ -299,7 +299,7 @@ def determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, 
     return obs_spec, modeled_synth_spectrum, params, errors, abundances_found, loggf_found, 
 # %%
 """Read in parameter file for initial parameters"""
-star_params = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv')
+# star_params = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv')
 
 #%%
 """Read in the star spectrum and the synthetic spectrum for fitting later"""
@@ -308,30 +308,30 @@ star_wave = star_spectrum['waveobs']
 star_flux = star_spectrum['flux']
 wave_step = 0.00017#np.round(star_wave[1]-star_wave[0],13)
 
-if not os.path.exists('hd_102870_synth_moog.fits'):
-    synthetic_wave, synthetic_flux, synthetic_spectrum = synthesize_spectrum(teff=6080,logg=4.1,MH=0.24,vsini=2.0,wave_base=480, wave_top=680, code='moog',wave_step=wave_step)
-    # write_spectrum('hd_102870_synth_spectrum.fits', synthetic_wave, synthetic_flux)
-    synthetic_wave = synthetic_spectrum['waveobs']
-    #reinterperlate the synthetic spectrum to be aligned with the observed spectrum for chi square fitting
-    synthetic_flux = np.interp(star_wave, synthetic_spectrum['waveobs'], synthetic_spectrum['flux'])
-    synthetic_wave = star_wave
-else:
-    synthetic_spectrum = ispec.read_spectrum('hd_102870_synth_moog.fits')
-    synthetic_wave = synthetic_spectrum['waveobs']
-    #reinterperlate the synthetic spectrum to be aligned with the observed spectrum for chi square fitting
-    synthetic_flux = np.interp(star_wave, synthetic_spectrum['waveobs'], synthetic_spectrum['flux'])
-    synthetic_wave = star_wave
+# if not os.path.exists('hd_102870_synth_moog.fits'):
+#     synthetic_wave, synthetic_flux, synthetic_spectrum = synthesize_spectrum(teff=6080,logg=4.1,MH=0.24,vsini=2.0,wave_base=480, wave_top=680, code='moog',wave_step=wave_step)
+#     # write_spectrum('hd_102870_synth_spectrum.fits', synthetic_wave, synthetic_flux)
+#     synthetic_wave = synthetic_spectrum['waveobs']
+#     #reinterperlate the synthetic spectrum to be aligned with the observed spectrum for chi square fitting
+#     synthetic_flux = np.interp(star_wave, synthetic_spectrum['waveobs'], synthetic_spectrum['flux'])
+#     synthetic_wave = star_wave
+# else:
+#     synthetic_spectrum = ispec.read_spectrum('hd_102870_synth_moog.fits')
+#     synthetic_wave = synthetic_spectrum['waveobs']
+#     #reinterperlate the synthetic spectrum to be aligned with the observed spectrum for chi square fitting
+#     synthetic_flux = np.interp(star_wave, synthetic_spectrum['waveobs'], synthetic_spectrum['flux'])
+#     synthetic_wave = star_wave
     
 #%%
 """Checks the synthetic spectrum and the observed spectrum chi squared value"""
-observed_chi_square, p_value = chisquare(star_spectrum['flux'], np.sum(star_spectrum['flux'])/np.sum(synthetic_flux)*synthetic_flux)
+# observed_chi_square, p_value = chisquare(star_spectrum['flux'], np.sum(star_spectrum['flux'])/np.sum(synthetic_flux)*synthetic_flux)
 
 #%%
 """Normalize the star spectrum using the synthetic spectrum as a template"""
 # Perform the normalization iteratively until the chi-squared value is minimized
-iteration_number = 0
-obs_spec, modeled_synth_spectrum, params, errors, abundances_found, loggf_found = determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff=6080,logg=4.1,MH=0.24,vsini=2.0, max_iterations=1, loop_iteration=iteration_number,wave_base=480, wave_top=680, resolution=82000, code="moog",wave_step=0.001)
-chi2 = np.sum(((obs_spec['flux'][1:-1] - modeled_synth_spectrum['flux'][1:-1])**2)/ modeled_synth_spectrum['flux'][1:-1])
+# iteration_number = 0
+# obs_spec, modeled_synth_spectrum, params, errors, abundances_found, loggf_found = determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff=6080,logg=4.1,MH=0.24,vsini=2.0, max_iterations=1, loop_iteration=iteration_number,wave_base=480, wave_top=680, resolution=82000, code="moog",wave_step=0.001)
+# chi2 = np.sum(((obs_spec['flux'][1:-1] - modeled_synth_spectrum['flux'][1:-1])**2)/ modeled_synth_spectrum['flux'][1:-1])
 #%%
 """New code for normalizing the spectrum"""
 iteration_number = 0
@@ -342,7 +342,7 @@ params_df = pd.DataFrame()
 first_loop=True
 while True:
     # Perform the normalization iteratively until the chi-squared value is minimized
-    loop_spectrum, modeled_synth_spectrum, params, errors, abundances_found, loggf_found = determine_astrophysical_parameters_using_synth_spectra(loop_spectrum, teff=6080,logg=4.1,MH=0.24,vsini=2.0, max_iterations=1, loop_iteration=iteration_number,wave_base=480, wave_top=680, resolution=82000, code="moog",wave_step=0.001)
+    loop_spectrum, modeled_synth_spectrum, params, errors, abundances_found, loggf_found = determine_astrophysical_parameters_using_synth_spectra(loop_spectrum, teff=6080,logg=4.1,MH=0.24,vsini=2.0, max_iterations=15, loop_iteration=iteration_number,wave_base=480, wave_top=680, resolution=82000, code="moog",wave_step=0.001)
     if first_loop:
         errors_df = pd.DataFrame(errors, index=0)
         params_df = pd.DataFrame(params, index=0)
@@ -365,13 +365,18 @@ while True:
         continue
         
     # Check if the new chi-squared value is smaller than the initial value, and if the iteration number is less than 10
-    if (chi2_df.loc[len(chi2_df)-1,'chi2'] < chi2_df.loc[len(chi2_df)-2,'chi2']) and (iteration_number < 10):
+    if (chi2_df.loc[len(chi2_df)-1,'chi2'] < chi2_df.loc[len(chi2_df)-2,'chi2']) and (iteration_number < 15):
         #prints the chi2 value for the iteration
         print(chi2_df.loc[len(chi2_df)-1,'chi2'])
         continue
     else:
         break
-    
+
+chi2_df.to_csv('hd_102870_chi2.txt')
+errors_df.to_csv('hd_102870_errors.txt')
+params_df.to_csv('hd_102870_params.txt')
+star_filename = "hd_102870_adjusted.fits" 
+ispec.write_spectrum(loop_spectrum, star_filename)  
     
     
 #%%
