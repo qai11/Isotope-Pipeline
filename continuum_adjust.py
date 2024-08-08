@@ -298,166 +298,67 @@ def determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, 
     # synth_filename = "example_modeled_synth_%s.fits" % (code)
     # ispec.write_spectrum(modeled_synth_spectrum, synth_filename)
 
-    return obs_spec, modeled_synth_spectrum, params, errors, abundances_found, loggf_found, 
-# %%
-"""Read in parameter file for initial parameters"""
-# star_params = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv')
+    return obs_spec, modeled_synth_spectrum, params, errors, abundances_found, loggf_found 
 
 #%%
 """Read in the star spectrum and the synthetic spectrum for fitting later"""
-star_name = 'hd_128620'
-star_spectrum = ispec.read_spectrum(f"/home/users/qai11/Documents/Fixed_fits_files/{star_name}/rv_corrected/median_spectrum_{star_name}.txt")
-star_wave = star_spectrum['waveobs']
-star_flux = star_spectrum['flux']
-wave_step = 0.00017#np.round(star_wave[1]-star_wave[0],13)
+star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621']
+for star_name in star:
+    star_spectrum = ispec.read_spectrum(f"/home/users/qai11/Documents/Fixed_fits_files/{star_name}/rv_corrected/median_spectrum_{star_name}.txt")
+    star_wave = star_spectrum['waveobs']
+    star_flux = star_spectrum['flux']
+    wave_step = 0.00017#np.round(star_wave[1]-star_wave[0],13)
 
-# if not os.path.exists('hd_102870_synth_moog.fits'):
-#     synthetic_wave, synthetic_flux, synthetic_spectrum = synthesize_spectrum(teff=6080,logg=4.1,MH=0.24,vsini=2.0,wave_base=480, wave_top=680, code='moog',wave_step=wave_step)
-#     # write_spectrum('hd_102870_synth_spectrum.fits', synthetic_wave, synthetic_flux)
-#     synthetic_wave = synthetic_spectrum['waveobs']
-#     #reinterperlate the synthetic spectrum to be aligned with the observed spectrum for chi square fitting
-#     synthetic_flux = np.interp(star_wave, synthetic_spectrum['waveobs'], synthetic_spectrum['flux'])
-#     synthetic_wave = star_wave
-# else:
-#     synthetic_spectrum = ispec.read_spectrum('hd_102870_synth_moog.fits')
-#     synthetic_wave = synthetic_spectrum['waveobs']
-#     #reinterperlate the synthetic spectrum to be aligned with the observed spectrum for chi square fitting
-#     synthetic_flux = np.interp(star_wave, synthetic_spectrum['waveobs'], synthetic_spectrum['flux'])
-#     synthetic_wave = star_wave
-    
-#%%
-"""Checks the synthetic spectrum and the observed spectrum chi squared value"""
-# observed_chi_square, p_value = chisquare(star_spectrum['flux'], np.sum(star_spectrum['flux'])/np.sum(synthetic_flux)*synthetic_flux)
-
-#%%
-"""Normalize the star spectrum using the synthetic spectrum as a template"""
-# Perform the normalization iteratively until the chi-squared value is minimized
-# iteration_number = 0
-# obs_spec, modeled_synth_spectrum, params, errors, abundances_found, loggf_found = determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff=6080,logg=4.1,MH=0.24,vsini=2.0, max_iterations=1, loop_iteration=iteration_number,wave_base=480, wave_top=680, resolution=82000, code="moog",wave_step=0.001)
-# chi2 = np.sum(((obs_spec['flux'][1:-1] - modeled_synth_spectrum['flux'][1:-1])**2)/ modeled_synth_spectrum['flux'][1:-1])
-#%%
-"""New code for normalizing the spectrum"""
-iteration_number = 0
-chi2_df = pd.DataFrame(columns=['iteration_number','chi2'])
-loop_spectrum = deepcopy(star_spectrum)
-errors_df = pd.DataFrame()
-params_df = pd.DataFrame()
-first_loop=True
-while True:
-    # Perform the normalization iteratively until the chi-squared value is minimized
-    loop_spectrum, modeled_synth_spectrum, params, errors, abundances_found, loggf_found = determine_astrophysical_parameters_using_synth_spectra(loop_spectrum, teff=6080,logg=4.1,MH=0.24,vsini=2.0, max_iterations=15, loop_iteration=iteration_number,wave_base=480, wave_top=680, resolution=82000, code="moog",wave_step=0.001)
-    if first_loop:
-        errors_df = pd.DataFrame(errors, index=np.arange(0,1,1))
-        params_df = pd.DataFrame(params, index=np.arange(0,1,1))
-    else:
-        #Add the errors to a pandas dataframe
-        errors_df = pd.concat([errors_df,pd.DataFrame(errors, index=list(f'{iteration_number}'))])
-        #Add the parameters to a pandas dataframe
-        params_df = pd.concat([params_df,pd.DataFrame(params, index=list(f'{iteration_number}'))])
-    
-    #Normalise the star spectrum using the template from the synthetic spectrum
-    loop_spectrum, star_continuum_model = normalize_whole_spectrum_with_template(loop_spectrum, modeled_synth_spectrum)
-    iteration_number += 1
-    
-    #Calculate the chi squared value and add it to a list
-    chi2 = np.sum(((loop_spectrum['flux'][1:-1] - modeled_synth_spectrum['flux'][1:-1])**2)/ modeled_synth_spectrum['flux'][1:-1])
-    chi2_df.loc[len(chi2_df)] = [iteration_number, chi2]
-    
-    if first_loop:
-        first_loop=False
-        continue
+    """New code for normalizing the spectrum"""
+    iteration_number = 0
+    chi2_df = pd.DataFrame(columns=['iteration_number','chi2'])
+    loop_spectrum = deepcopy(star_spectrum)
+    errors_df = pd.DataFrame()
+    params_df = pd.DataFrame()
+    first_loop=True
+    while True:
+        # Perform the normalization iteratively until the chi-squared value is minimized
+        loop_spectrum, modeled_synth_spectrum, params, errors, abundances_found, loggf_found = determine_astrophysical_parameters_using_synth_spectra(loop_spectrum, teff=6080,logg=4.1,MH=0.24,vsini=2.0, max_iterations=15, loop_iteration=iteration_number,wave_base=480, wave_top=680, resolution=82000, code="moog",wave_step=0.001)
+        if first_loop:
+            errors_df = pd.DataFrame(errors, index=np.arange(0,1,1))
+            params_df = pd.DataFrame(params, index=np.arange(0,1,1))
+        else:
+            #Add the errors to a pandas dataframe
+            errors_df = pd.concat([errors_df,pd.DataFrame(errors, index=list(f'{iteration_number}'))])
+            #Add the parameters to a pandas dataframe
+            params_df = pd.concat([params_df,pd.DataFrame(params, index=list(f'{iteration_number}'))])
         
-    # Check if the new chi-squared value is smaller than the initial value, and if the iteration number is less than 10
-    if ((chi2_df.loc[len(chi2_df)-1,'chi2'] - chi2_df.loc[len(chi2_df)-2,'chi2']) < 5) and (iteration_number < 15):
-        #prints the chi2 value for the iteration
-        print(chi2_df.loc[len(chi2_df)-1,'chi2'])
-        continue
-    else:
-        print(chi2_df)
-        print(errors_df)
-        print(params_df)
-        break
+        #Normalise the star spectrum using the template from the synthetic spectrum
+        loop_spectrum, star_continuum_model = normalize_whole_spectrum_with_template(loop_spectrum, modeled_synth_spectrum)
+        iteration_number += 1
+        
+        #Calculate the chi squared value and add it to a list
+        chi2 = np.sum(((loop_spectrum['flux'][1:-1] - modeled_synth_spectrum['flux'][1:-1])**2)/ modeled_synth_spectrum['flux'][1:-1])
+        chi2_df.loc[len(chi2_df)] = [iteration_number, chi2]
+        
+        if first_loop:
+            first_loop=False
+            continue
+            
+        # Check if the new chi-squared value is smaller than the initial value, and if the iteration number is less than 10
+        if ((chi2_df.loc[len(chi2_df)-1,'chi2'] - chi2_df.loc[len(chi2_df)-2,'chi2']) < 5) and (iteration_number < 15):
+            #prints the chi2 value for the iteration
+            print(chi2_df.loc[len(chi2_df)-1,'chi2'])
+            continue
+        else:
+            print(chi2_df)
+            print(errors_df)
+            print(params_df)
+            break
 
-chi2_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_chi2.txt')
-errors_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_errors.txt')
-params_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_params.txt')
-star_filename = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/'+ f"{star_name}_adjusted.fits" 
-ispec.write_spectrum(loop_spectrum, star_filename)  
-print('Files saved')
+    chi2_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_chi2.txt')
+    errors_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_errors.txt')
+    params_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_params.txt')
+    star_filename = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/'+ f"{star_name}_adjusted.fits" 
+    ispec.write_spectrum(loop_spectrum, star_filename)  
+    print('Files saved')
 
 end = time.time()
 
 print(f'Time taken: {end - start}')
 #%%
-"""Old code for normalizing the spectrum"""
-# iteration_number = 0
-# while True:
-#     if iteration_number == 0:
-#         '''Normalise the star spectrum using the template from the synthetic spectrum'''
-#         normalized_star_spectrum, star_continuum_model = normalize_whole_spectrum_with_template(star_spectrum, synthetic_spectrum)
-#         '''Calculate the chi squared value, which is a measure of how well the synthetic spectrum fits the observed spectrum, by messing with the 
-#         scipy chisquare to give a good value. '''
-#         # Save the original normalized star spectrum
-#         normalized_star_spectrum_original = normalized_star_spectrum
-#         # Calculate the initial chi-squared value
-#         initial_statistic, p_value = chisquare(normalized_star_spectrum['flux'], np.sum(normalized_star_spectrum['flux'])/np.sum(synthetic_flux)*synthetic_flux)
-#         iteration_number += 1
-#         #prints the initial values
-#         print('iteration_number = %f' % iteration_number)
-#         print('initial_statistic = %f' % initial_statistic)
-#     else:
-#         # Normalize the star spectrum using the template from the synthetic spectrum
-#         normalized_star_spectrum, star_continuum_model = normalize_whole_spectrum_with_template(normalized_star_spectrum, synthetic_spectrum)
-    
-#         # Calculate the new chi-squared value
-#         new_statistic, p_value = chisquare(normalized_star_spectrum['flux'], np.sum(normalized_star_spectrum['flux'])/np.sum(synthetic_flux)*synthetic_flux)
-        
-#         # Check if the new chi-squared value is smaller than the initial value, and if the iteration number is less than 10
-#         if (new_statistic < initial_statistic) and (iteration_number < 10):
-#             #Sets the new statistic for checking in the next iteration
-#             statistic = new_statistic
-#             iteration_number += 1 
-#             #Prints the new values for the iteration
-#             print('iteration_number = %f' % iteration_number)
-#             print('statistic = %f' % statistic)
-#         else:
-#             statistic = new_statistic
-#             #Prints the final values for the iteration, or the last values if iteration limit is reached
-#             print('iteration_number = %f' % iteration_number)
-#             print('statistic = %f' % statistic)
-#             #Breaks the loop
-#             break
-
-    
-# %%
-# plt.figure(figsize=(10,5))
-# plt.plot(synthetic_wave,synthetic_flux)
-# plt.plot(star_wave,star_flux)
-# plt.plot(normalized_star_spectrum_original['waveobs'],normalized_star_spectrum_original['flux'])
-# plt.legend(['Synthetic Spectrum','Observed Spectrum','adjusted observed'])
-# plt.xlabel('Wavelength (nm)')
-# plt.ylabel('Flux')
-# # plt.xlim(516.75,517.5)
-# plt.xlim(588.75,589.75)
-# # plt.savefig('/home/users/qai11/Documents/Masters_Figures/Method/hd_102870_adjusted_Mg.png',dpi=300)
-# plt.show()
-
-
-
-# %%
-#Saves the adjusted spectrum if the adjusted spectrum is better than the original spectrum
-#If the first adjusted spectrum is better than any other iterations it saves that instead
-# if statistic < initial_statistic and initial_statistic < observed_chi_square:
-#     print('The adjusted spectrum is better than the original spectrum.\n '
-#           'The initial fit was best with a chi-squared value of %f' % initial_statistic)
-#     logging.info("Saving spectrum...")
-#     star_filename = "hd_102870_adjusted.fits" 
-#     ispec.write_spectrum(normalized_star_spectrum_original, star_filename)
-# elif statistic < observed_chi_square and initial_statistic > observed_chi_square:
-#     print('The adjusted spectrum is better than the original spectrum.\n '
-#           'The chi-squared value has been reduced from %f to %f' % (initial_statistic, statistic))
-#     logging.info("Saving spectrum...")
-#     star_filename = "hd_102870_adjusted.fits" 
-#     ispec.write_spectrum(normalized_star_spectrum, star_filename)
-
-# %%
