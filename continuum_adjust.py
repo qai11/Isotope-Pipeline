@@ -164,7 +164,7 @@ def determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, 
     # star_spectrum = ispec.convolve_spectrum(star_spectrum, to_resolution, from_resolution)
     #--- Continuum fit -------------------------------------------------------------
     model = "Fixed value" # "Polynomy"
-    degree = 2
+    degree = 1
     nknots = None # Automatic: 1 spline every 5 nm
     from_resolution = resolution
 
@@ -302,8 +302,11 @@ def determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, 
 
 #%%
 """Read in the star spectrum and the synthetic spectrum for fitting later"""
-star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621']
-for star_name in star:
+# star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621']
+# star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621','hd_11695','hd_146233','hd_156098','hd_157244','hd_160691','moon']
+star = ['hd_11695','hd_146233','hd_156098','hd_157244','hd_160691','moon']
+
+def continuum_adjust(star_name):
     star_spectrum = ispec.read_spectrum(f"/home/users/qai11/Documents/Fixed_fits_files/{star_name}/rv_corrected/median_spectrum_{star_name}.txt")
     star_wave = star_spectrum['waveobs']
     star_flux = star_spectrum['flux']
@@ -358,6 +361,13 @@ for star_name in star:
     ispec.write_spectrum(loop_spectrum, star_filename)  
     print('Files saved')
 
+try:
+    pool=Pool(os.cpu_count()-1)
+    pool.map(continuum_adjust, star)
+finally:
+    pool.close()
+    pool.join()
+    
 end = time.time()
 
 print(f'Time taken: {end - start}')

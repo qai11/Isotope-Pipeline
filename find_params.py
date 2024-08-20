@@ -34,7 +34,7 @@ def determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, 
      
     #--- Continuum fit -------------------------------------------------------------
     model = "Fixed value" # "Polynomy"
-    degree = 2
+    degree = 1
     nknots = None # Automatic: 1 spline every 5 nm
     from_resolution = resolution
 
@@ -96,7 +96,7 @@ def determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, 
 
     # Free parameters
     #free_params = ["teff", "logg", "MH", "vmic", "vmac", "vsini", "R", "vrad", "limb_darkening_coeff"]
-    free_params = ["teff", "logg", "MH", "vsini", "alpha"]
+    free_params = ["teff", "logg", "MH","vmic", "vmac", "vsini", "alpha"]
 
     # Free individual element abundance
     free_abundances = None
@@ -150,9 +150,11 @@ def determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, 
     # synth_filename = "example_modeled_synth_%s.fits" % (code)
     # ispec.write_spectrum(modeled_synth_spectrum, synth_filename)
     return params, errors
+
  #%%   
 start = time.time()
-star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621']
+# star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621','hd_11695','hd_146233','hd_156098','hd_157244','hd_160691','moon']
+star = ['hd_11695','hd_146233','hd_156098','hd_157244','hd_160691','moon']
 # ,'hd_102870','hd_128620','hd_128621'
 star_number = 0
 errors_df = pd.DataFrame()
@@ -172,10 +174,14 @@ for star_name in star:
     #Add the parameters to a pandas dataframe
     params_df = pd.concat([params_df,pd.DataFrame(params, index=list(f'{star_number}'))])
     star_number+=1
+    os.rename('/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/iter_param.txt',f'/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/{star_name}_iter_param.txt')
+    #Save individual files
+    errors_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}/{star_name}_final_errors.txt')
+    params_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}/{star_name}_final_params.txt')
     
 if not os.path.exists(f'/home/users/qai11/Documents/Fixed_fits_files/parameters'):
         os.makedirs(f'/home/users/qai11/Documents/Fixed_fits_files/parameters')
-#Save all the results
+#Save all the results to one file
 errors_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/final_errors.txt')
 params_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/final_params.txt')
 print('Files saved')

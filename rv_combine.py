@@ -24,7 +24,8 @@ import ispec
 start = time.time()
 
 # spectrum = ispec.read_spectrum(f'{data_path}/{star_name}/median_spectrum_{star_name}.txt')
-star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621']
+# star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621','hd_11695','hd_146233','hd_156098','hd_157244','hd_160691','moon']
+star = ['hd_11695','hd_146233','hd_156098','hd_157244','hd_160691','moon']
 
 for star_name in star:
     # Open spectra one at a time in a folder
