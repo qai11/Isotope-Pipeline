@@ -9,6 +9,7 @@ Description: Prints the parameters and errors for each star in the final_params.
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+#%%
 # star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621']
 star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621','hd_11695','hd_146233','hd_156098','hd_157244','hd_160691','moon']
 # star = ['hd_11695','hd_146233','hd_156098','hd_157244','hd_160691','moon']
@@ -113,4 +114,34 @@ plt.savefig(f'/home/users/qai11/Documents/Masters_Figures/Method/{star_name}_con
 #     plt.legend(star)     
         
 
+# %%
+#Plot the Mg triplet removal from linelist effect on the synthetic spectra
+
+spectra_names = ["synth_only_Mg_5183.txt","cut.txt","synth_NoMg.txt","synth_only_Mg_5167.322.txt","synth_only_Mg_5172"]
+
+file1 = '/home/users/qai11/Documents/Fixed_fits_files/hd_102870/J0354027_synth_only_Mg_5183.txt'
+file2 = '/home/users/qai11/Documents/Fixed_fits_files/hd_102870/J0354027_cut.txt'
+file3 = '/home/users/qai11/Documents/Fixed_fits_files/hd_102870/J0354027_synth_NoMg.txt'
+file4 = '/home/users/qai11/Documents/Fixed_fits_files/hd_102870/J0354027_synth_only_Mg_5167.txt'
+file5 = '/home/users/qai11/Documents/Fixed_fits_files/hd_102870/J0354027_synth_only_Mg_5172.txt'
+
+data1 = pd.read_csv(file1,delimiter='	')
+data2 = pd.read_csv(file2,delimiter='	')
+data3 = pd.read_csv(file3,delimiter='	')
+data4 = pd.read_csv(file4,delimiter='	')
+data5 = pd.read_csv(file5,delimiter='	')
+
+plt.figure(figsize=(10,5))
+plt.plot(data1['waveobs'],data1['flux'],label='J0354027_synth_only_Mg_5183',color='darkblue')
+plt.plot(data2['waveobs'],data2['flux'],label='J0354027_cut',color='maroon')
+plt.plot(data3['waveobs'],data3['flux'],label='J0354027_synth_NoMg',color='purple')
+plt.plot(data4['waveobs'],data4['flux'],label='J0354027_synth_only_Mg_5167',color='green')
+plt.plot(data5['waveobs'],data5['flux'],label='J0354027_synth_only_Mg_5172',color='black')
+plt.xlabel('Wavelength (nm)')
+plt.ylabel('Flux')
+plt.xlim(516,519)
+plt.ylim(0.1,1.05)
+plt.legend(loc='lower right')
+
+plt.savefig(f'/home/users/qai11/Documents/Masters_Figures/Method/All_Mg_overplot.png',dpi=150)
 # %%

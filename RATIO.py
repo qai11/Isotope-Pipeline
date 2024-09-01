@@ -88,7 +88,11 @@ def calc_chi(raw, r):
 
     raw_flux = raw[(raw.wavelength > lw) & (raw.wavelength < uw)]
     
-    return chisquare(raw_flux.flux, raw_flux.model_flux)[0]
+    chisquare = np.sum(((raw_flux.flux - raw_flux.model_flux)**2)/ raw_flux.model_flux)
+    
+    #chisquare(raw_flux.flux, raw_flux.model_flux)[0]
+    
+    return chisquare
 
 def interp_smooth(raw, smooth):
 
@@ -502,7 +506,7 @@ def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, re
 def model_finder():
     
     data_path = '/home/users/qai11/Documents/Fixed_fits_files/hd_102870/'
-    region = 2
+    region = 0
     os.chdir(data_path)
     os.system('mkdir plots')
     # initial guesses as a dictionary
@@ -576,11 +580,11 @@ def calc_moog_string(r_24, r_25, r_26):
 def initial_guess():
 
     s = 8.41
-    mg = 0.55
+    mg = 0
     i_24 = 2
     i_25 = 15
     i_26 = 13
-    rv = 1.8
+    rv = 0
 
     # return the guess as a dictionary
     return {'s'    : s, 

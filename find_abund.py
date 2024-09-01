@@ -145,51 +145,45 @@ def determine_abundances_using_synth_spectra(star_spectrum, teff, logg, MH, Vmic
     # Selected model amtosphere, linelist and solar abundances
     model = ispec_dir + "/input/atmospheres/MARCS.GES/"
     
-    return params, errors, abundances_found, element_name
+    return abundances_found
 
 #%%
 start = time.time()
 star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621','hd_11695','hd_146233','hd_156098','hd_157244','hd_160691','moon']
 # star = ['hd_102870']
-# element = ["Mg", "Si", "Ca", "Ti", "Sc","V","Cr","Mn","Co", "Ni", "Y", "Ba", "La", "Nd", "Eu", "Sr", "Zr","Rb"]
-element = ["Mg", "Si"]
-def find_abund(star,element):
-    star_number = 0
-    for star_name in star:
-        abund_params_df=pd.DataFrame()
-        element_number = 0
-        for element_name in element:
-            star_spectrum = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_adjusted.fits')
-            parameters = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/{star_name}_iter_param.txt')
-            teff = parameters['teff'][len(parameters)-1]
-            logg = parameters['logg'][len(parameters)-1]
-            MH = parameters['MH'][len(parameters)-1]
-            Vmic = parameters['Vmic'][len(parameters)-1]
-            Vmac = parameters['Vmac'][len(parameters)-1]
-            alpha = parameters['alpha'][len(parameters)-1]
-            vsini = parameters['Vsini'][len(parameters)-1]
-            max_iterations = 1
-            params, errors, abundances_found, element_name = determine_abundances_using_synth_spectra(star_spectrum, teff, logg, MH, Vmic, Vmac, alpha, vsini, max_iterations, element_name=element_name, wave_base=480, wave_top=680, resolution=82000, code="moog")
-            #Save the parameters in a dataframe
-            #Add the abundances to a pandas dataframe
-            abund_params_df = pd.concat([abund_params_df,pd.DataFrame(abundances_found, index=list(f'{element_number}'))])
-            # os.rename('/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/iter_param.txt',f'/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/{star_name}_iter_param.txt')
-            element_number+=1
-        star_number+=1
+element = ["Mg", "Si", "Ca", "Ti", "Sc","V","Cr","Mn","Co", "Ni", "Y", "Ba", "La", "Nd", "Eu", "Sr", "Zr","Rb"]
+# element = ["Mg", "Si"]
+star_number = 0
+# errors_df = pd.DataFrame()
+# params_df = pd.DataFrame()
+for star_name in star:
+    abund_params_df=pd.DataFrame()
+    element_number = 0
+    for element_name in element:
+        print(f"element number  = {element_number}")
+        star_spectrum = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_adjusted.fits')
+        parameters = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/{star_name}_iter_param.txt')
+        teff = parameters['teff'][len(parameters)-1]
+        logg = parameters['logg'][len(parameters)-1]
+        MH = parameters['MH'][len(parameters)-1]
+        Vmic = parameters['Vmic'][len(parameters)-1]
+        Vmac = parameters['Vmac'][len(parameters)-1]
+        alpha = parameters['alpha'][len(parameters)-1]
+        vsini = parameters['Vsini'][len(parameters)-1]
+        max_iterations = 20
+        abundances_found = determine_abundances_using_synth_spectra(star_spectrum, teff, logg, MH, Vmic, Vmac, alpha, vsini, max_iterations, element_name=element_name, wave_base=480, wave_top=680, resolution=82000, code="moog")
+        #Save the parameters in a dataframe
+        #Add the abundances to a pandas dataframe
+        abund_params_df = pd.concat([abund_params_df,pd.DataFrame(abundances_found, index=[f'{element_number}'])])
+        # os.rename('/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/iter_param.txt',f'/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/{star_name}_iter_param.txt')
+        element_number+=1
+    star_number+=1
 
-            
-        #Save all the results to one file
-        abund_params_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}_final_indiv_abund.txt')
-        print('Files saved')
-
-
-try:
-    pool=Pool(os.cpu_count()-1)
-    pool.map(find_abund, star)
-finally:
-    pool.close()
-    pool.join()
-     
+        
+    #Save all the results to one file
+    abund_params_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}_final_indiv_abund.txt')
+    print('Files saved')
+    
 end = time.time()
 
 print(f'Time taken in sec: {end - start}')
