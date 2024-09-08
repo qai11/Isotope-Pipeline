@@ -142,7 +142,7 @@ code = "moog"
 plt.plot(ratio)
 plt.xlabel('Wavelength')
 plt.ylabel('Ratio')
-plt.title('Ratio of Isotopes')
+plt.title('Ratio of Isotopes') 
 plt.show()
 
 #--- Save the ratio ------------------------------------------------------------
