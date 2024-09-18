@@ -186,7 +186,7 @@ def make_model_plots(raw, smooth, output_filename, region, rv):
     gs.update(wspace=0, hspace=0, left=0, right=1, bottom=0, top=1)
     
 
-    plt.savefig('./plots/' + output_filename, facecolor='white', bbox_inches='tight', dpi = 300)
+    plt.savefig('./plots/'+ output_filename, facecolor='white', bbox_inches='tight', dpi = 300)
     plt.close()
 
 def make_temp_file(filename):
@@ -373,16 +373,15 @@ def get_chi_squared(raw, out_filename, region, guess, make_plot = True):
     # return the chi quared value over the line
     return calc_chi(raw, region)
 
-def make_filenames(par, prefix,folder=""):
+def make_filenames(par, prefix):
     str_s = str(round(par['s'],   2)).replace('.', '')
     str_mg = str(round(par['mg'],   3)).replace('.', '')
     str_24 = str(round(par['i_24'], 3)).replace('.', '')
     str_25 = str(round(par['i_25'], 3)).replace('.', '')
     str_26 = str(round(par['i_26'], 3)).replace('.', '')
     str_rv = str(round(par['rv'],   2)).replace('.', '')
-    print(folder + prefix + '_s'+ str_s +'_mg'+ str_mg + '_i' \
-     + str_24 + '_' + str_25  + '_' + str_26 + '_rv' + str_rv)
-    return folder + prefix + '_s'+ str_s +'_mg'+ str_mg + '_i' \
+
+    return prefix + '_s'+ str_s +'_mg'+ str_mg + '_i' \
      + str_24 + '_' + str_25  + '_' + str_26 + '_rv' + str_rv
 
 def get_wavelength_region(raw_wavelength):
@@ -499,23 +498,15 @@ def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, re
     for par in guess_arr:
         # add the new chi squared values to the df
         chi_of_model = optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, par)
-        # Assuming chi_df and chi_of_model are both DataFrames
-        chi_df = pd.concat([chi_df, chi_of_model], ignore_index=True) #Quins fix for depreciated pandas
+        chi_df = chi_df.append(chi_of_model)
     
     # return chi_df with the results of the new models
     return chi_df
 
 def model_finder():
     
-    if os.path.exists('/home/users/qai11/Documents/Fixed_fits_files/hd_102870/'):
-        "Location of the files on Uni computer"
-        data_path = '/home/users/qai11/Documents/Fixed_fits_files/hd_102870/'
-    else:
-        "location of data on Mac"
-        data_path = '/Users/quin/Desktop/2024_Data/Adjusted_fits_data/'
-
-        
-    region = 3
+    data_path = '/home/users/qai11/Documents/Fixed_fits_files/hd_102870/'
+    region = 0
     os.chdir(data_path)
     os.system('mkdir plots')
     # initial guesses as a dictionary

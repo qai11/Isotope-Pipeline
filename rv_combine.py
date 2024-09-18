@@ -35,7 +35,7 @@ for star_name in star:
     start = time.time()
     rad_vel = []
     all_spectra = []
-    for file in files:
+    for i, file in enumerate(files):
         # Load the data
         spectrum = ispec.read_spectrum(file)
         # Radial velocity shift the spectrum for further analysis
@@ -60,16 +60,19 @@ for star_name in star:
         rv_shifted_data = pd.DataFrame({'waveobs': rv_shift_median_spectrum['waveobs'], 'flux': spectrum['flux'], 'err': spectrum['err']})
         #Save the shifted spectrum
         # rv_shifted_data.to_csv(folder_path + '/rv_corrected/corrected_' + file[-13:-5] + '.txt', sep=' ',index=False)
+        if i==0:
+            template_wave= rv_shifted_data['waveobs']
+        resampled_flux = np.interp(template_wave, rv_shifted_data['waveobs'], rv_shifted_data['flux'])
         
         '''MERGE THE DATA'''
         # Load the data into data and wave for median addition
         data = fits.getdata(file)
-        all_spectra.append(spectrum['flux'])
+        all_spectra.append(resampled_flux)
     
     #median the fluxes
     median_flux = np.median(all_spectra, axis=0)
     # rebuild data for ispec
-    median_data = pd.DataFrame({'waveobs': rv_shift_median_spectrum['waveobs'], 'flux': median_flux, 'err': np.zeros_like(median_flux)})
+    median_data = pd.DataFrame({'waveobs': template_wave, 'flux': median_flux, 'err': np.zeros_like(median_flux)})
     # Save the median spectrum
     median_data.to_csv(folder_path + '/rv_corrected/median_spectrum_' + star_name + '.txt', sep=' ',index=False)
     
