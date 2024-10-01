@@ -5,7 +5,8 @@ Date: 13/09/24
 
 Description: This script reads in the linelist made by linemake.f
 and a iSpec linelist, Reformat the linemake linelist to be added
-to the iSpec linelist.
+to the iSpec linelist. This is to be used in the iSpec analysis and
+gets converted to the moog list in moog.py saved in documents.
 """
 #%%
 import pandas as pd
@@ -27,20 +28,15 @@ from ispec import read_chemical_elements
 
 from ispec import read_molecular_symbols
 
-linelist_quin = pd.read_csv('/home/users/qai11/Documents/Fixed_fits_files/hd_102870/quinlist.MgH', delimiter=r'\s+', engine='python')
-linelist_iSpec = pd.read_csv(ispec_dir + '/input/linelists/transitions/GBS_LIST.480_800nm/atomic_lines.tsv', delimiter='\t', engine='python')
 
 #%%
 molecules = read_molecular_symbols('/home/users/qai11/iSpec_v20201001/input/abundances/molecular_symbols.dat')
 elements = read_chemical_elements('/home/users/qai11/iSpec_v20201001/input/abundances/chemical_elements_symbols.dat')
 elements = elements.filled()
 elements = np.array(elements, dtype=[('id', 'i4'), ('symbol', 'U2'), ('name', 'U20'), ('group', 'i4'), ('period', 'i4'), ('block', 'i4'), ('atomic_num', 'i4'), ('ion', 'i4')])
-# %%
-
-import pandas as pd
 
 # Load both linelists
-linelist_iSpec = pd.read_csv(ispec_dir + '/input/linelists/transitions/GBS_LIST.480_800nm/atomic_lines.tsv', delimiter='\t', engine='python')
+linelist_iSpec = pd.read_csv(ispec_dir + '/input/linelists/transitions/GESv6_atom_hfs_iso.420_920nm/atomic_lines.tsv', delimiter='\t', engine='python')
 linelist_quin = pd.read_csv('/home/users/qai11/Documents/Fixed_fits_files/hd_102870/quinlist.MgH', delimiter=r'\s+', engine='python')
 
 # Convert the molecule array to a dictionary for easy mapping
@@ -115,7 +111,7 @@ def check_ion(element_value):
 merged_df['ion'] = merged_df['spectrum_moog_species'].apply(check_ion)
 
 # Change the 'moog_support' column to 'T' where it is 0 from the moog linelist
-merged_df.loc[merged_df['moog_support'] == 0, 'moog_support'] = 'T'
+merged_df.loc[merged_df['moog_support'] == 0, 'moog_support'] = "T"
 
 # Function to map numbers to molecule names
 def map_to_molecule(value):
@@ -157,11 +153,11 @@ merged_df = merged_df.iloc[:, :-3]
 merged_df = merged_df.sort_values(by='wave_A')
 
 #Create folder for the new linelist in iSpec directories
-if not os.path.exists(ispec_dir + '/input/linelists/transitions/Quin_GBS_LIST.480_800nm/'):
-    os.makedirs(ispec_dir +'/input/linelists/transitions/Quin_GBS_LIST.480_800nm/')
+if not os.path.exists(ispec_dir + '/input/linelists/transitions/Quin_GES_LIST.420_920nm/'):
+    os.makedirs(ispec_dir +'/input/linelists/transitions/Quin_GES_LIST.420_920nm/')
     
 #Save the new linelist as a tsv file called atomic_lines.tsv
-merged_df.to_csv(ispec_dir + '/input/linelists/transitions/Quin_GBS_LIST.480_800nm/atomic_lines.tsv', sep='\t', index=False)
+merged_df.to_csv(ispec_dir + '/input/linelists/transitions/Quin_GES_LIST.420_920nm/atomic_lines.tsv', sep='\t', index=False)
 
 # %%
  
