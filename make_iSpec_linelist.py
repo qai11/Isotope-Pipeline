@@ -13,6 +13,14 @@ import pandas as pd
 import numpy as np
 import os
 import sys
+from astropy.io import fits
+import matplotlib.pyplot as plt
+from astroquery.gaia import Gaia
+import astropy.units as u
+from astropy.coordinates import SkyCoord
+import numpy as np
+import matplotlib.patches as pt
+from astroquery.simbad import Simbad
 
 #--- iSpec directory -------------------------------------------------------------
 if os.path.exists('/home/users/qai11/iSpec_v20201001'):
@@ -83,6 +91,7 @@ def check_molecule(element_value):
 
 # Apply the function to create the 'molecule' column
 merged_df['molecule'] = merged_df['element'].apply(check_molecule)
+
 # Update the 'spectrum_moog_species' with the values in 'element' with moog format
 merged_df.loc[merged_df['spectrum_moog_species'] == 0, 'spectrum_moog_species'] = merged_df['element']
 
@@ -160,4 +169,46 @@ if not os.path.exists(ispec_dir + '/input/linelists/transitions/Quin_GES_LIST.42
 merged_df.to_csv(ispec_dir + '/input/linelists/transitions/Quin_GES_LIST.420_920nm/atomic_lines.tsv', sep='\t', index=False)
 
 # %%
- 
+"""ADD in the EuII isotopes list to the linelist"""
+# Load the EuII isotopes list
+hdul = fits.open("/home/users/qai11/Documents/quin-masters-code/asu.fit")
+data = hdul[1].data
+data = data.byteswap().newbyteorder('=')
+data = data.byteswap().newbyteorder('=')
+data = data.byteswap().newbyteorder('=')
+hdr1 = hdul[1].header
+hdr0 = hdul[0].header
+
+
+lines = pd.DataFrame(data)
+lines = lines[(lines["gfflag"] != "-") & (lines["gfflag"] != "N") & (lines["synflag"] != "N") & (lines["synflag"] != "-")]
+# lines = lines[(lines["lambda"].between(4800,6800))]
+# lines = lines[~lines["lambda"].between(5776, 5836)]
+
+# lines.to_csv("/home/users/qai11/Documents/quin-masters-code/Linelists/ges_lines.tsv", index = False, sep = "\t")
+
+# elements = ["Mg"]
+elements = lines["Element"].unique()
+
+all_list = pd.DataFrame()
+# %%
+
+
+'''Pull out the Eu lines I want to reformat them to match iSpec'''
+el_Eu = lines[(lines["Element"] == "Eu")].reset_index(drop=True)
+
+'''Pull out the Ba lines I want to reformat them to match iSpec'''
+el_Ba = lines[(lines["Element"] == "Ba")].reset_index(drop=True)
+
+
+
+   
+   
+#    el_list = el[["lambda", "Element", "Ion"]]
+#    el_list["wave_peak"] = el_list["lambda"].round(4) / 10
+#    el_list["wave_base"] = (el_list["lambda"].round(4) / 10 - 0.05).round(4)
+#    el_list["wave_top"] = (el_list["lambda"].round(4) / 10 + 0.05).round(4)
+#    el_list["Ion"] = el_list["Ion"].astype(str)
+#    el_list["note"] = el_list["Element"] + " " + el_list["Ion"]
+#    el_list = el_list.drop(columns = ["Element", "Ion", "lambda"])
+# %%
