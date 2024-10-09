@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 # star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621']
 star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621','hd_11695','hd_146233','hd_156098','hd_157244','hd_160691','moon']
 # star = ['hd_11695','hd_146233','hd_156098','hd_157244','hd_160691','moon']
+#%%
 params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/final_params.txt')
 errors = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/final_errors.txt')
 
@@ -144,4 +145,55 @@ plt.ylim(0.1,1.05)
 plt.legend(loc='lower right')
 
 plt.savefig(f'/home/users/qai11/Documents/Masters_Figures/Method/All_Mg_overplot.png',dpi=150)
+# %%
+
+#For printing abundances
+iteration = 0
+for star_name in star:
+    #Path for Mac
+    abund_params = pd.read_csv(f'/Users/quin/Desktop/2024_Data/parameters_gbs_linelist_only_first_calc/{star_name}_final_indiv_abund.txt')
+    print('\n')
+    print(star[iteration])
+    for i in range(0,len(abund_params)):
+        print(f'{abund_params["element"][i]} = {abund_params["[X/H]"][i]:.5f} pm {abund_params["e[X/H]"][i]:.5f}')
+    iteration +=1
+# %%
+import pandas as pd
+
+table_data = []
+star = ['hd_45588', 'hd_100407', 'hd_102870', 'hd_128620', 'hd_128621', 'hd_11695', 'hd_146233', 'hd_156098', 'hd_157244', 'hd_160691', 'moon']
+
+# Initialize an empty dictionary to hold abundance data for each star
+abundance_dict = {}
+
+for star_name in star:
+    # Read the abundance data for each star
+    abund_params = pd.read_csv(f'/Users/quin/Desktop/2024_Data/parameters_gbs_linelist_only_first_calc/{star_name}_final_indiv_abund.txt')
+    
+    # Initialize a temporary dictionary to store abundance values for this star
+    temp_dict = {}
+    
+    for i in range(len(abund_params)):
+        element = abund_params["element"][i]
+        abundance = f'{abund_params["[X/H]"][i]:.3f} ± {abund_params["e[X/H]"][i]:.3f}'
+        temp_dict[element] = abundance
+    
+    # Add the abundance data for this star to the main dictionary
+    abundance_dict[star_name] = temp_dict
+
+# Convert the abundance dictionary into a DataFrame
+table_df = pd.DataFrame(abundance_dict)
+
+# Transpose the DataFrame to get the star names as columns
+table_df_transposed = table_df
+
+# Convert DataFrame to LaTeX table
+latex_table = table_df_transposed.to_latex(column_format='|c|' * (len(table_df_transposed.columns)+1))
+
+# Manually insert \hline after each row
+latex_table_with_hline = latex_table.replace("\\\\", "\\\\ \\hline").replace("\\toprule", "").replace("\\bottomrule", "").replace("\\midrule", "")
+
+# Print the LaTeX table
+print(latex_table_with_hline)
+
 # %%

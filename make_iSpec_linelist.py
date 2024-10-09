@@ -38,14 +38,17 @@ from ispec import read_molecular_symbols
 
 
 #%%
-molecules = read_molecular_symbols('/home/users/qai11/iSpec_v20201001/input/abundances/molecular_symbols.dat')
-elements = read_chemical_elements('/home/users/qai11/iSpec_v20201001/input/abundances/chemical_elements_symbols.dat')
+molecules = read_molecular_symbols(ispec_dir + '/input/abundances/molecular_symbols.dat')
+elements = read_chemical_elements(ispec_dir + '/input/abundances/chemical_elements_symbols.dat')
 elements = elements.filled()
 elements = np.array(elements, dtype=[('id', 'i4'), ('symbol', 'U2'), ('name', 'U20'), ('group', 'i4'), ('period', 'i4'), ('block', 'i4'), ('atomic_num', 'i4'), ('ion', 'i4')])
 
 # Load both linelists
 linelist_iSpec = pd.read_csv(ispec_dir + '/input/linelists/transitions/GESv6_atom_hfs_iso.420_920nm/atomic_lines.tsv', delimiter='\t', engine='python')
-linelist_quin = pd.read_csv('/home/users/qai11/Documents/Fixed_fits_files/hd_102870/quinlist.MgH', delimiter=r'\s+', engine='python')
+try:
+    linelist_quin = pd.read_csv('/home/users/qai11/Documents/Fixed_fits_files/hd_102870/quinlist.MgH', delimiter=r'\s+', engine='python')
+except:
+    linelist_quin = pd.read_csv('/Users/quin/quin-masters-code/quinlist.MgH', delimiter=r'\s+', engine='python')
 
 # Convert the molecule array to a dictionary for easy mapping
 molecule_dict = {item['atomic_num']: item['symbol'] for item in molecules}
@@ -158,20 +161,15 @@ merged_df['element'] = merged_df.apply(lambda row: map_to_element(row['element']
 #Remove the last 3 columns
 merged_df = merged_df.iloc[:, :-3]
 
-#Sort the list by wavelength
-merged_df = merged_df.sort_values(by='wave_A')
-
-#Create folder for the new linelist in iSpec directories
-if not os.path.exists(ispec_dir + '/input/linelists/transitions/Quin_GES_LIST.420_920nm/'):
-    os.makedirs(ispec_dir +'/input/linelists/transitions/Quin_GES_LIST.420_920nm/')
-    
-#Save the new linelist as a tsv file called atomic_lines.tsv
-merged_df.to_csv(ispec_dir + '/input/linelists/transitions/Quin_GES_LIST.420_920nm/atomic_lines.tsv', sep='\t', index=False)
 
 # %%
 """ADD in the EuII isotopes list to the linelist"""
 # Load the EuII isotopes list
-hdul = fits.open("/home/users/qai11/Documents/quin-masters-code/asu.fit")
+try:
+    hdul = fits.open("/home/users/qai11/Documents/quin-masters-code/asu.fit")
+except:
+    hdul = fits.open("/Users/quin/quin-masters-code/asu.fit")
+    
 data = hdul[1].data
 data = data.byteswap().newbyteorder('=')
 data = data.byteswap().newbyteorder('=')
@@ -190,25 +188,71 @@ lines = lines[(lines["gfflag"] != "-") & (lines["gfflag"] != "N") & (lines["synf
 # elements = ["Mg"]
 elements = lines["Element"].unique()
 
-all_list = pd.DataFrame()
-# %%
+#%%
+# Now I want to reformat the lines to match the iSpec format
 
+# Create a new DataFrame to hold the reformatted lines
+el_list_Eu = pd.DataFrame()
 
 '''Pull out the Eu lines I want to reformat them to match iSpec'''
 el_Eu = lines[(lines["Element"] == "Eu")].reset_index(drop=True)
 
+# Add the correct values to the new DataFrame for Europium
+el_list_Eu['element'] = el_Eu['Element']+ " " + el_Eu['Ion'].astype(str)
+el_list_Eu['wave_A'] = el_Eu['lambda']
+el_list_Eu['wave_nm'] = el_Eu['lambda'] / 10
+el_list_Eu['loggf'] = el_Eu['loggf']
+el_list_Eu['lower_state_eV'] = el_Eu['Elow']
+el_list_Eu['lower_state_cm1'] = el_Eu['Elow'] * 8065.54429
+el_list_Eu['lower_j'] = el_Eu['Jlow']
+el_list_Eu['upper_state_eV'] = el_Eu['Eup']
+el_list_Eu['upper_state_cm1'] = el_Eu['Eup'] * 8065.54429
+el_list_Eu['upper_j'] = el_Eu['Jup']
+el_list_Eu['ion'] = el_Eu['Ion'].astype(int)
+el_list_Eu['moog_support'] = 'T'
+el_list_Eu['waals'] = el_Eu['Vdw-damp']
+el_list_Eu['spectrum_moog_species'] = round(63.1 + (el_Eu['Isotope']  * 0.0001), 4).astype(float)
+
+
+# then when we are done we want to set any other value to be zero because they arent needed
+
+#do the same formatting for Barium
 '''Pull out the Ba lines I want to reformat them to match iSpec'''
 el_Ba = lines[(lines["Element"] == "Ba")].reset_index(drop=True)
 
+# Add the correct values to the new DataFrame for Barium
+el_list_Ba = pd.DataFrame()
+
+el_list_Ba['element'] = el_Ba['Element']+ " " + el_Ba['Ion'].astype(str)
+el_list_Ba['wave_A'] = el_Ba['lambda']
+el_list_Ba['wave_nm'] = el_Ba['lambda'] / 10
+el_list_Ba['loggf'] = el_Ba['loggf']
+el_list_Ba['lower_state_eV'] = el_Ba['Elow']
+el_list_Ba['lower_state_cm1'] = el_Ba['Elow'] * 8065.54429
+el_list_Ba['lower_j'] = el_Ba['Jlow']
+el_list_Ba['upper_state_eV'] = el_Ba['Eup']
+el_list_Ba['upper_state_cm1'] = el_Ba['Eup'] * 8065.54429
+el_list_Ba['upper_j'] = el_Ba['Jup']
+el_list_Ba['ion'] = el_Ba['Ion'].astype(int)
+el_list_Ba['moog_support'] = 'T'
+el_list_Ba['waals'] = el_Ba['Vdw-damp']
+el_list_Ba['spectrum_moog_species'] = round(56.1 + (el_Ba['Isotope'] * 0.0001), 4).astype(float)
 
 
-   
-   
-#    el_list = el[["lambda", "Element", "Ion"]]
-#    el_list["wave_peak"] = el_list["lambda"].round(4) / 10
-#    el_list["wave_base"] = (el_list["lambda"].round(4) / 10 - 0.05).round(4)
-#    el_list["wave_top"] = (el_list["lambda"].round(4) / 10 + 0.05).round(4)
-#    el_list["Ion"] = el_list["Ion"].astype(str)
-#    el_list["note"] = el_list["Element"] + " " + el_list["Ion"]
-#    el_list = el_list.drop(columns = ["Element", "Ion", "lambda"])
+#%%
+# Concatenate the two DataFrames, keeping the original data intact and adding zeros for missing values
+merged_df_new = pd.concat([merged_df, el_list_Eu, el_list_Ba], axis=0, ignore_index=True)
+
+merged_df_new = merged_df_new.fillna(0)
+
+#Sort the list by wavelength
+merged_df_new = merged_df_new.sort_values(by='wave_A')
+
+#Create folder for the new linelist in iSpec directories
+if not os.path.exists(ispec_dir + '/input/linelists/transitions/Quin_GES_LIST.420_920nm/'):
+    os.makedirs(ispec_dir +'/input/linelists/transitions/Quin_GES_LIST.420_920nm/')
+    
+#Save the new linelist as a tsv file called atomic_lines.tsv
+merged_df_new.to_csv(ispec_dir + '/input/linelists/transitions/Quin_GES_LIST.420_920nm/atomic_lines.tsv', sep='\t', index=False)
+
 # %%
