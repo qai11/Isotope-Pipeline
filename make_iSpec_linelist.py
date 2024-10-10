@@ -47,16 +47,21 @@ elements = np.array(elements, dtype=[('id', 'i4'), ('symbol', 'U2'), ('name', 'U
 linelist_iSpec = pd.read_csv(ispec_dir + '/input/linelists/transitions/GESv6_atom_hfs_iso.420_920nm/atomic_lines.tsv', delimiter='\t', engine='python')
 try:
     linelist_quin = pd.read_csv('/home/users/qai11/Documents/Fixed_fits_files/hd_102870/quinlist.MgH', delimiter=r'\s+', engine='python')
+    linelist_quin2 = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/quinlist5500.MgH', delimiter=r'\s+', engine='python')
 except:
     linelist_quin = pd.read_csv('/Users/quin/quin-masters-code/quinlist.MgH', delimiter=r'\s+', engine='python')
 
 # Convert the molecule array to a dictionary for easy mapping
 molecule_dict = {item['atomic_num']: item['symbol'] for item in molecules}
 
+#Rename the columns for concatenating the 5100-5200 linelists
 linelist_quin.columns = ['wave_A', 'element', 'lower_state_eV', 'loggf', 'waals', 'd0', 'equivalent_width', 'comment']
 
+#Rename the columns for concatenating the 5500-5200 linelists
+linelist_quin2.columns = ['wave_A', 'element', 'lower_state_eV', 'loggf', 'waals', 'd0', 'equivalent_width', 'comment']
+
 # Concatenate the two DataFrames, keeping the original data intact
-merged_df = pd.concat([linelist_iSpec, linelist_quin], axis=0, ignore_index=True)
+merged_df = pd.concat([linelist_iSpec, linelist_quin, linelist_quin2], axis=0, ignore_index=True)
 
 # Fill in missing values with 0 for the non-overlapping columns
 merged_df = merged_df.fillna(0)
@@ -162,8 +167,9 @@ merged_df['element'] = merged_df.apply(lambda row: map_to_element(row['element']
 merged_df = merged_df.iloc[:, :-3]
 
 
+
 # %%
-"""ADD in the EuII isotopes list to the linelist"""
+"""ADD in the EuII isotopes list to the linelist from the GES linelist"""
 # Load the EuII isotopes list
 try:
     hdul = fits.open("/home/users/qai11/Documents/quin-masters-code/asu.fit")

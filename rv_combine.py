@@ -42,6 +42,7 @@ def rv_combine(star):
         start = time.time()
         rad_vel = []
         all_spectra = []
+        all_err = []
         for i, file in enumerate(files):
             # Load the data
             spectrum = ispec.read_spectrum(file)
@@ -58,13 +59,13 @@ def rv_combine(star):
             #Save the error
             rv_err = np.round(model[0].emu(),2)
             #Shift the Spectrum
-            rv_shift_median_spectrum = ispec.correct_velocity(spectrum, rv)
+            rv_shift_spectrum = ispec.correct_velocity(spectrum, rv)
             #Save the rv corrected spectrum
             #Make a new folder for the rv corrected spectra
             if not os.path.exists(folder_path + '/rv_corrected'):
                 os.makedirs(folder_path + '/rv_corrected')
             #Make a dataframe for the rv corrected spectrum
-            rv_shifted_data = pd.DataFrame({'waveobs': rv_shift_median_spectrum['waveobs'], 'flux': spectrum['flux'], 'err': spectrum['err']})
+            rv_shifted_data = pd.DataFrame({'waveobs': rv_shift_spectrum['waveobs'], 'flux': spectrum['flux'], 'err': spectrum['err']})
             #Save the shifted spectrum
             # rv_shifted_data.to_csv(folder_path + '/rv_corrected/corrected_' + file[-13:-5] + '.txt', sep=' ',index=False)
             if i==0:
@@ -75,11 +76,14 @@ def rv_combine(star):
             # Load the data into data and wave for median addition
             data = fits.getdata(file)
             all_spectra.append(resampled_flux)
+            all_err.append(spectrum['err'])
         
         #median the fluxes
         median_flux = np.median(all_spectra, axis=0)
+        #median the Errors (probably temporary for now)
+        median_error = np.median(all_err,axis=0)
         # rebuild data for ispec
-        median_data = pd.DataFrame({'waveobs': template_wave, 'flux': median_flux, 'err': np.zeros_like(median_flux)})
+        median_data = pd.DataFrame({'waveobs': template_wave, 'flux': median_flux, 'err': median_error})
         # Save the median spectrum
         median_data.to_csv(folder_path + '/rv_corrected/median_spectrum_' + star_name + '.txt', sep=' ',index=False)
     

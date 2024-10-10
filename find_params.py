@@ -26,7 +26,7 @@ ispec_dir = '/home/users/qai11/iSpec_v20201001'
 sys.path.insert(0, os.path.abspath(ispec_dir))
 import ispec
 
-def find_params(star):
+def find_params(star_name):
     '''Function for running in parameters_pipeline file'''
     #%%
     def determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, logg,MH, vsini, max_iterations,wave_base=480, wave_top=680, resolution=82000, code="moog"):
@@ -162,25 +162,25 @@ def find_params(star):
     star_number = 0
     errors_df = pd.DataFrame()
     params_df = pd.DataFrame()
-    for star_name in star:
-        star_spectrum = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_adjusted.fits')
-        parameters = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_params.txt')
-        teff = parameters['teff'][len(parameters)-1]
-        logg = parameters['logg'][len(parameters)-1]
-        MH = parameters['MH'][len(parameters)-1]
-        vsini = parameters['vsini'][len(parameters)-1]
-        max_iterations = 20    
-        params, errors = determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, logg, MH, vsini, max_iterations,wave_base=480, wave_top=680, resolution=82000, code="moog")
-        #Save the parameters in a dataframe
-        #Add the errors to a pandas dataframe
-        errors_df = pd.concat([errors_df,pd.DataFrame(errors, index=list(f'{star_number}'))])
-        #Add the parameters to a pandas dataframe
-        params_df = pd.concat([params_df,pd.DataFrame(params, index=list(f'{star_number}'))])
-        star_number+=1
-        os.rename('/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/iter_param.txt',f'/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/{star_name}_iter_param.txt')
-        #Save individual files
-        errors_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}/{star_name}_final_errors.txt')
-        params_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}/{star_name}_final_params.txt')
+    # for star_name in star:
+    star_spectrum = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_adjusted.fits')
+    parameters = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_params.txt')
+    teff = parameters['teff'][len(parameters)-1]
+    logg = parameters['logg'][len(parameters)-1]
+    MH = parameters['MH'][len(parameters)-1]
+    vsini = parameters['vsini'][len(parameters)-1]
+    max_iterations = 20    
+    params, errors = determine_astrophysical_parameters_using_synth_spectra(star_spectrum, teff, logg, MH, vsini, max_iterations,wave_base=480, wave_top=680, resolution=82000, code="moog")
+    #Save the parameters in a dataframe
+    #Add the errors to a pandas dataframe
+    errors_df = pd.concat([errors_df,pd.DataFrame(errors, index=list(f'{star_number}'))])
+    #Add the parameters to a pandas dataframe
+    params_df = pd.concat([params_df,pd.DataFrame(params, index=list(f'{star_number}'))])
+    star_number+=1
+    os.rename('/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/iter_param.txt',f'/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/{star_name}_iter_param.txt')
+    #Save individual files
+    errors_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}/{star_name}_final_errors.txt')
+    params_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}/{star_name}_final_params.txt')
         
     if not os.path.exists(f'/home/users/qai11/Documents/Fixed_fits_files/parameters'):
             os.makedirs(f'/home/users/qai11/Documents/Fixed_fits_files/parameters')

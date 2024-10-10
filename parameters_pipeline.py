@@ -55,20 +55,20 @@ from interp_atmos import interp_atmos
 
 
 star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621','hd_11695','hd_146233','hd_156098','hd_157244','hd_160691','moon']
-element = ["Mg", "Si", "Ca", "Ti", "Sc","V","Cr","Mn","Co", "Ni", "Y", "Ba", "La", "Nd", "Eu", "Sr", "Zr","Rb"]
+element = ["Mg", "Si", "Ca", "Ti", "Sc","V","Cr","Mn","Co", "Ni", "Y", "Ba", "La", "Nd", "Eu", "Sr", "Zr","Rb"]#Rb will probably crash oh well
 #%%
 start = time.time()
 '''finish setting up parallel pools for each thing'''
 #Run the rv correction and Merging
-rv_combine(star)
-#Run the continuum adjustment
-try:
-    pool = Pool(os.cpu_count()-1)
-    pool.map(continuum_adjust, star)
-finally:
-    pool.close()
-    pool.join()
-#Run the parameter finding
+# rv_combine(star)
+# #Run the continuum adjustment
+# try:
+#     pool = Pool(os.cpu_count()-1)
+#     pool.map(continuum_adjust, star)
+# finally:
+#     pool.close()
+#     pool.join()
+# #Run the parameter finding
 try:
     pool = Pool(os.cpu_count()-1)
     pool.map(find_params, star)
