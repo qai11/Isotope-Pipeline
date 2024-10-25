@@ -216,7 +216,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     "standard_out   '" + standard_out +"'\n"                    + \
     "summary_out    '" + summary_out +"'\n"                     + \
     "smoothed_out   '" + out_filename +"'\n"                    + \
-    "model_in       'hd_102870_atmosphere.moog'\n"                          + \
+    "model_in       'moon_atmosphere.moog'\n"                          + \
     "lines_in       'quinlist.MgH'\n"                           + \
     "observed_in    '" + raw_spec_filename +"'\n"               + \
     "atmosphere    1\n"                                         + \
@@ -505,14 +505,16 @@ def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, re
 
 def model_finder():
     
-    data_path = '/home/users/qai11/Documents/Fixed_fits_files/hd_102870/'
-    region = 0
+    # data_path = '/home/users/qai11/Documents/Fixed_fits_files/hd_102870/test_2/'
+    data_path = '/home/users/qai11/Documents/Fixed_fits_files/moon/test_1/'
+    region = 3
     os.chdir(data_path)
     os.system('mkdir plots')
     # initial guesses as a dictionary
     guess = initial_guess()
 
-    raw_spec_filename = 'hd_102870_5100-5200.txt'
+    # raw_spec_filename = 'hd_102870_5100-5200_adjusted.txt'
+    raw_spec_filename = 'moon_5100_5200_adjusted.txt'
     raw_spectra       = read_raw_spectra(raw_spec_filename)
     wavelength_region = get_wavelength_region(raw_spectra.wavelength)
 
@@ -579,8 +581,8 @@ def calc_moog_string(r_24, r_25, r_26):
 
 def initial_guess():
 
-    s = 8.41
-    mg = 0
+    s = 0
+    mg = 0.055
     i_24 = 2
     i_25 = 15
     i_26 = 13

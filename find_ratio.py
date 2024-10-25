@@ -148,7 +148,9 @@ plt.show()
 #--- Save the ratio ------------------------------------------------------------
 # Save the ratio
 # ratio_path = '/home/users/qai11/Documents/Fixed_fits_files/hd_160691/ratio.csv'
-ratio.to_csv(ratio_path)
+# ratio.to_csv(ratio_path)
+
+
 
 #--- End of script ------------------------------------------------------------
 end = time.time()

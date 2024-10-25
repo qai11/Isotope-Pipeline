@@ -55,6 +55,9 @@ for e in elements:
    el_list["note"] = el_list["Element"] + " " + el_list["Ion"]
    el_list = el_list.drop(columns = ["Element", "Ion", "lambda"])
    
+   if len(e.strip()) == 1:
+    e = e.strip()
+   
    el_list.to_csv(f"/home/users/qai11/Documents/quin-masters-code/Linelists/{e}_lines.csv", index = False, sep = "\t")
    all_list = pd.concat([all_list, el_list])
    all_list.to_csv(f"/home/users/qai11/Documents/quin-masters-code/Linelists/all_lines.csv", index = False, sep = "\t")

@@ -58,8 +58,8 @@ def synthesize_spectrum(atomic_linelist_file=None, code="spectrum"):
     # Wavelengths to synthesis
     #regions = ispec.read_segment_regions(ispec_dir + "/input/regions/fe_lines_segments.txt")
     regions = None
-    wave_base = 420.0 # Magnesium triplet region
-    wave_top = 425.0
+    wave_base = 510.0 # Magnesium triplet region
+    wave_top = 540.0
 
 
     # Selected model amtosphere, linelist and solar abundances
@@ -130,7 +130,7 @@ def synthesize_spectrum(atomic_linelist_file=None, code="spectrum"):
     
     return synth_spectrum
 
-synth_spectrum1 = synthesize_spectrum(atomic_linelist_file = '/GESv6_atom_nohfs_noiso.420_920nm/atomic_lines.tsv',code="moog")
+# synth_spectrum1 = synthesize_spectrum(atomic_linelist_file = '/GESv6_atom_nohfs_noiso.420_920nm/atomic_lines.tsv',code="moog")
 
 synth_spectrum2 = synthesize_spectrum(atomic_linelist_file = '/Quin_GES_LIST.420_920nm/atomic_lines.tsv', code="moog")
 #%%
@@ -139,7 +139,7 @@ synth_spectrum2 = synthesize_spectrum(atomic_linelist_file = '/Quin_GES_LIST.420
 import matplotlib.pyplot as plt
 plt.plot(synth_spectrum1['waveobs'], synth_spectrum1['flux'])
 plt.plot(synth_spectrum2['waveobs'], synth_spectrum2['flux'])
-plt.xlim(420.3, 420.35)
+plt.xlim(510, 540.35)
 plt.ylim(0.8,1)
 plt.legend(['GES', 'Quin'])
 plt.xlabel('Wavelength (Å)')

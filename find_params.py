@@ -74,7 +74,7 @@ def find_params(star_name):
 
         # Selected model amtosphere, linelist and solar abundances
         model = ispec_dir + "/input/atmospheres/MARCS.GES/"
-        atomic_linelist_file = ispec_dir + "/input/linelists/transitions/GBS_LIST.480_800nm/atomic_lines.tsv"
+        atomic_linelist_file = ispec_dir + "/input/linelists/transitions/Quin_GES_LIST.420_920nm/atomic_lines.tsv"
 
         if "ATLAS" in model:
             solar_abundances_file = ispec_dir + "/input/abundances/Grevesse.1998/stdatom.dat"
@@ -179,8 +179,8 @@ def find_params(star_name):
     star_number+=1
     os.rename('/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/iter_param.txt',f'/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/{star_name}_iter_param.txt')
     #Save individual files
-    errors_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}/{star_name}_final_errors.txt')
-    params_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}/{star_name}_final_params.txt')
+    errors_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}_final_errors.txt')
+    params_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}_final_params.txt')
         
     if not os.path.exists(f'/home/users/qai11/Documents/Fixed_fits_files/parameters'):
             os.makedirs(f'/home/users/qai11/Documents/Fixed_fits_files/parameters')

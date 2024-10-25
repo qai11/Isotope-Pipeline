@@ -9,6 +9,7 @@ Description: Prints the parameters and errors for each star in the final_params.
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+
 #%%
 # star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621']
 star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621','hd_11695','hd_146233','hd_156098','hd_157244','hd_160691','moon']
@@ -18,17 +19,23 @@ params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/f
 errors = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/final_errors.txt')
 
 # %%
+'''print the parameters and errors for each star'''
 iteration = 0
-for i in star:
+for star_name in star:
     print('\n')
-    print(star[iteration])
-    print(f'teff = {params["teff"][iteration]:.0f} pm {errors["teff"][iteration]:.0f}')
-    print(f'logg = {params["logg"][iteration]:.2f} pm {errors["logg"][iteration]:.2f}')
-    print(f'MH = {params["MH"][iteration]:.2f} pm {errors["MH"][iteration]:.2f}')
-    print(f'vmac = {params["vmac"][iteration]:.2f} pm {errors["vmac"][iteration]:.2f}')
-    print(f'vsini = {params["vsini"][iteration]:.2f} pm {errors["vsini"][iteration]:.2f}')
+    print(star_name)
+    params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}_final_params.txt', sep=',',index_col=0)
+    errors = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}_final_errors.txt', sep=',',index_col=0)
+    print(errors['teff'].values)
+    print(params['logg'])
+    # print(f'teff = {params["teff"]} pm {errors["teff"]}')
+    # print(f'logg = {params["logg"]} pm {errors["logg"]}')
+    # print(f'MH = {params["MH"]} pm {errors["MH"]}')
+    # print(f'vmac = {params["vmac"]} pm {errors["vmac"]}')
+    # print(f'vsini = {params["vsini"]} pm {errors["vsini"]}')
     iteration +=1
-    
+#%%
+
 # %%
 #plot the convergence of the parameters to the final values for each star
 for i,star_name in enumerate(star):
@@ -57,22 +64,23 @@ for i,star_name in enumerate(star):
 
 #%%
 #plot the convergence of the parameters to the final values for each star onto sublplots
-star = ['hd_45588']
+# ,teff,logg,MH,alpha,Vmic,Vmac,Vsini,limb_darkening_coeff,R,CHI-SQUARE,DOF
+star = ['hd_102870']
 for i,star_name in enumerate(star):
-    plot_params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/{star_name}_iter_param.txt')
+    plot_params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/{star_name}_iter_param.txt',header=None)
     fig, axs = plt.subplots(2, 2, figsize=(8, 8))
     fig.tight_layout(pad=3)  # Add padding between subplots
-    axs[0, 0].plot(plot_params['teff'],label='teff')
+    axs[0, 0].plot(plot_params[1],label='teff')
     axs[0, 0].set_ylabel('Teff (K)')
     
-    axs[0, 1].plot(plot_params['logg'],label='logg')
+    axs[0, 1].plot(plot_params[2],label='logg')
     axs[0, 1].set_ylabel('logg')
     
-    axs[1, 0].plot(plot_params['MH'],label='MH')
+    axs[1, 0].plot(plot_params[3],label='MH')
     axs[1, 0].set_xlabel('Iteration')
     axs[1, 0].set_ylabel('[M/H]')
     
-    axs[1, 1].plot(plot_params['CHI-SQUARE'],label='$\chi^2$')
+    axs[1, 1].plot(plot_params[10],label='$\chi^2$')
     axs[1, 1].set_xlabel('Iteration')
     axs[1, 1].set_ylabel('$\chi^2$')  
     
@@ -146,17 +154,23 @@ plt.legend(loc='lower right')
 
 plt.savefig(f'/home/users/qai11/Documents/Masters_Figures/Method/All_Mg_overplot.png',dpi=150)
 # %%
-
+"""Prints the abundances for each star"""
+star = ['hd_45588', 'hd_100407', 'hd_102870', 'hd_128620', 'hd_128621', 'hd_11695', 'hd_146233', 'hd_156098', 'hd_157244', 'hd_160691', 'moon']
 #For printing abundances
 iteration = 0
 for star_name in star:
     #Path for Mac
-    abund_params = pd.read_csv(f'/Users/quin/Desktop/2024_Data/parameters_gbs_linelist_only_first_calc/{star_name}_final_indiv_abund.txt')
+    try:
+        abund_params = pd.read_csv(f'/Users/quin/Desktop/2024_Data/parameters_gbs_linelist_only_first_calc/{star_name}_final_indiv_abund.txt')
+    except:
+        #Path for Uni
+        abund_params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/summary_abundances_{star_name}.txt', delimiter=' ')
     print('\n')
     print(star[iteration])
     for i in range(0,len(abund_params)):
-        print(f'{abund_params["element"][i]} = {abund_params["[X/H]"][i]:.5f} pm {abund_params["e[X/H]"][i]:.5f}')
+        print(f'{abund_params["element"][i]} = {abund_params["[X/H]"][i]:.5f} \pm {abund_params["e[X/H]"][i]:.5f}')
     iteration +=1
+    
 # %%
 import pandas as pd
 

@@ -58,7 +58,7 @@ def continuum_adjust(star_name):
         # Selected model amtosphere, linelist and solar abundances
         model = ispec_dir + "/input/atmospheres/MARCS.GES/"
         
-        atomic_linelist_file = ispec_dir + "/input/linelists/transitions/GBS_LIST.480_800nm/atomic_lines.tsv"
+        atomic_linelist_file = ispec_dir + "/input/linelists/transitions/Quin_GES_LIST.420_920nm/atomic_lines.tsv"
 
         isotope_file = ispec_dir + "/input/isotopes/SPECTRUM.lst"
 
@@ -213,7 +213,7 @@ def continuum_adjust(star_name):
         #atomic_linelist_file = ispec_dir + "/input/linelists/transitions/VALD.1100_2400nm/atomic_lines.tsv"
         # atomic_linelist_file = ispec_dir + "/input/linelists/transitions/GESv6_atom_hfs_iso.420_920nm/atomic_lines.tsv"
         #atomic_linelist_file = ispec_dir + "/input/linelists/transitions/GESv6_atom_nohfs_noiso.420_920nm/atomic_lines.tsv"
-        atomic_linelist_file = ispec_dir + "/input/linelists/transitions/GBS_LIST.480_800nm/atomic_lines.tsv"
+        atomic_linelist_file = ispec_dir + "/input/linelists/transitions/Quin_GES_LIST.420_920nm/atomic_lines.tsv"
 
         if "ATLAS" in model:
             solar_abundances_file = ispec_dir + "/input/abundances/Grevesse.1998/stdatom.dat"

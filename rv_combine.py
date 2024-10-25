@@ -71,12 +71,13 @@ def rv_combine(star):
             if i==0:
                 template_wave= rv_shifted_data['waveobs']
             resampled_flux = np.interp(template_wave, rv_shifted_data['waveobs'], rv_shifted_data['flux'])
+            resampled_err = np.interp(template_wave, rv_shifted_data['waveobs'], rv_shifted_data['err'])
             
             '''MERGE THE DATA'''
             # Load the data into data and wave for median addition
             data = fits.getdata(file)
             all_spectra.append(resampled_flux)
-            all_err.append(spectrum['err'])
+            all_err.append(resampled_err)
         
         #median the fluxes
         median_flux = np.median(all_spectra, axis=0)

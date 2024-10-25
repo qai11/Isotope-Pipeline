@@ -60,11 +60,22 @@ linelist_quin.columns = ['wave_A', 'element', 'lower_state_eV', 'loggf', 'waals'
 #Rename the columns for concatenating the 5500-5200 linelists
 linelist_quin2.columns = ['wave_A', 'element', 'lower_state_eV', 'loggf', 'waals', 'd0', 'equivalent_width', 'comment']
 
-# Concatenate the two DataFrames, keeping the original data intact
+# Add a new column to track the source of each DataFrame
+linelist_quin['source'] = 'quin'
+linelist_quin2['source'] = 'quin2'
+linelist_iSpec['source'] = 'iSpec'
+
+# Concatenate the DataFrames
 merged_df = pd.concat([linelist_iSpec, linelist_quin, linelist_quin2], axis=0, ignore_index=True)
 
 # Fill in missing values with 0 for the non-overlapping columns
 merged_df = merged_df.fillna(0)
+
+# Set 'theoretical_depth' to 0.01 for rows added from 'linelist_quin' and 'linelist_quin2'
+merged_df.loc[merged_df['source'].isin(['quin', 'quin2']), 'theoretical_depth'] = 0.01
+
+# Drop the 'source' column if it's no longer needed
+merged_df = merged_df.drop(columns='source')
 
 # Update the wave_nm column for the quin linelist section
 merged_df.loc[merged_df['wave_nm'] == 0, 'wave_nm'] = merged_df['wave_A'] / 10
@@ -218,7 +229,7 @@ el_list_Eu['ion'] = el_Eu['Ion'].astype(int)
 el_list_Eu['moog_support'] = 'T'
 el_list_Eu['waals'] = el_Eu['Vdw-damp']
 el_list_Eu['spectrum_moog_species'] = round(63.1 + (el_Eu['Isotope']  * 0.0001), 4).astype(float)
-
+el_list_Eu['theoretical_depth'] = 0.01
 
 # then when we are done we want to set any other value to be zero because they arent needed
 
@@ -243,6 +254,7 @@ el_list_Ba['ion'] = el_Ba['Ion'].astype(int)
 el_list_Ba['moog_support'] = 'T'
 el_list_Ba['waals'] = el_Ba['Vdw-damp']
 el_list_Ba['spectrum_moog_species'] = round(56.1 + (el_Ba['Isotope'] * 0.0001), 4).astype(float)
+el_list_Ba['theoretical_depth'] = 0.01
 
 
 #%%
