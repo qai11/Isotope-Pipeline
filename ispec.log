@@ -8989,3 +8989,1438 @@
 [2024-10-10 03:01:18,620] [INFO] [find_params:determine_astrophysical_parameters_using_synth_spectra:147]: Saving results...
 [2024-10-10 03:14:29,633] [INFO] [find_params:determine_astrophysical_parameters_using_synth_spectra:145]: Saving results...
 [2024-10-10 03:14:29,633] [INFO] [find_params:determine_astrophysical_parameters_using_synth_spectra:147]: Saving results...
+[2024-10-30 16:37:19,802] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:19,818] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:19,829] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:19,840] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:19,855] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:19,877] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:19,891] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:19,902] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:19,913] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:20,317] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.04 +/- 0.41 km/s)
+[2024-10-30 16:37:21,117] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:21,128] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:21,139] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:21,151] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:21,162] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:21,182] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:21,193] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:21,204] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:21,214] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:21,241] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.11 +/- 0.40 km/s)
+[2024-10-30 16:37:21,991] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:22,005] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:22,018] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:22,032] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:22,046] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:22,074] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:22,087] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:22,101] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:22,112] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:22,132] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.11 +/- 0.40 km/s)
+[2024-10-30 16:37:22,889] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:22,902] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:22,916] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:22,927] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:22,939] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:22,958] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:22,972] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:22,985] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:22,997] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:23,024] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.11 +/- 0.40 km/s)
+[2024-10-30 16:37:23,794] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:23,808] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:23,819] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:23,831] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:23,842] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:23,863] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:23,874] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:23,885] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:23,896] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:23,916] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.10 +/- 0.40 km/s)
+[2024-10-30 16:37:24,674] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:24,687] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:24,698] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:24,710] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:24,721] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:24,742] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:24,753] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:24,765] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:24,776] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:24,804] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.11 +/- 0.40 km/s)
+[2024-10-30 16:37:25,542] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:25,553] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:25,564] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:25,575] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:25,587] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:25,609] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:25,620] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:25,631] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:25,642] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:25,670] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.11 +/- 0.40 km/s)
+[2024-10-30 16:37:26,401] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:26,412] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:26,424] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:26,436] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:26,447] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:26,467] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:26,482] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:26,497] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:26,517] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:26,537] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.10 +/- 0.40 km/s)
+[2024-10-30 16:37:27,285] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:27,296] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:27,308] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:27,319] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:27,330] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:27,350] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:27,361] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:27,373] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:27,384] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:27,401] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.11 +/- 0.40 km/s)
+[2024-10-30 16:37:28,152] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:28,163] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:28,174] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:28,186] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:28,198] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:28,224] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:28,237] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:28,248] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:28,259] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:28,278] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.10 +/- 0.40 km/s)
+[2024-10-30 16:37:29,035] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:29,046] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:29,057] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:29,068] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:29,079] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:29,100] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:29,111] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:29,123] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:29,134] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:29,153] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.10 +/- 0.40 km/s)
+[2024-10-30 16:37:29,922] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:29,936] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:29,951] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:29,963] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:29,974] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:29,995] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:30,006] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:30,018] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:30,029] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:30,049] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.04 +/- 0.42 km/s)
+[2024-10-30 16:37:30,810] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:30,821] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:30,832] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:30,843] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:30,854] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:30,874] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:30,885] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:30,896] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:30,907] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:30,933] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.11 +/- 0.40 km/s)
+[2024-10-30 16:37:31,678] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:31,691] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:31,703] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:31,716] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:31,727] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:31,747] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:31,759] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:31,771] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:31,785] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:31,803] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.11 +/- 0.40 km/s)
+[2024-10-30 16:37:32,552] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:32,565] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:32,579] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:32,590] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:32,602] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:32,624] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:32,635] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:32,646] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:32,657] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:32,675] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.11 +/- 0.40 km/s)
+[2024-10-30 16:37:33,432] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:33,443] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:33,455] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:33,468] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:33,479] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:33,503] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:33,514] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:33,525] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:33,536] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:33,553] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.10 +/- 0.40 km/s)
+[2024-10-30 16:37:34,298] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:34,309] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:34,320] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:34,331] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:34,343] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:34,363] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:34,374] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:34,385] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:34,397] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:34,414] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.10 +/- 0.40 km/s)
+[2024-10-30 16:37:35,147] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:35,157] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:35,168] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:35,180] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:35,191] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:35,211] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:35,222] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:35,233] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:35,245] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:35,262] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.11 +/- 0.40 km/s)
+[2024-10-30 16:37:35,996] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:36,007] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:36,018] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:36,032] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:36,046] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:36,067] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:36,079] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:36,091] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:36,103] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:36,119] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.10 +/- 0.40 km/s)
+[2024-10-30 16:37:36,862] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:36,872] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:36,884] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:36,895] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:36,906] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:36,932] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:36,946] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:36,959] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:36,970] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:36,988] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.09 +/- 0.40 km/s)
+[2024-10-30 16:37:37,738] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:37,749] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:37,760] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:37,771] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:37,782] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:37,803] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:37,814] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:37,825] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:37,836] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:37,854] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.10 +/- 0.40 km/s)
+[2024-10-30 16:37:38,612] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:38,623] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:38,636] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:38,649] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:38,660] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:38,681] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:38,693] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:38,710] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:38,721] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:38,740] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.11 +/- 0.40 km/s)
+[2024-10-30 16:37:39,497] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:39,508] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:39,519] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:39,530] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:39,540] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:39,560] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:39,572] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:39,584] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:39,595] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:39,613] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.09 +/- 0.40 km/s)
+[2024-10-30 16:37:40,365] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:40,376] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:40,389] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:40,400] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:40,411] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:40,432] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:40,443] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:40,454] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:40,465] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:40,493] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 23.00 km/s (fitted at 23.10 +/- 0.40 km/s)
+[2024-10-30 16:37:43,811] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:43,820] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:43,829] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:43,838] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:43,846] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:43,859] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:43,866] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:43,873] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:43,881] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:43,905] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 0.00 km/s (fitted at -0.00 +/- 0.81 km/s)
+[2024-10-30 16:37:44,619] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:44,629] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:44,640] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:44,651] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:44,663] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:44,683] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:44,694] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:44,705] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:44,720] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:44,753] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.03 +/- 0.47 km/s)
+[2024-10-30 16:37:45,478] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:45,488] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:45,499] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:45,509] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:45,520] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:45,539] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:45,550] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:45,560] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:45,571] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:45,600] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.03 +/- 0.47 km/s)
+[2024-10-30 16:37:46,309] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:46,320] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:46,331] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:46,341] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:46,352] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:46,371] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:46,382] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:46,394] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:46,406] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:46,425] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.03 +/- 0.47 km/s)
+[2024-10-30 16:37:47,127] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:47,137] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:47,147] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:47,158] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:47,168] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:47,187] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:47,198] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:47,209] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:47,220] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:47,248] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.39 +/- 0.46 km/s)
+[2024-10-30 16:37:47,954] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:47,967] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:47,980] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:47,991] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:48,002] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:48,023] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:48,034] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:48,045] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:48,057] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:48,077] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.38 +/- 0.46 km/s)
+[2024-10-30 16:37:48,777] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:48,787] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:48,797] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:48,808] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:48,818] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:48,838] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:48,848] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:48,859] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:48,869] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:48,897] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.39 +/- 0.46 km/s)
+[2024-10-30 16:37:49,599] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:49,610] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:49,621] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:49,632] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:49,643] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:49,663] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:49,674] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:49,686] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:49,698] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:49,720] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.38 +/- 0.46 km/s)
+[2024-10-30 16:37:50,442] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:50,453] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:50,468] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:50,484] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:50,498] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:50,522] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:50,534] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:50,546] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:50,557] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:50,576] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.38 +/- 0.46 km/s)
+[2024-10-30 16:37:51,276] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:51,288] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:51,299] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:51,310] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:51,321] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:51,341] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:51,352] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:51,364] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:51,375] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:51,395] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.35 +/- 0.48 km/s)
+[2024-10-30 16:37:52,093] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:52,106] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:52,117] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:52,128] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:52,140] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:52,160] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:52,174] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:52,185] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:52,197] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:52,215] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.35 +/- 0.49 km/s)
+[2024-10-30 16:37:52,917] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:52,930] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:52,944] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:52,956] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:52,967] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:52,987] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:52,999] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:53,013] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:53,024] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:53,043] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.38 +/- 0.48 km/s)
+[2024-10-30 16:37:53,750] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:53,761] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:53,772] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:53,784] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:53,794] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:53,815] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:53,826] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:53,837] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:53,848] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:53,880] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.34 +/- 0.48 km/s)
+[2024-10-30 16:37:54,581] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:54,591] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:54,603] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:54,614] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:54,625] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:54,645] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:54,656] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:54,667] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:54,678] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:54,708] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.36 +/- 0.49 km/s)
+[2024-10-30 16:37:55,412] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:55,423] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:55,434] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:55,445] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:55,456] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:55,476] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:55,487] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:55,498] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:55,510] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:55,532] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.36 +/- 0.45 km/s)
+[2024-10-30 16:37:56,235] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:56,245] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:56,257] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:56,268] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:56,279] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:56,299] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:56,311] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:56,322] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:56,333] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:56,351] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.37 +/- 0.45 km/s)
+[2024-10-30 16:37:57,053] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:57,064] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:57,075] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:57,089] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:57,101] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:57,122] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:57,134] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:57,147] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:57,159] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:57,179] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.36 +/- 0.45 km/s)
+[2024-10-30 16:37:57,882] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:57,893] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:57,904] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:57,916] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:57,927] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:57,947] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:57,958] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:57,969] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:57,981] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:58,010] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.37 +/- 0.45 km/s)
+[2024-10-30 16:37:58,709] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:58,719] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:58,731] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:58,741] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:58,758] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:58,781] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:58,792] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:58,803] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:58,815] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:58,834] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.37 +/- 0.45 km/s)
+[2024-10-30 16:37:59,535] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:37:59,548] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:37:59,559] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:37:59,570] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:37:59,583] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:37:59,603] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:37:59,614] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:37:59,625] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:37:59,636] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:37:59,656] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.37 +/- 0.45 km/s)
+[2024-10-30 16:38:00,352] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:00,365] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:00,376] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:00,387] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:00,399] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:00,419] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:00,430] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:00,441] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:00,452] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:00,470] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.37 +/- 0.45 km/s)
+[2024-10-30 16:38:01,170] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:01,181] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:01,192] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:01,209] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:01,223] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:01,246] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:01,257] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:01,268] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:01,279] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:01,297] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.37 +/- 0.45 km/s)
+[2024-10-30 16:38:01,997] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:02,007] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:02,018] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:02,029] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:02,040] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:02,060] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:02,071] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:02,082] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:02,093] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:02,112] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.37 +/- 0.45 km/s)
+[2024-10-30 16:38:02,820] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:02,830] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:02,842] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:02,853] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:02,865] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:02,884] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:02,898] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:02,911] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:02,922] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:02,941] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 5.00 km/s (fitted at 5.37 +/- 0.45 km/s)
+[2024-10-30 16:38:05,375] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:05,386] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:05,397] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:05,408] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:05,420] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:05,440] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:05,451] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:05,462] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:05,473] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:05,491] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 42.00 km/s (fitted at 41.67 +/- 0.32 km/s)
+[2024-10-30 16:38:06,201] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:06,213] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:06,224] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:06,234] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:06,245] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:06,264] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:06,274] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:06,285] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:06,296] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:06,313] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 42.00 km/s (fitted at 41.68 +/- 0.33 km/s)
+[2024-10-30 16:38:07,017] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:07,030] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:07,041] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:07,055] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:07,067] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:07,091] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:07,105] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:07,119] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:07,132] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:07,151] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 42.00 km/s (fitted at 41.66 +/- 0.32 km/s)
+[2024-10-30 16:38:07,861] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:07,871] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:07,882] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:07,893] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:07,904] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:07,926] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:07,940] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:07,953] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:07,966] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:07,983] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 42.00 km/s (fitted at 41.67 +/- 0.32 km/s)
+[2024-10-30 16:38:08,690] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:08,703] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:08,714] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:08,726] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:08,737] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:08,759] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:08,772] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:08,783] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:08,795] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:08,815] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 42.00 km/s (fitted at 41.66 +/- 0.32 km/s)
+[2024-10-30 16:38:09,529] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:09,539] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:09,550] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:09,561] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:09,571] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:09,591] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:09,602] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:09,613] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:09,624] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:09,650] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 42.00 km/s (fitted at 41.66 +/- 0.32 km/s)
+[2024-10-30 16:38:10,356] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:10,368] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:10,379] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:10,390] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:10,401] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:10,422] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:10,433] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:10,444] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:10,455] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:10,473] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 42.00 km/s (fitted at 41.67 +/- 0.32 km/s)
+[2024-10-30 16:38:11,179] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:11,192] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:11,203] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:11,217] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:11,231] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:11,255] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:11,266] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:11,278] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:11,288] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:11,306] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 42.00 km/s (fitted at 41.68 +/- 0.32 km/s)
+[2024-10-30 16:38:12,025] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:12,038] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:12,049] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:12,060] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:12,071] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:12,092] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:12,103] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:12,114] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:12,125] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:12,142] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 42.00 km/s (fitted at 41.69 +/- 0.32 km/s)
+[2024-10-30 16:38:12,850] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:12,860] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:12,872] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:12,884] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:12,897] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:12,917] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:12,928] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:12,939] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:12,950] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:12,967] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 42.00 km/s (fitted at 41.68 +/- 0.32 km/s)
+[2024-10-30 16:38:15,945] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:15,956] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:15,967] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:15,978] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:15,988] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:16,007] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:16,017] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:16,029] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:16,040] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:16,069] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -17.00 km/s (fitted at -16.61 +/- 0.34 km/s)
+[2024-10-30 16:38:16,794] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:16,805] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:16,816] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:16,827] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:16,839] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:16,859] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:16,870] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:16,881] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:16,893] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:16,912] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -17.00 km/s (fitted at -16.61 +/- 0.34 km/s)
+[2024-10-30 16:38:17,631] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:17,642] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:17,655] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:17,666] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:17,677] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:17,698] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:17,709] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:17,720] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:17,731] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:17,750] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -17.00 km/s (fitted at -16.62 +/- 0.34 km/s)
+[2024-10-30 16:38:18,466] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:18,479] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:18,490] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:18,504] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:18,518] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:18,540] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:18,551] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:18,563] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:18,576] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:18,595] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -17.00 km/s (fitted at -16.62 +/- 0.34 km/s)
+[2024-10-30 16:38:19,317] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:19,328] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:19,339] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:19,351] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:19,362] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:19,383] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:19,396] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:19,408] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:19,420] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:19,449] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -17.00 km/s (fitted at -16.62 +/- 0.34 km/s)
+[2024-10-30 16:38:20,181] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:20,192] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:20,203] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:20,215] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:20,226] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:20,246] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:20,258] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:20,269] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:20,280] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:20,302] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -17.00 km/s (fitted at -16.62 +/- 0.34 km/s)
+[2024-10-30 16:38:21,039] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:21,052] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:21,067] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:21,078] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:21,090] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:21,110] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:21,122] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:21,133] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:21,144] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:21,163] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -17.00 km/s (fitted at -16.62 +/- 0.34 km/s)
+[2024-10-30 16:38:21,892] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:21,903] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:21,917] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:21,930] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:21,941] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:21,964] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:21,975] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:21,987] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:21,998] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:22,019] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -17.00 km/s (fitted at -16.61 +/- 0.34 km/s)
+[2024-10-30 16:38:22,753] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:22,764] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:22,776] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:22,788] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:22,799] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:22,823] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:22,834] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:22,846] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:22,857] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:22,876] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -17.00 km/s (fitted at -16.62 +/- 0.34 km/s)
+[2024-10-30 16:38:23,607] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:23,620] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:23,631] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:23,645] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:23,656] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:23,676] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:23,687] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:23,698] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:23,709] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:23,727] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -17.00 km/s (fitted at -16.62 +/- 0.34 km/s)
+[2024-10-30 16:38:24,457] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:24,468] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:24,480] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:24,493] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:24,506] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:24,529] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:24,540] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:24,551] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:24,562] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:24,580] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -17.00 km/s (fitted at -16.61 +/- 0.34 km/s)
+[2024-10-30 16:38:25,314] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:25,325] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:25,338] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:25,351] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:25,362] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:25,382] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:25,393] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:25,404] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:25,415] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:25,433] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -17.00 km/s (fitted at -16.61 +/- 0.34 km/s)
+[2024-10-30 16:38:26,170] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:26,180] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:26,192] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:26,203] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:26,214] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:26,235] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:26,246] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:26,257] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:26,268] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:26,287] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -17.00 km/s (fitted at -16.61 +/- 0.34 km/s)
+[2024-10-30 16:38:27,014] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:27,024] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:27,037] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:27,048] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:27,059] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:27,080] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:27,094] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:27,105] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:27,117] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:27,136] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -17.00 km/s (fitted at -16.61 +/- 0.34 km/s)
+[2024-10-30 16:38:27,867] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:27,877] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:27,888] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:27,900] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:27,911] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:27,931] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:27,942] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:27,953] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:27,964] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:27,982] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -17.00 km/s (fitted at -16.61 +/- 0.34 km/s)
+[2024-10-30 16:38:31,048] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:31,058] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:31,070] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:31,081] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:31,092] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:31,112] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:31,123] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:31,134] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:31,145] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:31,173] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -6.00 km/s (fitted at -6.24 +/- 0.25 km/s)
+[2024-10-30 16:38:31,881] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:31,891] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:31,905] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:31,918] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:31,929] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:31,949] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:31,961] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:31,972] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:31,983] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:32,001] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -6.00 km/s (fitted at -6.25 +/- 0.25 km/s)
+[2024-10-30 16:38:32,712] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:32,722] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:32,733] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:32,744] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:32,755] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:32,775] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:32,786] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:32,797] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:32,811] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:32,833] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -6.00 km/s (fitted at -6.25 +/- 0.25 km/s)
+[2024-10-30 16:38:34,827] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:34,837] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:34,849] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:34,860] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:34,871] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:34,891] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:34,905] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:34,917] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:34,928] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:34,946] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -6.00 km/s (fitted at -6.25 +/- 0.25 km/s)
+[2024-10-30 16:38:35,653] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:35,666] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:35,678] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:35,691] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:35,703] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:35,723] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:35,735] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:35,746] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:35,757] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:35,776] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -6.00 km/s (fitted at -6.25 +/- 0.25 km/s)
+[2024-10-30 16:38:36,480] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:36,491] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:36,502] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:36,513] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:36,524] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:36,544] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:36,556] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:36,567] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:36,578] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:36,599] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -6.00 km/s (fitted at -6.25 +/- 0.25 km/s)
+[2024-10-30 16:38:37,307] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:37,318] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:37,332] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:37,343] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:37,357] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:37,378] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:37,389] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:37,400] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:37,412] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:37,434] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -6.00 km/s (fitted at -6.25 +/- 0.25 km/s)
+[2024-10-30 16:38:38,137] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:38,147] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:38,158] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:38,168] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:38,179] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:38,198] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:38,209] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:38,220] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:38,231] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:38,247] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -6.00 km/s (fitted at -6.25 +/- 0.25 km/s)
+[2024-10-30 16:38:38,961] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:38,972] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:38,984] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:38,995] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:39,006] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:39,028] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:39,039] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:39,050] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:39,062] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:39,084] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -6.00 km/s (fitted at -6.24 +/- 0.25 km/s)
+[2024-10-30 16:38:39,794] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:39,807] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:39,819] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:39,830] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:39,841] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:39,862] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:39,873] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:39,885] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:39,896] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:39,914] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -6.00 km/s (fitted at -6.24 +/- 0.25 km/s)
+[2024-10-30 16:38:42,893] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:42,907] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:42,921] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:42,933] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:42,944] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:42,965] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:42,976] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:42,988] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:43,001] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:43,020] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.35 +/- 0.29 km/s)
+[2024-10-30 16:38:43,729] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:43,739] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:43,750] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:43,760] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:43,771] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:43,790] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:43,801] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:43,812] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:43,823] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:43,841] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.33 +/- 0.29 km/s)
+[2024-10-30 16:38:44,547] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:44,557] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:44,568] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:44,579] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:44,591] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:44,611] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:44,622] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:44,633] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:44,645] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:44,662] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.33 +/- 0.29 km/s)
+[2024-10-30 16:38:45,372] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:45,384] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:45,395] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:45,406] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:45,417] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:45,438] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:45,451] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:45,462] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:45,473] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:45,489] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.33 +/- 0.29 km/s)
+[2024-10-30 16:38:46,197] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:46,210] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:46,221] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:46,235] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:46,247] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:46,267] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:46,278] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:46,294] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:46,308] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:46,328] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.35 +/- 0.29 km/s)
+[2024-10-30 16:38:47,045] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:47,055] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:47,065] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:47,076] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:47,087] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:47,106] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:47,117] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:47,127] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:47,138] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:47,154] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.34 +/- 0.29 km/s)
+[2024-10-30 16:38:47,867] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:47,877] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:47,890] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:47,901] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:47,914] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:47,935] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:47,946] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:47,957] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:47,968] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:47,985] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.34 +/- 0.28 km/s)
+[2024-10-30 16:38:48,706] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:48,716] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:48,726] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:48,737] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:48,748] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:48,767] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:48,777] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:48,787] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:48,798] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:48,814] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.34 +/- 0.28 km/s)
+[2024-10-30 16:38:49,532] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:49,543] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:49,554] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:49,565] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:49,576] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:49,596] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:49,608] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:49,622] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:49,636] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:49,653] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.33 +/- 0.28 km/s)
+[2024-10-30 16:38:50,377] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:50,387] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:50,399] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:50,410] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:50,421] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:50,442] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:50,454] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:50,469] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:50,481] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:50,499] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.33 +/- 0.28 km/s)
+[2024-10-30 16:38:51,227] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:51,238] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:51,254] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:51,265] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:51,276] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:51,302] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:51,315] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:51,327] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:51,338] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:51,356] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.33 +/- 0.28 km/s)
+[2024-10-30 16:38:52,087] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:52,097] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:52,108] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:52,119] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:52,130] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:52,149] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:52,161] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:52,172] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:52,183] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:52,201] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.34 +/- 0.28 km/s)
+[2024-10-30 16:38:52,933] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:52,943] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:52,954] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:52,966] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:52,977] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:53,000] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:53,011] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:53,022] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:53,034] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:53,051] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.33 +/- 0.28 km/s)
+[2024-10-30 16:38:53,784] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:53,795] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:53,807] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:53,819] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:53,831] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:53,853] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:53,864] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:53,876] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:53,887] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:53,904] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.33 +/- 0.29 km/s)
+[2024-10-30 16:38:54,641] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:54,652] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:54,663] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:54,674] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:54,686] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:54,706] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:54,718] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:54,730] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:54,742] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:54,762] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.34 +/- 0.28 km/s)
+[2024-10-30 16:38:55,490] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:55,501] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:55,512] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:55,523] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:55,534] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:55,553] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:55,564] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:55,575] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:55,586] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:55,604] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 16.00 km/s (fitted at 16.33 +/- 0.28 km/s)
+[2024-10-30 16:38:58,748] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:58,758] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:58,770] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:58,781] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:58,792] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:58,812] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:58,823] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:58,834] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:58,845] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:58,864] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -26.00 km/s (fitted at -26.22 +/- 0.33 km/s)
+[2024-10-30 16:38:59,569] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:38:59,582] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:38:59,595] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:38:59,606] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:38:59,620] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:38:59,641] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:38:59,652] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:38:59,664] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:38:59,676] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:38:59,698] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -26.00 km/s (fitted at -26.22 +/- 0.33 km/s)
+[2024-10-30 16:39:00,406] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:00,417] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:00,428] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:00,439] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:00,450] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:00,470] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:00,481] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:00,492] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:00,503] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:00,522] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -26.00 km/s (fitted at -26.22 +/- 0.33 km/s)
+[2024-10-30 16:39:01,229] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:01,240] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:01,251] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:01,265] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:01,279] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:01,302] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:01,314] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:01,327] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:01,339] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:01,357] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -26.00 km/s (fitted at -26.22 +/- 0.33 km/s)
+[2024-10-30 16:39:02,066] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:02,076] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:02,087] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:02,099] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:02,113] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:02,134] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:02,146] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:02,157] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:02,169] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:02,187] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -26.00 km/s (fitted at -26.22 +/- 0.33 km/s)
+[2024-10-30 16:39:02,897] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:02,908] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:02,919] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:02,930] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:02,941] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:02,961] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:02,972] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:02,983] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:02,994] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:03,015] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -26.00 km/s (fitted at -26.22 +/- 0.33 km/s)
+[2024-10-30 16:39:03,729] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:03,739] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:03,751] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:03,762] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:03,774] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:03,794] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:03,808] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:03,823] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:03,835] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:03,855] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -26.00 km/s (fitted at -26.22 +/- 0.33 km/s)
+[2024-10-30 16:39:04,560] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:04,571] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:04,582] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:04,593] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:04,605] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:04,625] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:04,636] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:04,648] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:04,659] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:04,679] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -26.00 km/s (fitted at -26.22 +/- 0.33 km/s)
+[2024-10-30 16:39:05,390] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:05,400] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:05,411] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:05,421] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:05,432] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:05,451] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:05,462] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:05,472] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:05,483] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:05,503] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -26.00 km/s (fitted at -26.22 +/- 0.33 km/s)
+[2024-10-30 16:39:06,210] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:06,221] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:06,233] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:06,244] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:06,255] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:06,277] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:06,289] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:06,301] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:06,312] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:06,330] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -26.00 km/s (fitted at -26.22 +/- 0.33 km/s)
+[2024-10-30 16:39:07,035] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:07,047] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:07,061] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:07,072] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:07,083] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:07,103] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:07,114] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:07,126] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:07,137] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:07,156] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -26.00 km/s (fitted at -26.22 +/- 0.33 km/s)
+[2024-10-30 16:39:07,868] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:07,879] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:07,890] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:07,901] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:07,913] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:07,936] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:07,948] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:07,962] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:07,973] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:07,993] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -26.00 km/s (fitted at -26.22 +/- 0.33 km/s)
+[2024-10-30 16:39:11,043] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:11,054] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:11,067] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:11,081] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:11,092] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:11,112] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:11,124] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:11,135] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:11,146] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:11,166] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 32.00 km/s (fitted at 32.38 +/- 0.39 km/s)
+[2024-10-30 16:39:11,872] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:11,882] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:11,893] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:11,903] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:11,916] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:11,936] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:11,947] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:11,958] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:11,970] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:11,988] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 32.00 km/s (fitted at 32.38 +/- 0.39 km/s)
+[2024-10-30 16:39:12,690] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:12,700] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:12,712] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:12,724] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:12,735] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:12,756] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:12,767] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:12,778] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:12,790] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:12,808] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 32.00 km/s (fitted at 32.38 +/- 0.39 km/s)
+[2024-10-30 16:39:13,510] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:13,521] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:13,535] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:13,549] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:13,562] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:13,583] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:13,594] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:13,606] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:13,617] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:13,635] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 32.00 km/s (fitted at 32.40 +/- 0.38 km/s)
+[2024-10-30 16:39:14,339] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:14,350] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:14,362] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:14,373] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:14,384] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:14,404] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:14,416] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:14,428] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:14,439] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:14,457] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 32.00 km/s (fitted at 32.39 +/- 0.38 km/s)
+[2024-10-30 16:39:15,168] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:15,179] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:15,194] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:15,207] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:15,220] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:15,241] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:15,252] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:15,264] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:15,275] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:15,292] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 32.00 km/s (fitted at 32.40 +/- 0.38 km/s)
+[2024-10-30 16:39:16,003] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:16,016] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:16,030] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:16,041] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:16,052] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:16,074] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:16,087] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:16,098] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:16,109] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:16,126] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 32.00 km/s (fitted at 32.39 +/- 0.38 km/s)
+[2024-10-30 16:39:18,815] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:18,822] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:18,831] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:18,840] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:18,848] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:18,862] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:18,869] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:18,876] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:18,883] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:18,897] [INFO] [lines:__model_velocity_profile:2455]: Peak found at 0.00 km/s (fitted at 0.05 +/- 0.95 km/s)
+[2024-10-30 16:39:19,590] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:19,600] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:19,611] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:19,621] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:19,632] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:19,650] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:19,661] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:19,671] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:19,682] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:19,701] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -39.00 km/s (fitted at -39.22 +/- 0.58 km/s)
+[2024-10-30 16:39:20,404] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:20,414] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:20,425] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:20,435] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:20,446] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:20,465] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:20,476] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:20,486] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:20,497] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:20,514] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -39.00 km/s (fitted at -39.22 +/- 0.58 km/s)
+[2024-10-30 16:39:21,210] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:21,220] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:21,234] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:21,247] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:21,257] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:21,280] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:21,290] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:21,301] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:21,312] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:21,328] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -39.00 km/s (fitted at -39.21 +/- 0.58 km/s)
+[2024-10-30 16:39:22,046] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:22,056] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:22,067] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:22,078] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:22,088] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:22,108] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:22,119] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:22,130] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:22,140] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:22,159] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -39.00 km/s (fitted at -39.23 +/- 0.58 km/s)
+[2024-10-30 16:39:22,859] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:22,870] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:22,881] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:22,891] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:22,903] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:22,922] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:22,933] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:22,944] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:22,955] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:22,972] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -39.00 km/s (fitted at -39.22 +/- 0.58 km/s)
+[2024-10-30 16:39:23,671] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:23,681] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:23,692] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:23,703] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:23,715] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:23,737] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:23,748] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:23,759] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:23,770] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:23,787] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -39.00 km/s (fitted at -39.22 +/- 0.58 km/s)
+[2024-10-30 16:39:24,490] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:24,501] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:24,512] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:24,524] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:24,536] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:24,556] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:24,566] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:24,577] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:24,588] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:24,606] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -39.00 km/s (fitted at -39.22 +/- 0.58 km/s)
+[2024-10-30 16:39:25,309] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:25,319] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:25,330] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:25,341] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:25,352] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:25,372] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:25,382] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:25,393] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:25,404] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:25,422] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -39.00 km/s (fitted at -39.22 +/- 0.58 km/s)
+[2024-10-30 16:39:26,121] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:26,133] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:26,145] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:26,156] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:26,168] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:26,190] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:26,202] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:26,216] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:26,231] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:26,248] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -39.00 km/s (fitted at -39.22 +/- 0.58 km/s)
+[2024-10-30 16:39:26,948] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:26,958] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:26,969] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:26,980] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:26,991] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:27,010] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:27,021] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:27,032] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:27,044] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:27,062] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -39.00 km/s (fitted at -39.25 +/- 0.58 km/s)
+[2024-10-30 16:39:27,764] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:27,776] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:27,787] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:27,799] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:27,811] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:27,832] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:27,842] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:27,853] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:27,864] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:27,882] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -39.00 km/s (fitted at -39.25 +/- 0.59 km/s)
+[2024-10-30 16:39:28,583] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:28,594] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:28,606] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:28,617] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:28,628] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:28,651] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:28,662] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:28,673] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:28,684] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:28,701] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -39.00 km/s (fitted at -39.23 +/- 0.58 km/s)
+[2024-10-30 16:39:29,397] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:29,407] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:29,419] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:29,431] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:29,442] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:29,462] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:29,473] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:29,484] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:29,496] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:29,514] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -39.00 km/s (fitted at -39.26 +/- 0.58 km/s)
+[2024-10-30 16:39:30,216] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 0.00%
+[2024-10-30 16:39:30,226] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 10.22%
+[2024-10-30 16:39:30,237] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 20.45%
+[2024-10-30 16:39:30,248] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 30.67%
+[2024-10-30 16:39:30,259] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 40.90%
+[2024-10-30 16:39:30,282] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 60.10%
+[2024-10-30 16:39:30,292] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 70.32%
+[2024-10-30 16:39:30,304] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 80.55%
+[2024-10-30 16:39:30,314] [INFO] [lines:__cross_correlation_function_uniform_in_velocity:1994]: 90.77%
+[2024-10-30 16:39:30,333] [INFO] [lines:__model_velocity_profile:2455]: Peak found at -39.00 km/s (fitted at -39.27 +/- 0.58 km/s)
+[2024-10-30 16:39:36,043] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:39:36,046] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:39:36,063] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:39:36,984] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:39:36,985] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:39:37,006] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:39:37,206] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:39:37,208] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:39:37,214] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:39:37,216] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:39:37,223] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:39:37,226] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:39:37,230] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:39:37,233] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:39:37,235] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:39:37,240] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:39:37,245] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:39:37,248] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:39:37,250] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:39:37,264] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:39:37,274] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:39:37,422] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:39:37,509] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:39:37,591] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:39:37,654] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:39:37,656] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:39:37,674] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:40:19,301] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:40:19,302] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:40:19,302] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:40:19,303] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:40:19,316] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:40:19,321] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:40:20,613] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:40:20,615] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:40:20,631] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:40:20,633] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:40:20,644] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:40:20,647] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:40:20,649] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:40:20,662] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:40:20,670] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:40:20,721] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:40:20,767] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:40:20,768] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:40:20,777] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:40:20,757] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:40:20,791] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:40:20,783] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:40:20,829] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:40:20,833] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:40:22,145] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:40:22,146] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:40:22,156] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:41:45,863] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:41:45,865] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:41:45,877] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:41:45,897] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:41:45,899] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:41:45,916] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:41:47,105] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:41:47,107] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:41:47,128] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:41:47,129] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:41:47,130] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:41:47,149] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:41:47,157] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:41:47,159] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:41:47,180] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:41:47,262] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:41:47,266] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:41:47,285] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:41:47,256] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:41:47,271] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:41:47,303] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:41:47,302] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:41:47,323] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:41:47,326] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:41:48,748] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:41:48,750] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:41:48,759] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:42:58,817] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:42:58,819] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:42:58,832] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:42:58,833] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:42:58,836] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:42:58,849] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:43:00,142] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:43:00,145] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:43:00,153] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:43:00,156] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:43:00,158] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:43:00,160] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:43:00,169] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:43:00,173] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:43:00,178] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:43:00,191] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:43:00,193] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:43:00,216] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:43:00,268] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:43:00,285] [WARNING] [ssf:model_spectrum:901]: 'enhance_abundances' changed to False because alpha is a free parameter
+[2024-10-30 16:43:00,289] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:43:00,307] [WARNING] [ssf:model_spectrum:909]: 'vmac_from_empirical_relation' changed to False because vmac is a free parameter
+[2024-10-30 16:43:00,354] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.
+[2024-10-30 16:43:00,352] [WARNING] [ssf:model_spectrum:945]: Use of errors has been desactivated because all of them are set to zero.

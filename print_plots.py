@@ -667,6 +667,44 @@ plt.show()
 '''Plot the MgH feature for all stars at 5133.8 to 5135.5'''
 import pandas as pd
 import matplotlib.pyplot as plt
+import astropy.io.fits as fits
+import numpy as np
+import glob
+import os
+from astropy.io import fits
+import pandas as pd
+import time
+import scipy as sp
+import sys
+#--- iSpec directory -------------------------------------------------------------
+#ispec_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
+ispec_dir = '/home/users/qai11/iSpec_v20201001/'
+sys.path.insert(0, os.path.abspath(ispec_dir))
+import ispec
+
+# All stars including special stars
+star_list = ['hd_156098','hd_45588', 'hd_102870', 'hd_146233', 'hd_128620', 'moon',
+             'hd_160691', 'hd_100407', 'hd_128621', 'hd_157244', 'hd_11695']
+# 'hd_2151','hd_11695','hd_18907','hd_10700','hd_23249','hd_22049','hd_18884','hd_165499','hd_156098'
+# Create empty DataFrames to store parameters and errors separately
+all_params = pd.DataFrame()
+
+# Loop through each star and load parameters and errors
+for star_name in star_list:
+    # Load parameters and errors for each star
+    params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}_final_params.txt', sep=',', index_col=None)
+    
+    # Add a column for the star name
+    params['star'] = star_name
+
+    # Append the data for this star to all_params and all_errors DataFrames
+    all_params = pd.concat([all_params, params], ignore_index=True)
+
+# Open the benchmark values from the literature
+benchmark_params = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv')
+
+# Filter the data to only include stars that are in both DataFrames
+merged_data = pd.merge(all_params, benchmark_params, left_on='star', right_on='ID2')
 
 # Open the benchmark values from the literature
 benchmark_params = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv')
@@ -695,7 +733,7 @@ for star_name in merged_data['star']:
     
     # Create the legend with SPT, Teff, Logg, and Mh
     if len(star_spt) > 0 and len(star_teff) > 0 and len(star_logg) > 0 and len(star_mh) > 0:
-        plt.legend([f"Star: {star_name}, SPT: {star_spt[0]}, Teff: {star_teff[0]}, Logg: {star_logg[0]}, [M/H]: {star_mh[0]}"])
+        plt.legend([f"Star: {star_name}, SPT: {star_spt[0]}, Teff: {star_teff[0]:.0f}, Logg: {star_logg[0]:.2f}, [M/H]: {star_mh[0]}"])
     else:
         plt.legend(["SPT: N/A, Teff: N/A, Logg: N/A, [M/H]: N/A"])
     
