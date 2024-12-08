@@ -1,9 +1,10 @@
 """
 Title: line_by_line_abunds.py
-Author: Heather Sinclair-Wentworth, edits by Quin Aicken Davies
+Author: Heather Sinclair-Wentworth, edits by Quin Aicken Davies, Some extra code for saving from Ethan Bull
 Date: 06/10/24
 
-Description: Find the abundances of elements by line-by-line analysis using iSpec
+Description: Find the abundances of elements by line-by-line analysis using iSpec. Saves all the synth regions 
+for each line for plotting later and checking condition of fit.
 """
 #%%
 import os
@@ -100,12 +101,15 @@ def find_abundance(star, elements=None, overwrite_line_regions=False):
         #    #Build line regions file for specified element from atomic linelist, if it doesn't exist
         line_region_loc = '/home/users/qai11/Documents/quin-masters-code/Linelists/'
         line_regions = line_region_loc + f'{element}_lines.csv'
-        #    if not os.path.exists(line_regions) or overwrite_line_regions:
-        #        full_line_regions = pd.read_csv(ispec_dir + '/input/regions/47000_GES/limited_but_with_missing_elements_moog_synth_good_for_abundances_all_extended.txt', sep='\t')
-        #        element_line_regions = full_line_regions[full_line_regions['element'].str.split().str[0] == element]
-        #        # print(full_line_regions['element'].str.split().str[0])
-        #        element_line_regions = element_line_regions[['wave_peak', 'wave_base', 'wave_top', 'note']]
-        #        element_line_regions.to_csv(line_regions, sep='\t', index=False)
+        
+        #Saves the line regions 
+        if not os.path.exists(line_regions) or overwrite_line_regions:
+            full_line_regions = pd.read_csv(ispec_dir + '/input/regions/47000_GES/limited_but_with_missing_elements_moog_synth_good_for_abundances_all_extended.txt', sep='\t')
+            element_line_regions = full_line_regions[full_line_regions['element'].str.split().str[0] == element]
+            # print(full_line_regions['element'].str.split().str[0])
+            element_line_regions = element_line_regions[['wave_peak', 'wave_base', 'wave_top', 'note']]
+            element_line_regions.to_csv(line_regions, sep='\t', index=False)
+            
         line_regions = ispec.read_line_regions(line_regions)
         
         output_dir = f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star}/'
@@ -150,12 +154,22 @@ def find_abundance(star, elements=None, overwrite_line_regions=False):
                         code=code)
             except:
                 continue
+            synth = pd.DataFrame(modeled_synth_spectrum[['waveobs', 'flux']], columns=['waveobs', 'flux'])
             
             abundances_found = pd.DataFrame(abundances_found, index=[i])
             abundances_found['element'] = element_name
             abundances_found = abundances_found[['element', 'code', 'Abund', 'A(X)', '[X/H]', '[X/Fe]', 'eAbund', 'eA(X)', 'e[X/H]', 'e[X/Fe]']]
             abundances_found = pd.concat([abundances_found, pd.DataFrame({'wave_peak': line['wave_peak']}, index=[i])], axis=1)
             # print('concatenated')
+            
+            #Define folder for saving. If it doesn't exist, create it
+            synth_folder = output_dir + 'synth_regions_' + element + '/'
+            if not os.path.exists(synth_folder):
+                os.mkdir(synth_folder)
+            filename_synth = f'{synth_folder}'+ f'synth_{element}' + '_' + str(line['wave_peak']) + '.txt'
+            synth.to_csv(filename_synth, sep=' ', index=False, mode='w', header=True)
+            
+            
             if i == 0:
                 abundances_found.to_csv(filename + '.txt', sep=' ', index=True, mode='w', header=True)
             else:

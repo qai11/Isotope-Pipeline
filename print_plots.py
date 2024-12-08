@@ -15,6 +15,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 from astropy.io import fits
+
+
 #%%
 def velocity_correction(wavelength, rv):
     ''' 
@@ -183,7 +185,7 @@ def make_temp_file(filename):
     f.write('')
     f.close() 
 
-def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name):
+def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist):
     # I doubt I'll ever want to change these so initialise them here
     standard_out = 'out1'
     summary_out  = 'out2'
@@ -205,7 +207,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     "summary_out    '" + summary_out +"'\n"                     + \
     "smoothed_out   '" + out_filename +"'\n"                    + \
     f"model_in       '{star_name}_atmosphere.moog'\n"                          + \
-    "lines_in       'quinlinelist.in'\n"                           + \
+    f"lines_in       '{linelist}'\n"                           + \
     "observed_in    '" + raw_spec_filename +"'\n"               + \
     "atmosphere    1\n"                                         + \
     "molecules     2\n"                                         + \
@@ -261,7 +263,7 @@ def make_filenames(par, prefix):
     return prefix + '_s'+ str_s +'_mg'+ str_mg + '_i' \
      + str_24 + '_' + str_25  + '_' + str_26 + '_rv' + str_rv
      
-def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name):
+def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist):
 
     # creating the in and out filenames based on the guess parameters
     in_filename  = make_filenames(guess, 'in')
@@ -269,7 +271,7 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
 
 
     # creates a parameter string in the directory that moog can read
-    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name)
+    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist)
 
     # create the smoothed spectra by calling pymoogi
     smoothed_spectrum = call_pymoogi(in_filename)
@@ -295,10 +297,10 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
 def initial_guess():
 
     s = 8.41 #has to be here for some reason or it breaks, seems to break move below 1.4
-    mg = 0.055
-    i_24 = 1
-    i_25 = 6
-    i_26 = 9
+    mg = 1.1
+    i_24 = 1.5
+    i_25 = 5
+    i_26 = 8
     rv = 0
 
     # return the guess as a dictionary
@@ -316,12 +318,23 @@ def get_wavelength_region(raw_wavelength):
     upper_wavelength = raw_wavelength[len(raw_wavelength)-1] # -1 isnt working for some reason
     return str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) 
     
-def model_finder(star_name):
+def model_finder(star_name,linelist):
+    try:
+        #Uni computer
+        data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/'
+        os.chdir(data_path)
+    except:
+        #MAC
+        if os.path.exists(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/'):
+            data_path = f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/'
+            os.chdir(data_path)
+        else:
+            os.mkdir(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/')
+            data_path = f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/'
+            os.chdir(data_path)
+    region = 0
     
-    data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/'
-    region = 1
-    os.chdir(data_path)
-    os.system('mkdir plots')
+    # os.system('mkdir plots')
     # initial guesses as a dictionary
     guess = initial_guess()
 
@@ -331,10 +344,31 @@ def model_finder(star_name):
 
     # add the first chi_squyared value to the dataframe
     chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, 
-                                region, wavelength_region, guess,star_name)
+                                region, wavelength_region, guess,star_name,linelist)
 
-star_name = 'hd_157244'
-model_finder(star_name)
+# star_name = 'hd_157244' #66.58_17.75_15.67
+# mg = 0.001
+#     i_24 = 3.5
+#     i_25 = 30
+#     i_26 = 50
+#     rv = 0
+# star_name = 'hd_128620' #79.52_10.68_9.8
+# mg = 0.55
+    # i_24 = 0.9
+    # i_25 = 6.7
+    # i_26 = 7.5
+    # rv = 0
+star_name = 'hd_102870' #67.23_20.17_12.61
+# s = 8.41 #has to be here for some reason or it breaks, seems to break move below 1.4
+#     mg = 1.1
+#     i_24 = 1.5
+#     i_25 = 5
+#     i_26 = 8
+#     rv = 0
+#
+# linelist = 'quinlinelist.in'
+linelist = 'quinlist.MgH'
+model_finder(star_name,linelist)
 # %%
 '''idk what happened above but it made the output file for some reason so ill print that'''
 mg24 = str(mg['i_24']).replace('.', '')
@@ -347,27 +381,38 @@ s_all = str(mg['s']).replace('.', '')
 # smoothed = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/hd_102870/out_s841_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
 # raw = pd.read_csv('/home/users/qai11/Documents/Fixed_fits_files/hd_102870/hd_102870_5100-5200.txt', sep="	", header=None)
 #HD128620
-smoothed = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
-raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{star_name}_5100-5200.txt', sep="	", header=None)
+try:
+    #Uni Computer paths
+    smoothed = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
+    raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{star_name}_5100-5200.txt', sep="	", header=None)
+except:
+    #Mac computer paths
+    smoothed = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
+    raw = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/{star_name}_5100-5200.txt', sep="	", header=None)
 
 plt.figure(figsize=(8, 4))
 plt.plot(smoothed[0], smoothed[1])
 plt.plot(raw[0], raw[1])
 plt.legend(['Model', 'Observed'])
-# plt.xlim(5133.8, 5135.5) #Region 1
+plt.xlim(5134, 5135.3) #Region 1
 # plt.xlim(5133, 5135)
-plt.xlim(5130,5140)
+# plt.xlim(5130,5140)
 # plt.xlim(5138.59, 5138.95) #Region 2
 # plt.xlim(5140.04, 5140.46) #Region 3
 # plt.xlim(5138.59,5138.95)
 #HD102870
-# plt.ylim(0.86, 1) #Region 1
+plt.ylim(0.86, 1) #Region 1
+# plt.ylim(0.9,1.05) #Region 2 change
 # plt.ylim(0.92, 1) #Region 2
 # plt.ylim(0.94, 1) #Region 3
 #HD128620
-# plt.ylim(0.84, 1.05) #Region 1
+# plt.ylim(0.80, 1.01) #Region 1
 # plt.ylim(0.8, 1) #Region 2
 # plt.ylim(0.85, 1) #Region 3
+#HD157244
+# plt.ylim(0.65, 1.01) #Region 1
+
+# plt.xlim(5133.8, 5135.46)
 
 plt.xlabel('Wavelength ($\AA$)',fontsize=14)
 plt.ylabel('Norm. Flux',fontsize=14)
@@ -398,9 +443,8 @@ plt.ylabel('Norm. Flux',fontsize=14)
 #     plt.savefig('/home/users/qai11/Documents/Masters_Figures/Method/Model_Mg24.png', dpi=300, bbox_inches='tight')
 # # else:
 # print("some cobination of Mg24, Mg25 and Mg26")
+# #Uni save all
 # plt.savefig('/home/users/qai11/Documents/Masters_Figures/Method/Model_Mg24_Mg25_Mg26.png', dpi=300, bbox_inches='tight')
-plt.show()
-#%%
 def calc_ratio(i_24, i_25, i_26):
     i24_percentage=1/(0.01*i_24)
     i25_percentage=1/(0.01*i_25)
@@ -414,19 +458,29 @@ def calc_ratio(i_24, i_25, i_26):
     
     return str(round(i24_ratio,2)) + '_' + str(round(i25_ratio,2)) + '_' + str(round(i26_ratio,2))
 
-print(calc_ratio(mg['i_24'], mg['i_25'], mg['i_26']))
+mg_ratio = calc_ratio(mg['i_24'], mg['i_25'], mg['i_26'])
+print(mg_ratio)
 
+# #MAC save all
+plt.savefig(f'/Users/quin/quin-masters-code/Masters_Figures/Model_Mg24_Mg25_Mg26{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}.png', dpi=300, bbox_inches='tight')
+plt.show()
+#%%
+spec = ispec.read_spectrum('/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_157244/moog_tests/hd_157244_5100-5200.txt')
+plt.figure()
+plt.plot(spec['waveobs'], spec['flux'])
+plt.xlim(5134,5140)
 # %%
 
 import astropy.io.fits as fits
 
 def make_hr_diagram(gbs_filename, obs_filename):
-    '''Makes an HR digram with inverted axes, Teff on x and Logg on y. Coloured by MH'''
+    '''Makes an HR diagram with inverted axes, Teff on x and Logg on y. Coloured by MH'''
     #Open the files
     gbs = fits.open(gbs_filename)
+    # print(gbs[1].data)
     obs = pd.read_csv(obs_filename, delimiter=',')
     #Print the files
-    plt.figure(figsize=(8, 4))
+    plt.figure(figsize=(6,4))
 
     # Convert star names to lists
     obs_star_names = obs['ID2'].tolist()
@@ -459,13 +513,19 @@ def make_hr_diagram(gbs_filename, obs_filename):
     plt.gca().invert_yaxis()
     plt.xlabel('Teff (K)',fontsize=14)
     plt.ylabel('Logg (cm/s$^{2}$)',fontsize=14)
-    plt.legend(['GBS-only Stars', 'Observed Stars'])
-    plt.savefig('/home/users/qai11/Documents/Masters_Figures/Method/HR_diagram.png', dpi=300,bbox_inches='tight')
+    plt.legend(['GBS Stars', 'Observed Stars'])
+    #UNI PC SAVE
+    # plt.savefig('/home/users/qai11/Documents/Masters_Figures/Method/HR_diagram.png', dpi=300,bbox_inches='tight')
+    #MAC SAVE
+    plt.savefig('/Users/quin/quin-masters-code/Masters_Figures/HR_diagram.png', dpi=300,bbox_inches='tight')
     # Show the plot
     plt.show()
     gbs.close()
     
-make_hr_diagram('/home/users/qai11/Documents/quin-masters-code/gbs_stars.fit', '/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv')
+#UNI COMPUTER RUN
+# make_hr_diagram('/home/users/qai11/Documents/quin-masters-code/gbs_stars.fit', '/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv')
+#MAC RUN
+make_hr_diagram('/Users/quin/quin-masters-code/gbs_stars.fit', '/Users/quin/quin-masters-code/Masters_stars.csv')
 
 # %%
 import astropy.io.fits as fits
@@ -602,9 +662,15 @@ all_errors = pd.DataFrame()
 # Loop through each star and load parameters and errors
 for star_name in star_list:
     # Load parameters and errors for each star
-    params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}_final_params.txt', sep=',', index_col=None)
-    errors = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}_final_errors.txt', sep=',', index_col=None)
-    
+    try:
+        # params from uni computer
+        params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}_final_params.txt', sep=',', index_col=None)
+        errors = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}_final_errors.txt', sep=',', index_col=None)
+    except:
+        # params from Mac
+        params = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/parameters/{star_name}_final_params.txt', sep=',', index_col=None)
+        errors = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/parameters/{star_name}_final_errors.txt', sep=',', index_col=None)
+        
     # Add a column for the star name
     params['star'] = star_name
     errors['star'] = star_name
@@ -614,7 +680,12 @@ for star_name in star_list:
     all_errors = pd.concat([all_errors, errors], ignore_index=True)
 
 # Open the benchmark values from the literature
-benchmark_params = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv')
+try:
+    # Benchmark params from uni computer
+    benchmark_params = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv')
+except:
+    # Benchmark params from Mac
+    benchmark_params = pd.read_csv('/Users/quin/quin-masters-code/Masters_stars.csv')
 
 # Filter the data to only include stars that are in both DataFrames
 merged_data = pd.merge(all_params, benchmark_params, left_on='star', right_on='ID2')
@@ -622,6 +693,9 @@ merged_data = pd.merge(all_params, benchmark_params, left_on='star', right_on='I
 # Define the parameters to plot
 parameters = ['teff', 'logg', 'MH']  # Parameters from all_params
 benchmark_params_columns = ['TEFF', 'LOGG', 'FEH']  # Corresponding columns in benchmark_params
+# Define horizonal line values
+y_lines = [[-100, -50, 0, 50, 100], [-0.5, -0.2, 0, 0.2, 0.5], [-0.5, -0.2 ,0, 0.2, 0.5]]
+y_labels = [['-100', '-50', '0', '50', '100'], ['-0.5', '-0.2', '0', '0.2', '0.5'], ['-0.5', '-0.2', '0', '0.2', '0.5']]
 
 # Create a figure with three stacked plots
 fig, axes = plt.subplots(3, 1, figsize=(6, 9))  # 3 rows, 1 column
@@ -634,18 +708,27 @@ for i, (param, benchmark_param) in enumerate(zip(parameters, benchmark_params_co
 
     # Extract corresponding uncertainties for the merged stars
     star_errors = merged_data['star'].map(all_errors.set_index('star')[param])
+    
+    #plot the horizontal lines
+    axes[i].axhline(y=y_lines[i][0], color='black', linestyle='-.',label=f'$\pm${y_labels[i][0]}',alpha = 0.5,linewidth=0.75)
+    axes[i].axhline(y=y_lines[i][1], color='black', linestyle='--',label=f'$\pm${y_labels[i][1]}',alpha = 0.5,linewidth=0.75)
+    axes[i].axhline(y=y_lines[i][2], color='black',linestyle='-', label=None,alpha = 0.5, linewidth=0.75)
+    axes[i].axhline(y=y_lines[i][3], color='black', linestyle='--', label=None,alpha = 0.5,linewidth=0.75)
+    axes[i].axhline(y=y_lines[i][4], color='black', linestyle='-.', label=None,alpha = 0.5,linewidth=0.75)
 
     # Plot regular stars with error bars
     regular_stars_mask = ~merged_data['star'].isin(star_list_special)
     axes[i].errorbar(x_values[regular_stars_mask], y_values[regular_stars_mask],
-                     yerr=star_errors[regular_stars_mask], fmt='o', color='#377eb8', label='Benchmark Stars', markersize=2)
-
+                     yerr=star_errors[regular_stars_mask], fmt='o', color='#377eb8', label='Benchmark Stars', markersize=3)
+    
     # Plot special stars with error bars
     special_stars_mask = merged_data['star'].isin(star_list_special)
     axes[i].errorbar(x_values[special_stars_mask], y_values[special_stars_mask],
-                     yerr=star_errors[special_stars_mask], fmt='o', color='#ff7f00', label='Unknown Stars', markersize=2)
+                     yerr=star_errors[special_stars_mask], fmt='o', color='#ff7f00', label='Unknown Stars', markersize=3)
 
+    #label the x axis
     axes[i].set_xlabel('log($\it{g}$) (cm/s$^{2}$)', fontsize=12)
+
 
     # Manually modify the y-axis label
     if param == 'teff':
@@ -656,11 +739,16 @@ for i, (param, benchmark_param) in enumerate(zip(parameters, benchmark_params_co
         axes[i].set_ylabel('[M/H] Difference LTE (dex)', fontsize=12)
 
     # Add legend
-    axes[i].legend(loc='best', fontsize=10)
+    axes[i].legend(loc='upper right', fontsize="small")
 
 # Adjust layout and show plot
 plt.tight_layout()
-# plt.savefig('/home/users/qai11/Documents/Masters_Figures/Method/Parameter_comparison.png', dpi=300, bbox_inches='tight')
+try:
+    # UNI COMPUTER SAVE
+    plt.savefig('/home/users/qai11/Documents/Masters_Figures/Method/Parameter_comparison.png', dpi=300, bbox_inches='tight')
+except:
+    # MAC SAVE
+    plt.savefig('/Users/quin/quin-masters-code/Masters_Figures/Parameter_comparison.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 # %%
@@ -677,14 +765,25 @@ import time
 import scipy as sp
 import sys
 #--- iSpec directory -------------------------------------------------------------
-#ispec_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
-ispec_dir = '/home/users/qai11/iSpec_v20201001/'
+if os.path.exists('/home/users/qai11/iSpec_v20201001'):
+    "Location of the files on Uni computer"
+    ispec_dir = '/home/users/qai11/iSpec_v20201001'
+else:
+    "location of data on Mac"
+    ispec_dir = '/Users/quin/Desktop/2024_Data/iSpec_v20230804'
 sys.path.insert(0, os.path.abspath(ispec_dir))
 import ispec
 
 # All stars including special stars
-star_list = ['hd_156098','hd_45588', 'hd_102870', 'hd_146233', 'hd_128620', 'moon',
+# star_list = ['hd_11695', 'hd_157244','hd_128621','hd_100407','hd_160691',
+#              'Sun','hd_128620','hd_146233', 'hd_102870','hd_45588', 'hd_156098']
+
+'''Order of spectra type'''
+star_list = ['hd_156098','hd_45588', 'hd_102870', 'hd_146233', 'hd_128620', 'Sun',
              'hd_160691', 'hd_100407', 'hd_128621', 'hd_157244', 'hd_11695']
+
+
+
 # 'hd_2151','hd_11695','hd_18907','hd_10700','hd_23249','hd_22049','hd_18884','hd_165499','hd_156098'
 # Create empty DataFrames to store parameters and errors separately
 all_params = pd.DataFrame()
@@ -692,7 +791,12 @@ all_params = pd.DataFrame()
 # Loop through each star and load parameters and errors
 for star_name in star_list:
     # Load parameters and errors for each star
-    params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}_final_params.txt', sep=',', index_col=None)
+    try:
+        #params from uni computer
+        params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star_name}_final_params.txt', sep=',', index_col=None)
+    except:
+        #params from Mac
+         params = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/parameters/{star_name}_final_params.txt', sep=',', index_col=None)
     
     # Add a column for the star name
     params['star'] = star_name
@@ -701,45 +805,185 @@ for star_name in star_list:
     all_params = pd.concat([all_params, params], ignore_index=True)
 
 # Open the benchmark values from the literature
-benchmark_params = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv')
+try:
+    # Benchmark params from uni computer
+    benchmark_params = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv')
+except:
+    # Benchmark params from Mac
+    benchmark_params = pd.read_csv('/Users/quin/quin-masters-code/Masters_stars.csv')
 
 # Filter the data to only include stars that are in both DataFrames
 merged_data = pd.merge(all_params, benchmark_params, left_on='star', right_on='ID2')
+merged_data = merged_data.sort_values('TEFF', ascending=False)
 
-# Open the benchmark values from the literature
-benchmark_params = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv')
-
-# Filter the data to only include stars that are in both DataFrames
-merged_data = pd.merge(all_params, benchmark_params, left_on='star', right_on='ID2')
-
+# text_pos = 0
+star_pos = 1.5
+legend_entries = []
+plt.figure(figsize=(6, 8))
+# fig, ax = plt.subplots()
 for star_name in merged_data['star']:
+    #plot all of the stars on top of each other
     # Read the spectrum file for the current star
-    spectrum = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_adjusted.fits')
+    try:
+        # Spectrum from uni computer
+        spectrum = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_adjusted.fits')
+    except:
+        # Spectrum from Mac
+        spectrum = ispec.read_spectrum(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/{star_name}_adjusted.fits')
+
     
     # Filter the benchmark_params to get the corresponding SPT, Teff, Logg, and Mh for the current star
     star_params = benchmark_params[benchmark_params['ID2'] == star_name]
     
-    # Extract the values (if present)
+    # Extract the parameters (if present)
     star_spt = star_params['SPT'].values
     star_teff = star_params['TEFF'].values
     star_logg = star_params['LOGG'].values
     star_mh = star_params['FEH'].values
     
-    # Plot the spectrum
-    plt.figure(figsize=(8, 4))
-    plt.plot(spectrum['waveobs'] * 10, spectrum['flux'])
+    # Plot the spectra
+    plt.plot((spectrum['waveobs'] * 10), spectrum['flux'] + star_pos)
     plt.xlim(5133.8, 5135.5)
-    plt.ylim(0.6, 1.1)
+    plt.ylim(0.45, 2.6)
+    plt.xlabel('Wavelength $\AA$',fontsize=12)
+    plt.ylabel('Normalized Flux',fontsize=12)
     
-    # Create the legend with SPT, Teff, Logg, and Mh
+    # # Create the legend with SPT, Teff, Logg, and Mh
     if len(star_spt) > 0 and len(star_teff) > 0 and len(star_logg) > 0 and len(star_mh) > 0:
-        plt.legend([f"Star: {star_name}, SPT: {star_spt[0]}, Teff: {star_teff[0]:.0f}, Logg: {star_logg[0]:.2f}, [M/H]: {star_mh[0]}"])
+        legend_entries.append(f"$\mathbf{{Star}}$: {star_name}, $\mathbf{{SPT}}$: {star_spt[0]}, $\mathbf{{Teff}}$: {star_teff[0]:.0f}, $\mathbf{{Logg}}$: {star_logg[0]:.2f}, $\mathbf{{[M/H]}}$: {star_mh[0]}")
     else:
-        plt.legend(["SPT: N/A, Teff: N/A, Logg: N/A, [M/H]: N/A"])
-    
+        #If no star data exists then plot N/A
+        legend_entries.append("$\mathbf{{Star}}$: N/A, $\mathbf{{SPT}}$: N/A, $\mathbf{{Teff}}$: N/A, $\mathbf{{Logg}}$: N/A, $\mathbf{{[M/H]}}$: N/A")
+    star_pos -= 0.15
     # plt.show()
+    
+    # Add a dot or line with automatic color
+    # Use scatter to place a colored dot to the left of the text without affecting plot colors
+    # ax.scatter(1.02, 0 + text_pos, transform=ax.transAxes, s=50)  # s=50 controls the dot size
+    # #add the information in a textbox next to the plot
+    # ax.text(1.05, 0 + text_pos, f"$\mathbf{{Star}}$: {star_name}, $\mathbf{{SPT}}$: {star_spt[0]}, $\mathbf{{Teff}}$: {star_teff[0]:.0f}, $\mathbf{{Logg}}$: {star_logg[0]:.2f}, $\mathbf{{[M/H]}}$: {star_mh[0]}" , transform=ax.transAxes, ha='left', va='center')    
+    # text_pos +=0.1
+    
+# Plot all legend entries
+# plt.legend(legend_entries, loc="upper right", fontsize="small")
+plt.legend(legend_entries, loc="center left", bbox_to_anchor=(1.02, 0.5), labelspacing=1.5, fontsize=8)
+plt.yticks([])
 
 
+#Save Figure
+try:
+    # UNI COMPUTER SAVE
+    plt.savefig('/home/users/qai11/Documents/Masters_Figures/Method/MgH_line_SPT.png', dpi=300, bbox_inches='tight')
+except:
+    # MAC SAVE
+    plt.savefig('/Users/quin/quin-masters-code/Masters_Figures/MgH_line_SPT.png', dpi=300, bbox_inches='tight')
 
 
+# %%
+
+# plot with spectrum and s/n underneath?
+
+#%%
+'''Plot the MgH featur for the moon and iSpec sun (G2V) and arcturus (K15.III)'''
+import pandas as pd
+import matplotlib.pyplot as plt
+import astropy.io.fits as fits
+import numpy as np
+import glob
+import os
+from astropy.io import fits
+import pandas as pd
+import time
+import scipy as sp
+import sys
+#--- iSpec directory -------------------------------------------------------------
+if os.path.exists('/home/users/qai11/iSpec_v20201001'):
+    "Location of the files on Uni computer"
+    ispec_dir = '/home/users/qai11/iSpec_v20201001'
+else:
+    "location of data on Mac"
+    ispec_dir = '/Users/quin/Desktop/2024_Data/iSpec_v20230804'
+sys.path.insert(0, os.path.abspath(ispec_dir))
+import ispec
+
+# star = ['hd_128621','hd_128620']
+
+#Spectrum from observed stars
+# mysun = ispec.read_spectrum(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/Sun/Sun_adjusted.fits')
+# #Spectra from ispec for comparison
+# ispecarc = ispec.read_spectrum('/Users/quin/Desktop/2024_Data/iSpec_v20230804/input/spectra/templates/Atlas.Arcturus.372_926nm/template.txt.gz')
+# ispecsun = ispec.read_spectrum('/Users/quin/Desktop/2024_Data/iSpec_v20230804/input/spectra/templates/Atlas.Sun.372_926nm/template.txt.gz')
+# #Plot ispec synth spectrum sun
+# synthsun = ispec.read_spectrum('/Users/quin/Desktop/2024_Data/iSpec_v20230804/input/spectra/templates/Synth.Sun.300_1100nm/template.txt.gz')
+#plot hd_157244 giant star
+mygiant =ispec.read_spectrum(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_157244/hd_157244_adjusted.fits')
+# hd_102870spec = ispec.read_spectrum(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_102870/hd_102870_adjusted.fits')
+#%%
+plt.figure(figsize=(8,4))
+# plt.plot(ispecsun['waveobs']*10,ispecsun['flux'])
+# plt.plot(ispecarc['waveobs']*10,ispecarc['flux'])
+# plt.plot(synthsun['waveobs']*10,synthsun['flux'])
+plt.plot(mygiant['waveobs']*10,mygiant['flux'])
+# plt.plot(hd_102870spec['waveobs']*10,hd_102870spec['flux'])
+# plt.plot(mysun['waveobs']*10,mysun['flux'])
+plt.legend(['Atlas Sun','Atlas Arcturus','Synthetic Sun','hd_157244','hd_102870','Observed Sun'])
+plt.xlabel('Wavelength $\AA$',fontsize=12)
+plt.ylabel('Normalized Flux',fontsize=12)
+plt.xlim(5133.8, 5135.5)
+# plt.xlim(5265,5275)
+# plt.xlim(5134,5140)
+# plt.ylim(0.45,1.1)
+# %%
+"""Plot the isotope fit for a giant and for a dwarf making the display obvious"""
+
+star = ['hd_157244','hd_128620','hd_102870']
+start_pos = 0
+plt.figure(figsize=(8,4))
+for star_name in star:
+    # try:
+    #     #Uni Computer paths
+    #     #Load the raw file
+    #     raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{star_name}_5100-5200.txt', sep="	", header=None)
+    #     if star_name == 'hd_102870':
+    #         #Load hd_102870 fit
+    #         smoothed1 = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/out_s841_mg11_i15_5_8_rv0', sep="     ", header=None, skiprows = [0,1])
+    #     elif star_name == 'hd_157244':
+    #         #Load hd_157244 fit
+    #         smoothed2 = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/out_s841_mg0017_i3_15_23_rv0', sep="     ", header=None, skiprows = [0,1])
+    #     elif star_name == 'hd_128670':
+    #         #Load hd_128620 fit
+    #         smoothed3 = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/out_s841_mg055_i09_67_75_rv0', sep="     ", header=None, skiprows = [0,1])
+    # except:
+        #Mac computer paths
+        #Load the raw file
+    raw1 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_102870/hd_102870_5100-5200.txt', sep="	", header=None,skiprows = [0,1])
+    raw2 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_157244/hd_157244_5100-5200.txt', sep="	", header=None,skiprows = [0,1])
+    raw3 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_128620/hd_128620_5100-5200.txt', sep="	", header=None,skiprows = [0,1])
+    
+    # if star_name == 'hd_102870':
+    #Load hd_102870 fit
+    smoothed1 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_102870/moog_tests/out_s841_mg11_i15_5_8_rv0', sep="     ", header=None, skiprows = [0,1])
+    # elif star_name == 'hd_157244':
+    #Load hd_157244 fit
+    smoothed2 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_157244/moog_tests/out_s841_mg0001_i35_30_50_rv0', sep="     ", header=None, skiprows = [0,1])
+    # elif star_name == 'hd_128620': 
+    #Load hd_128620 fit
+    smoothed3 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_128620/moog_tests/out_s841_mg055_i09_67_75_rv0', sep="     ", header=None, skiprows = [0,1])
+    
+    plt.plot(raw1[0],raw1[1]+0.2,linestyle='--',color='#377eb8')
+    plt.plot(raw2[0],raw2[1],linestyle='--',color='#4daf4a')   
+    plt.plot(raw3[0],raw3[1]+0.1,linestyle='--',color='#ff7f00')
+    plt.plot(smoothed1[0],smoothed1[1]+0.2,color='#377eb8')
+    plt.plot(smoothed2[0],smoothed2[1],color='#4daf4a')
+    plt.plot(smoothed3[0],smoothed3[1]+0.1,color='#ff7f00')
+    plt.legend(['hd_157244_Raw','hd_128620_Raw','hd_102870_Raw','hd_157244_model','hd_128620_model','hd_102870_model'],loc='lower left')
+    plt.xlim(5134, 5135)
+    # plt.xlim(5134,5140)
+    plt.ylim(0.65, 1.25)
+    plt.xlabel('Wavelength ($\AA$)',fontsize=14)
+    plt.yticks([])
+    plt.ylabel('Normalized Flux',fontsize=14)
+    start_pos+=0.1
+    
+plt.savefig('/Users/quin/quin-masters-code/Masters_Figures/Isotope_fit_3_stars.png', dpi=300, bbox_inches='tight')
 # %%

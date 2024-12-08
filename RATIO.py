@@ -216,8 +216,8 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     "standard_out   '" + standard_out +"'\n"                    + \
     "summary_out    '" + summary_out +"'\n"                     + \
     "smoothed_out   '" + out_filename +"'\n"                    + \
-    "model_in       'moon_atmosphere.moog'\n"                          + \
-    "lines_in       'quinlist.MgH'\n"                           + \
+    "model_in       'hd_157244_atmosphere.moog'\n"                          + \
+    "lines_in       'quinlinelist.in'\n"                           + \
     "observed_in    '" + raw_spec_filename +"'\n"               + \
     "atmosphere    1\n"                                         + \
     "molecules     2\n"                                         + \
@@ -385,8 +385,19 @@ def make_filenames(par, prefix):
      + str_24 + '_' + str_25  + '_' + str_26 + '_rv' + str_rv
 
 def get_wavelength_region(raw_wavelength):
-    lower_wavelength = raw_wavelength[0]
-    upper_wavelength = raw_wavelength[len(raw_wavelength)-1] # -1 isnt working for some reason
+    '''Try cutting out the range'''
+    # lower_wavelength = raw_wavelength[0]
+    '''retion 1'''
+    # lower_wavelength = 5131
+    # upper_wavelength = 5138
+    '''region 2'''
+    lower_wavelength =  5135
+    upper_wavelength = 5142
+    # '''region 3'''
+    # lower_wavelength = 5136
+    # upper_wavelength = 5143
+    # upper_wavelength = raw_wavelength[len(raw_wavelength)-1] # -1 isnt working for some reason
+    # print(str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) )
     return str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) 
 
 def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess):
@@ -498,7 +509,7 @@ def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, re
     for par in guess_arr:
         # add the new chi squared values to the df
         chi_of_model = optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, par)
-        chi_df = chi_df.append(chi_of_model)
+        chi_df = pd.concat([chi_df,chi_of_model])
     
     # return chi_df with the results of the new models
     return chi_df
@@ -506,15 +517,16 @@ def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, re
 def model_finder():
     
     # data_path = '/home/users/qai11/Documents/Fixed_fits_files/hd_102870/test_2/'
-    data_path = '/home/users/qai11/Documents/Fixed_fits_files/moon/test_1/'
-    region = 3
+    data_path = '/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_157244/moog_tests/'
+    'change wavelength range'
+    region = 2
     os.chdir(data_path)
     os.system('mkdir plots')
     # initial guesses as a dictionary
     guess = initial_guess()
 
     # raw_spec_filename = 'hd_102870_5100-5200_adjusted.txt'
-    raw_spec_filename = 'moon_5100_5200_adjusted.txt'
+    raw_spec_filename = 'hd_157244_5100-5200.txt'
     raw_spectra       = read_raw_spectra(raw_spec_filename)
     wavelength_region = get_wavelength_region(raw_spectra.wavelength)
 
@@ -581,11 +593,11 @@ def calc_moog_string(r_24, r_25, r_26):
 
 def initial_guess():
 
-    s = 0
-    mg = 0.055
-    i_24 = 2
-    i_25 = 15
-    i_26 = 13
+    s =  8.41
+    mg = 0.6
+    i_24 = 3.5
+    i_25 = 20
+    i_26 = 30
     rv = 0
 
     # return the guess as a dictionary

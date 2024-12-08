@@ -20,7 +20,7 @@ from scipy.stats import chisquare
 import scipy.optimize as opt
 from copy import deepcopy
 import time
-from pymoog.model import read_marcs_model, save_marcs_model, marcs2moog, read_Kurucz_model, kurucz2moog
+# from pymoog.model import read_marcs_model, save_marcs_model, marcs2moog, read_Kurucz_model, kurucz2moog
 
 #--- iSpec directory -------------------------------------------------------------
 if os.path.exists('/home/users/qai11/iSpec_v20201001'):
@@ -61,39 +61,50 @@ def interp_atmos(star):
     #         print("Atmosphere interpolated successfully!")
             # ,teff,logg,MH,alpha,Vmic,Vmac,Vsini,limb_darkening_coeff,R,CHI-SQUARE,DOF
     for star_name in star:
-        params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/{star_name}_iter_param.txt',header=None)
-        save_path = '/home/users/qai11/Documents/Fixed_fits_files/' + star_name + '/'
+        try:
+            #UNI
+            params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/iteration_parameters/{star_name}_iter_param.txt',header=None)
+            save_path = '/home/users/qai11/Documents/Fixed_fits_files/' + star_name + '/'
+        except:
+            #MAC
+            # params = pd.read_csv(f'/Users/quin/quin-masters-code/Masters_stars.csv',header=None, delimiter=',')
+            params = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/{star_name}_params.txt',header=None)
+            save_path = '/Users/quin/Desktop/2024_Data/Fixed_fits_files/' + star_name + '/'
+        
         code='moog'
         
-        model = ispec_dir + "/input/atmospheres/MARCS.GES/"
+        # model = ispec_dir + "/input/atmospheres/MARCS.GES/"
+        model = ispec_dir + "/input/atmospheres/ATLAS9.Castelli/"
         # interpolate(model, star_name, save_path, params=None, code='moog')
         '''This function will interpolate the atmosphere layers for a given set of parameters'''
-        teff = params[1][-1:].values[0]
-        print(teff)
-        # teff = 6083.0
-        logg = params[2][-1:].values[0]
-        print(logg)
-        # logg = 4.1
-        MH = params[3][-1:].values[0]
-        print(MH)
-        # MH = 0.24
-        alpha = params[4][-1:].values[0]
-        print(alpha)
-        # alpha = 0.0
+        # teff = float(params[1][-1:].values[0])
+        # print(teff)
+        teff = 6093
+        # logg = float(params[2][-1:].values[0])
+        # print(logg)
+        logg = 	4.08
+        # MH = float(params[3][-1:].values[0])
+        # print(MH)
+        MH = 0.13
+        # alpha = float(params[4][-1:].values[0])
+        # print(alpha)
+        vmic = 1.5
+        alpha = 0.0
         # Load model atmospheres
         modeled_layers_pack = ispec.load_modeled_layers_pack(model)
         atmosphere_layers = ispec.interpolate_atmosphere_layers(modeled_layers_pack, {'teff':teff, 'logg':logg, 'MH':MH, 'alpha':alpha}, code=code)
         atmosphere_layers_file = save_path + star_name + "_atmosphere.moog"
         atmosphere_layers_file = ispec.write_atmosphere(atmosphere_layers, teff, logg, MH, atmosphere_filename=atmosphere_layers_file, code=code)
-        print("Atmosphere interpolated successfully!")
+        print(f"{star}Atmosphere interpolated successfully!")
 
         '''Add the molecules to the atmosphere file by reopeneing the file and adding the molecules'''
         """FROM moog.py lines 134-158 in iSpec"""
         # Append microturbulence, solar abundances and metallicity
         moog_atmosphere = open(save_path + star_name + "_atmosphere.moog", "a")
         # atom_abundances = abundances[np.logical_and(abundances['code'] > 1, abundances['code'] <= 92)] # Don't update hydrogen or helium abundances
-        moog_atmosphere.write("  %.2f\n" % (params[5][-1:].values[0]))
-        moog_atmosphere.write("NATOMS=   %i %.2f\n" % (0, params[3][-1:].values[0]))
+        # moog_atmosphere.write("  %.2f\n" % (float(params[5][-1:].values[0])))
+        moog_atmosphere.write("  %.2f\n" % (vmic))
+        moog_atmosphere.write("NATOMS=   %i %.2f\n" % (0, float(params[3][-1:].values[0])))
 
         # Molecule list as used by Jorge Melendez (private communication) from iSpec
         moog_atmosphere.write("NMOL      28\n")
@@ -105,6 +116,6 @@ def interp_atmos(star):
         moog_atmosphere.write("  6.1     7.1     8.1   12.1  20.1  22.1  23.1  26.1  40.1\n")
         moog_atmosphere.close()
         
-        print("Text appended successfully!")
+        print(f"{star}Text appended successfully!")
 
 # %%
