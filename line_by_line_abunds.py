@@ -82,7 +82,8 @@ def find_abundance(star, elements=None, overwrite_line_regions=False):
 #    wave_base = wave_min
 #    wave_top = wave_max 
     for element in elements:    
-        atomic_linelist_file = ispec_dir + "/input/linelists/transitions/Quin_GES_LIST.420_920nm/atomic_lines.tsv"
+        # atomic_linelist_file = ispec_dir + "/input/linelists/transitions/Quin_GES_LIST.420_920nm/atomic_lines.tsv"
+        atomic_linelist_file = ispec_dir + "/input/linelists/transitions/VALD.300_1100nm/atomic_lines.tsv"
         atomic_linelist = ispec.read_atomic_linelist(atomic_linelist_file, wave_base=np.min(spectrum['waveobs']), wave_top=np.max(spectrum['waveobs']))
         atomic_linelist = atomic_linelist[atomic_linelist['theoretical_depth'] >= 0.01]  # Select lines that have some minimal contribution in the sun
         

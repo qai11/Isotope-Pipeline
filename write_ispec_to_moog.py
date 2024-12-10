@@ -82,7 +82,7 @@ def synthesize_spectrum(atomic_linelist_file=None, code="spectrum"):
 
     # Load chemical information and linelist
     atomic_linelist = ispec.read_atomic_linelist(atomic_linelist_file, wave_base=wave_base, wave_top=wave_top)
-    atomic_linelist = atomic_linelist[atomic_linelist['theoretical_depth'] >= 0.01] # Select lines that have some minimal contribution in the sun
+    # atomic_linelist = atomic_linelist[atomic_linelist['theoretical_depth'] >= 0.01] # Select lines that have some minimal contribution in the sun
 
     isotopes = ispec.read_isotope_data(isotope_file)
 
@@ -136,17 +136,17 @@ synth_spectrum2 = synthesize_spectrum(atomic_linelist_file = '/Quin_GES_LIST.420
 #%%
 
 # Plot the synthetic spectrum
-import matplotlib.pyplot as plt
-plt.plot(synth_spectrum1['waveobs'], synth_spectrum1['flux'])
-plt.plot(synth_spectrum2['waveobs'], synth_spectrum2['flux'])
-plt.xlim(510, 540.35)
-plt.ylim(0.8,1)
-plt.legend(['GES', 'Quin'])
-plt.xlabel('Wavelength (Å)')
-plt.ylabel('Flux')
-# plt.xlim(510.5, 510.6)
-# plt.savefig('/home/users/qai11/Documents/Masters_Figures/Method/GESV6_VS_GES_MOL.png')
-#THERE Appears the be a small difference between the Cu1 lines in the two linelists
-#one had molecules in this region and one does not at approximately 510.519-510.521
-plt.show()
+# import matplotlib.pyplot as plt
+# plt.plot(synth_spectrum1['waveobs'], synth_spectrum1['flux'])
+# plt.plot(synth_spectrum2['waveobs'], synth_spectrum2['flux'])
+# plt.xlim(510, 540.35)
+# plt.ylim(0.8,1)
+# plt.legend(['GES', 'Quin'])
+# plt.xlabel('Wavelength (Å)')
+# plt.ylabel('Flux')
+# # plt.xlim(510.5, 510.6)
+# # plt.savefig('/home/users/qai11/Documents/Masters_Figures/Method/GESV6_VS_GES_MOL.png')
+# #THERE Appears the be a small difference between the Cu1 lines in the two linelists
+# #one had molecules in this region and one does not at approximately 510.519-510.521
+# plt.show()
 # %%

@@ -228,6 +228,8 @@ el_list_Eu['upper_j'] = el_Eu['Jup']
 el_list_Eu['ion'] = el_Eu['Ion'].astype(int)
 el_list_Eu['moog_support'] = 'T'
 el_list_Eu['waals'] = el_Eu['Vdw-damp']
+el_list_Eu['stark'] = -7.0
+el_list_Eu['rad'] = 8
 el_list_Eu['spectrum_moog_species'] = round(63.1 + (el_Eu['Isotope']  * 0.0001), 4).astype(float)
 el_list_Eu['theoretical_depth'] = 0.01
 
@@ -253,6 +255,8 @@ el_list_Ba['upper_j'] = el_Ba['Jup']
 el_list_Ba['ion'] = el_Ba['Ion'].astype(int)
 el_list_Ba['moog_support'] = 'T'
 el_list_Ba['waals'] = el_Ba['Vdw-damp']
+el_list_Ba['stark'] = -7.0
+el_list_Ba['rad'] = 8
 el_list_Ba['spectrum_moog_species'] = round(56.1 + (el_Ba['Isotope'] * 0.0001), 4).astype(float)
 el_list_Ba['theoretical_depth'] = 0.01
 

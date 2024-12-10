@@ -209,11 +209,12 @@ def continuum_adjust(star_name):
         # Selected model amtosphere, linelist and solar abundances
         model = ispec_dir + "/input/atmospheres/MARCS.GES/"
 
-        #atomic_linelist_file = ispec_dir + "/input/linelists/transitions/VALD.300_1100nm/atomic_lines.tsv"
+        atomic_linelist_file = ispec_dir + "/input/linelists/transitions/VALD.300_1100nm/atomic_lines.tsv"
         #atomic_linelist_file = ispec_dir + "/input/linelists/transitions/VALD.1100_2400nm/atomic_lines.tsv"
         # atomic_linelist_file = ispec_dir + "/input/linelists/transitions/GESv6_atom_hfs_iso.420_920nm/atomic_lines.tsv"
         #atomic_linelist_file = ispec_dir + "/input/linelists/transitions/GESv6_atom_nohfs_noiso.420_920nm/atomic_lines.tsv"
-        atomic_linelist_file = ispec_dir + "/input/linelists/transitions/Quin_GES_LIST.420_920nm/atomic_lines.tsv"
+        # atomic_linelist_file = ispec_dir + "/input/linelists/transitions/Quin_GES_LIST.420_920nm/atomic_lines.tsv"
+        
 
         if "ATLAS" in model:
             solar_abundances_file = ispec_dir + "/input/abundances/Grevesse.1998/stdatom.dat"
@@ -324,7 +325,8 @@ def continuum_adjust(star_name):
     star_flux = star_spectrum['flux']
     star_flux_err = star_spectrum['err']
     wave_step = 0.00017#np.round(star_wave[1]-star_wave[0],13)
-
+   
+    
     """New code for normalizing the spectrum"""
     iteration_number = 0
     chi2_df = pd.DataFrame(columns=['iteration_number','chi2'])
@@ -333,8 +335,9 @@ def continuum_adjust(star_name):
     params_df = pd.DataFrame()
     first_loop=True
     while True:
+        print(star_name[iteration_number])
         # Perform the normalization iteratively until the chi-squared value is minimized
-        loop_spectrum, modeled_synth_spectrum, params, errors, abundances_found, loggf_found = determine_astrophysical_parameters_using_synth_spectra(loop_spectrum, teff=5792,logg=4.31,MH=0.26,vsini=2.0, max_iterations=1, loop_iteration=iteration_number,wave_base=480, wave_top=680, resolution=82000, code="moog",wave_step=0.001)
+        loop_spectrum, modeled_synth_spectrum, params, errors, abundances_found, loggf_found = determine_astrophysical_parameters_using_synth_spectra(loop_spectrum, teff=5792,logg=4.31,MH=0.26,vsini=2.0, max_iterations=5, loop_iteration=iteration_number,wave_base=480, wave_top=680, resolution=82000, code="moog",wave_step=0.001)
         # loop_spectrum, modeled_synth_spectrum, params, errors, abundances_found, loggf_found = determine_astrophysical_parameters_using_synth_spectra(loop_spectrum, teff=6080,logg=4.1,MH=0.24,vsini=2.0, max_iterations=1, loop_iteration=iteration_number,wave_base=480, wave_top=680, resolution=82000, code="moog",wave_step=0.001)
         if first_loop:
             errors_df = pd.DataFrame(errors, index=np.arange(0,1,1))
@@ -358,7 +361,7 @@ def continuum_adjust(star_name):
             continue
             
         # Check if the new chi-squared value is smaller than the initial value, and if the iteration number is less than 15
-        if ((chi2_df.loc[len(chi2_df)-1,'chi2'] - chi2_df.loc[len(chi2_df)-2,'chi2']) < 5) and (iteration_number < 1):
+        if ((chi2_df.loc[len(chi2_df)-1,'chi2'] - chi2_df.loc[len(chi2_df)-2,'chi2']) < 5) and (iteration_number < 5):
             #prints the chi2 value for the iteration
             print(chi2_df.loc[len(chi2_df)-1,'chi2'])
             continue
@@ -368,9 +371,9 @@ def continuum_adjust(star_name):
             print(params_df)
             break
     
-    # chi2_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_chi2.txt')
-    # errors_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_errors.txt')
-    # params_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_params.txt')
+    chi2_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_chi2.txt')
+    errors_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_errors.txt')
+    params_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_params.txt')
     try:
         #Uni computer
         star_filename = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/'+ f"{star_name}_adjusted.fits" 

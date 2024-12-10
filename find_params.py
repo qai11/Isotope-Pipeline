@@ -74,7 +74,8 @@ def find_params(star_name):
 
         # Selected model amtosphere, linelist and solar abundances
         model = ispec_dir + "/input/atmospheres/MARCS.GES/"
-        atomic_linelist_file = ispec_dir + "/input/linelists/transitions/Quin_GES_LIST.420_920nm/atomic_lines.tsv"
+        # atomic_linelist_file = ispec_dir + "/input/linelists/transitions/Quin_GES_LIST.420_920nm/atomic_lines.tsv"
+        atomic_linelist_file = ispec_dir + "/input/linelists/transitions/VALD.300_1100nm/atomic_lines.tsv"
 
         if "ATLAS" in model:
             solar_abundances_file = ispec_dir + "/input/abundances/Grevesse.1998/stdatom.dat"
@@ -99,7 +100,8 @@ def find_params(star_name):
 
         # Free parameters
         #free_params = ["teff", "logg", "MH", "vmic", "vmac", "vsini", "R", "vrad", "limb_darkening_coeff"]
-        free_params = ["teff", "logg", "MH","vmic", "vmac", "vsini", "alpha"]
+        # free_params = ["teff", "logg", "MH","vmic", "vmac", "vsini", "alpha"]
+        free_params = ["teff", "logg", "MH","vmic", "vmac", "alpha", "R"]
 
         # Free individual element abundance
         free_abundances = None

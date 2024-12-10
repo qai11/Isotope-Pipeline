@@ -847,6 +847,25 @@ for star_name in merged_data['star']:
     plt.ylim(0.45, 2.6)
     plt.xlabel('Wavelength $\AA$',fontsize=12)
     plt.ylabel('Normalized Flux',fontsize=12)
+    #plot the mg26 lines
+    plt.text(5134.376, 0.87, 'Mg26 \n5134.376', fontsize=12, color='black',horizontalalignment='center')
+    plt.text(5134.734, 0.87, 'Mg26 \n5134.734', fontsize=12, color='black',horizontalalignment='center')
+    plt.annotate('', xy=(5134.376, 0.97), xytext=(5134.376, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
+    plt.annotate('', xy=(5134.734, 0.96), xytext=(5134.734, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
+    #plot the mg25 lines
+    plt.text(5134.295, 0.87, 'Mg25 \n5134.295', fontsize=12, color='black',horizontalalignment='center',linestyle='--')
+    plt.text(5134.656, 0.87, 'Mg25 \n5134.656', fontsize=12, color='black',horizontalalignment='center',linestyle='--')
+    plt.text(5135.160, 0.87, 'Mg25 \n5135.160', fontsize=12, color='black',horizontalalignment='center',linestyle='--')
+    plt.annotate('', xy=(5134.295, 0.969), xytext=(5134.295, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
+    plt.annotate('', xy=(5134.656, 0.958), xytext=(5134.656, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
+    plt.annotate('', xy=(5135.160, 0.973), xytext=(5135.160, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
+    #plot the mg24 lines
+    plt.text(5134.208, 0.87, 'Mg24 \n5134.208', fontsize=12, color='black',horizontalalignment='center',linestyle='-.-')
+    plt.text(5134.570, 0.87, 'Mg24 \n5134.570', fontsize=12, color='black',horizontalalignment='center',linestyle='-.-')
+    plt.text(5135.111, 0.87, 'Mg24 \n5135.111', fontsize=12, color='black',horizontalalignment='center',linestyle='-.-')
+    plt.annotate('', xy=(5134.208, 0.963), xytext=(5134.208, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
+    plt.annotate('', xy=(5134.570, 0.96), xytext=(5134.570, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
+    plt.annotate('', xy=(5135.111, 0.973), xytext=(5135.111, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
     
     # # Create the legend with SPT, Teff, Logg, and Mh
     if len(star_spt) > 0 and len(star_teff) > 0 and len(star_logg) > 0 and len(star_mh) > 0:
