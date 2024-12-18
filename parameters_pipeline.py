@@ -70,8 +70,9 @@ import ispec
 # star = ['hd_102870']
 # star = ['hd_45588']
 # star = ['hd_128620']
-star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621','hd_146233','hd_157244','hd_160691','moon']
+# star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621','hd_146233','hd_157244','hd_160691','moon']
 # star = ['hd_2151','hd_11695','hd_18907','hd_10700','hd_23249','hd_22049','hd_18884','hd_165499','hd_156098']
+star =['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621','hd_146233','hd_157244','hd_160691','moon','hd_2151','hd_11695','hd_18907','hd_10700','hd_23249','hd_22049','hd_18884','hd_165499','hd_156098']
 # star = ['hd_2151']
 element = ["Mg", "Si", "Ca", "Ti", "Sc","V","Cr","Mn","Co", "Ni", "Y", "Ba", "La", "Nd", "Eu", "Sr", "Zr"]#Rb isnt included
 #%%
@@ -94,12 +95,12 @@ element = ["Mg", "Si", "Ca", "Ti", "Sc","V","Cr","Mn","Co", "Ni", "Y", "Ba", "La
 #     pool.close()
 #     pool.join()
 # # Run the abundance finding
-try:
-    pool = Pool(os.cpu_count()-1)
-    pool.map(partial(find_abundance, elements=element), star)
-finally:
-    pool.close()
-    pool.join()
+# try:
+#     pool = Pool(os.cpu_count()-1)
+#     pool.map(partial(find_abundance, elements=element), star)
+# finally:
+#     pool.close()
+#     pool.join()
 #Run the interpolation of the atmospheres
 # interp_atmos(star)
 
@@ -162,16 +163,27 @@ finally:
 #     print(f"Data for {star_name} saved successfully.")
 
 # star = ['hd_157244']
-# #Load and save the stars with a cut wavelength range for MgH fitting
-# for star_name in star:
-#     spectrum = ispec.read_spectrum(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/{star_name}_adjusted.fits')
-#     spectrum['waveobs'] = spectrum['waveobs']
-#     #Cut the spectrum to be between 5100 and 5200
-#     wfilter = ispec.create_wavelength_filter(spectrum, wave_base=510, wave_top=520)
-#     cutted_star_spectrum = spectrum[wfilter]
-#     #Save the cut spectrum
-#     ispec.write_spectrum(cutted_star_spectrum,f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/{star_name}_510-520.txt')
-#     print(f"{star_name} saved successfully.")
+#Load and save the stars with a cut wavelength range for MgH fitting
+for star_name in star:
+    try:
+        #Uni PC
+         spectrum = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_adjusted.fits')
+    except:
+        #MAC
+        spectrum = ispec.read_spectrum(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/{star_name}_adjusted.fits')
+        
+    spectrum['waveobs'] = spectrum['waveobs']
+    #Cut the spectrum to be between 5100 and 5200
+    wfilter = ispec.create_wavelength_filter(spectrum, wave_base=510, wave_top=520)
+    cutted_star_spectrum = spectrum[wfilter]
+    #Save the cut spectrum
+    try:
+        #Uni PC
+        ispec.write_spectrum(cutted_star_spectrum,f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_510-520.txt')
+    except:
+        #MAC
+        ispec.write_spectrum(cutted_star_spectrum,f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/{star_name}_510-520.txt')
+    print(f"{star_name} saved successfully.")
     
 # end = time.time()
 

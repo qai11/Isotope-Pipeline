@@ -17,7 +17,6 @@ from matplotlib.ticker import AutoMinorLocator
 from astropy.io import fits
 
 
-#%%
 def velocity_correction(wavelength, rv):
     ''' 
     Transforming the wavelengths in velocity space
@@ -332,13 +331,13 @@ def model_finder(star_name,linelist):
             os.mkdir(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/')
             data_path = f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/'
             os.chdir(data_path)
-    region = 0
+    region = 1
     
     # os.system('mkdir plots')
     # initial guesses as a dictionary
     guess = initial_guess()
 
-    raw_spec_filename = f'{star_name}_5100-5200.txt'
+    raw_spec_filename = data_path + f'{star_name}_5100-5200.txt'
     raw_spectra       = read_raw_spectra(raw_spec_filename)
     wavelength_region = get_wavelength_region(raw_spectra.wavelength)
 
@@ -366,8 +365,8 @@ star_name = 'hd_102870' #67.23_20.17_12.61
 #     i_26 = 8
 #     rv = 0
 #
-# linelist = 'quinlinelist.in'
-linelist = 'quinlist.MgH'
+linelist = 'quinlinelist.in'
+# linelist = 'quinlist.MgH'
 model_finder(star_name,linelist)
 # %%
 '''idk what happened above but it made the output file for some reason so ill print that'''
@@ -445,6 +444,7 @@ plt.ylabel('Norm. Flux',fontsize=14)
 # print("some cobination of Mg24, Mg25 and Mg26")
 # #Uni save all
 # plt.savefig('/home/users/qai11/Documents/Masters_Figures/Method/Model_Mg24_Mg25_Mg26.png', dpi=300, bbox_inches='tight')
+#%%
 def calc_ratio(i_24, i_25, i_26):
     i24_percentage=1/(0.01*i_24)
     i25_percentage=1/(0.01*i_25)
@@ -515,9 +515,9 @@ def make_hr_diagram(gbs_filename, obs_filename):
     plt.ylabel('Logg (cm/s$^{2}$)',fontsize=14)
     plt.legend(['GBS Stars', 'Observed Stars'])
     #UNI PC SAVE
-    # plt.savefig('/home/users/qai11/Documents/Masters_Figures/Method/HR_diagram.png', dpi=300,bbox_inches='tight')
+    plt.savefig('/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Method/HR_diagram.png', dpi=300,bbox_inches='tight')
     #MAC SAVE
-    plt.savefig('/Users/quin/quin-masters-code/Masters_Figures/HR_diagram.png', dpi=300,bbox_inches='tight')
+    # plt.savefig('/Users/quin/quin-masters-code/Masters_Figures/HR_diagram.png', dpi=300,bbox_inches='tight')
     # Show the plot
     plt.show()
     gbs.close()
@@ -649,11 +649,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # All stars including special stars
-star_list = ['hd_100407', 'hd_102870', 'hd_128620', 'hd_128621', 'hd_11695', 
-             'hd_146233', 'hd_157244', 'hd_160691', 'moon', 'hd_45588', 'hd_156098']
-
+# star_list = ['hd_100407', 'hd_102870', 'hd_128620', 'hd_128621', 'hd_11695', 
+#              'hd_146233', 'hd_157244', 'hd_160691', 'moon', 'hd_45588', 'hd_156098']
+star_list =['hd_100407','hd_102870','hd_128620','hd_128621','hd_146233','hd_157244',
+       'hd_160691','moon','hd_2151','hd_11695','hd_18907','hd_10700','hd_23249','hd_22049','hd_18884',
+       'hd_45588', 'hd_156098','hd_165499']
 # Special stars you want to highlight
-star_list_special = ['hd_45588', 'hd_156098']  # These stars will be highlighted in the plot
+star_list_special = ['hd_45588', 'hd_156098','hd_165499']  # These stars will be highlighted in the plot
 
 # Create empty DataFrames to store parameters and errors separately
 all_params = pd.DataFrame()
@@ -739,13 +741,13 @@ for i, (param, benchmark_param) in enumerate(zip(parameters, benchmark_params_co
         axes[i].set_ylabel('[M/H] Difference LTE (dex)', fontsize=12)
 
     # Add legend
-    axes[i].legend(loc='upper right', fontsize="small")
+    axes[i].legend(loc='upper center', fontsize="small")
 
 # Adjust layout and show plot
 plt.tight_layout()
 try:
     # UNI COMPUTER SAVE
-    plt.savefig('/home/users/qai11/Documents/Masters_Figures/Method/Parameter_comparison.png', dpi=300, bbox_inches='tight')
+    plt.savefig('/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Method/Parameter_comparison.png', dpi=300, bbox_inches='tight')
 except:
     # MAC SAVE
     plt.savefig('/Users/quin/quin-masters-code/Masters_Figures/Parameter_comparison.png', dpi=300, bbox_inches='tight')
@@ -779,10 +781,12 @@ import ispec
 #              'Sun','hd_128620','hd_146233', 'hd_102870','hd_45588', 'hd_156098']
 
 '''Order of spectra type'''
-star_list = ['hd_156098','hd_45588', 'hd_102870', 'hd_146233', 'hd_128620', 'Sun',
-             'hd_160691', 'hd_100407', 'hd_128621', 'hd_157244', 'hd_11695']
+# star_list = ['hd_156098','hd_45588', 'hd_102870', 'hd_146233', 'hd_128620', 'Sun',
+#              'hd_160691', 'hd_100407', 'hd_128621', 'hd_157244', 'hd_11695']
 
-
+star_list = ['hd_156098','hd_45588','hd_102870','hd_2151','hd_165499','hd_146233',
+             'hd_128620','moon','hd_160691','hd_100407','hd_10700','hd_128621',
+             'hd_23249','hd_22049','hd_18907','hd_157244','hd_18884','hd_11695']
 
 # 'hd_2151','hd_11695','hd_18907','hd_10700','hd_23249','hd_22049','hd_18884','hd_165499','hd_156098'
 # Create empty DataFrames to store parameters and errors separately
@@ -843,29 +847,29 @@ for star_name in merged_data['star']:
     
     # Plot the spectra
     plt.plot((spectrum['waveobs'] * 10), spectrum['flux'] + star_pos)
-    plt.xlim(5133.8, 5135.5)
-    plt.ylim(0.45, 2.6)
+    plt.xlim(5134, 5135.5)
+    plt.ylim(-1.5, 2.6)
     plt.xlabel('Wavelength $\AA$',fontsize=12)
     plt.ylabel('Normalized Flux',fontsize=12)
     #plot the mg26 lines
-    plt.text(5134.376, 0.87, 'Mg26 \n5134.376', fontsize=12, color='black',horizontalalignment='center')
-    plt.text(5134.734, 0.87, 'Mg26 \n5134.734', fontsize=12, color='black',horizontalalignment='center')
-    plt.annotate('', xy=(5134.376, 0.97), xytext=(5134.376, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
-    plt.annotate('', xy=(5134.734, 0.96), xytext=(5134.734, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
+    # plt.text(5134.376, 0.87, 'Mg26 \n5134.376', fontsize=12, color='black',horizontalalignment='center')
+    # plt.text(5134.734, 0.87, 'Mg26 \n5134.734', fontsize=12, color='black',horizontalalignment='center')
+    plt.axvline(x=5134.376, ymin=0, color='black',lw=1,alpha=0.05)
+    plt.axvline(x=5134.734, ymin=0, color='black',lw=1,alpha=0.05)
     #plot the mg25 lines
-    plt.text(5134.295, 0.87, 'Mg25 \n5134.295', fontsize=12, color='black',horizontalalignment='center',linestyle='--')
-    plt.text(5134.656, 0.87, 'Mg25 \n5134.656', fontsize=12, color='black',horizontalalignment='center',linestyle='--')
-    plt.text(5135.160, 0.87, 'Mg25 \n5135.160', fontsize=12, color='black',horizontalalignment='center',linestyle='--')
-    plt.annotate('', xy=(5134.295, 0.969), xytext=(5134.295, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
-    plt.annotate('', xy=(5134.656, 0.958), xytext=(5134.656, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
-    plt.annotate('', xy=(5135.160, 0.973), xytext=(5135.160, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
+    # plt.text(5134.295, 0.87, 'Mg25 \n5134.295', fontsize=12, color='black',horizontalalignment='center')
+    # plt.text(5134.656, 0.87, 'Mg25 \n5134.656', fontsize=12, color='black',horizontalalignment='center')
+    # plt.text(5135.160, 0.87, 'Mg25 \n5135.160', fontsize=12, color='black',horizontalalignment='center')
+    plt.axvline(x=5134.295, ymin=0, linestyle='--', color='black',lw=1,alpha=0.05)
+    plt.axvline(x=5134.656, ymin=0, linestyle='--', color='black',lw=1,alpha=0.05)
+    plt.axvline(x=5135.160, ymin=0, linestyle='--', color='black',lw=1,alpha=0.05)
     #plot the mg24 lines
-    plt.text(5134.208, 0.87, 'Mg24 \n5134.208', fontsize=12, color='black',horizontalalignment='center',linestyle='-.-')
-    plt.text(5134.570, 0.87, 'Mg24 \n5134.570', fontsize=12, color='black',horizontalalignment='center',linestyle='-.-')
-    plt.text(5135.111, 0.87, 'Mg24 \n5135.111', fontsize=12, color='black',horizontalalignment='center',linestyle='-.-')
-    plt.annotate('', xy=(5134.208, 0.963), xytext=(5134.208, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
-    plt.annotate('', xy=(5134.570, 0.96), xytext=(5134.570, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
-    plt.annotate('', xy=(5135.111, 0.973), xytext=(5135.111, 0.885), arrowprops=dict(arrowstyle='->', color='black'))
+    # plt.text(5134.208, 0.87, 'Mg24 \n5134.208', fontsize=12, color='black',horizontalalignment='center')
+    # plt.text(5134.570, 0.87, 'Mg24 \n5134.570', fontsize=12, color='black',horizontalalignment='center')
+    # plt.text(5135.111, 0.87, 'Mg24 \n5135.111', fontsize=12, color='black',horizontalalignment='center')
+    plt.axvline(x=5134.208, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.05)
+    plt.axvline(x=5134.570, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.05)
+    plt.axvline(x=5135.111, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.05)
     
     # # Create the legend with SPT, Teff, Logg, and Mh
     if len(star_spt) > 0 and len(star_teff) > 0 and len(star_logg) > 0 and len(star_mh) > 0:
@@ -873,7 +877,7 @@ for star_name in merged_data['star']:
     else:
         #If no star data exists then plot N/A
         legend_entries.append("$\mathbf{{Star}}$: N/A, $\mathbf{{SPT}}$: N/A, $\mathbf{{Teff}}$: N/A, $\mathbf{{Logg}}$: N/A, $\mathbf{{[M/H]}}$: N/A")
-    star_pos -= 0.15
+    star_pos -= 0.2
     # plt.show()
     
     # Add a dot or line with automatic color
@@ -892,7 +896,7 @@ plt.yticks([])
 #Save Figure
 try:
     # UNI COMPUTER SAVE
-    plt.savefig('/home/users/qai11/Documents/Masters_Figures/Method/MgH_line_SPT.png', dpi=300, bbox_inches='tight')
+    plt.savefig('/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Method/MgH_line_SPT.png', dpi=300, bbox_inches='tight')
 except:
     # MAC SAVE
     plt.savefig('/Users/quin/quin-masters-code/Masters_Figures/MgH_line_SPT.png', dpi=300, bbox_inches='tight')
@@ -959,43 +963,39 @@ star = ['hd_157244','hd_128620','hd_102870']
 start_pos = 0
 plt.figure(figsize=(8,4))
 for star_name in star:
-    # try:
-    #     #Uni Computer paths
-    #     #Load the raw file
-    #     raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{star_name}_5100-5200.txt', sep="	", header=None)
-    #     if star_name == 'hd_102870':
-    #         #Load hd_102870 fit
-    #         smoothed1 = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/out_s841_mg11_i15_5_8_rv0', sep="     ", header=None, skiprows = [0,1])
-    #     elif star_name == 'hd_157244':
-    #         #Load hd_157244 fit
-    #         smoothed2 = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/out_s841_mg0017_i3_15_23_rv0', sep="     ", header=None, skiprows = [0,1])
-    #     elif star_name == 'hd_128670':
-    #         #Load hd_128620 fit
-    #         smoothed3 = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/out_s841_mg055_i09_67_75_rv0', sep="     ", header=None, skiprows = [0,1])
-    # except:
-        #Mac computer paths
+    try:
+        #Uni Computer paths
         #Load the raw file
-    raw1 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_102870/hd_102870_5100-5200.txt', sep="	", header=None,skiprows = [0,1])
-    raw2 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_157244/hd_157244_5100-5200.txt', sep="	", header=None,skiprows = [0,1])
-    raw3 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_128620/hd_128620_5100-5200.txt', sep="	", header=None,skiprows = [0,1])
-    
-    # if star_name == 'hd_102870':
-    #Load hd_102870 fit
-    smoothed1 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_102870/moog_tests/out_s841_mg11_i15_5_8_rv0', sep="     ", header=None, skiprows = [0,1])
-    # elif star_name == 'hd_157244':
-    #Load hd_157244 fit
-    smoothed2 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_157244/moog_tests/out_s841_mg0001_i35_30_50_rv0', sep="     ", header=None, skiprows = [0,1])
-    # elif star_name == 'hd_128620': 
-    #Load hd_128620 fit
-    smoothed3 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_128620/moog_tests/out_s841_mg055_i09_67_75_rv0', sep="     ", header=None, skiprows = [0,1])
+        # raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{star_name}_5100-5200.txt', sep="	", header=None)
+        raw1 = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/hd_102870/hd_102870_5100-5200.txt', sep="	", header=None,skiprows = [0,1])
+        raw2 = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/hd_157244/hd_157244_5100-5200.txt', sep="	", header=None,skiprows = [0,1])
+        raw3 = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/hd_128620/hd_128620_5100-5200.txt', sep="	", header=None,skiprows = [0,1])
+        #Load hd_102870 fit
+        smoothed1 = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/hd_102870/moog_tests/out_s841_mg11_i15_5_8_rv0', sep="     ", header=None, skiprows = [0,1])
+        #Load hd_157244 fit
+        smoothed2 = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/hd_157244/moog_tests/out_s841_mg0001_i35_30_50_rv0', sep="     ", header=None, skiprows = [0,1])
+        #Load hd_128620 fit
+        smoothed3 = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/hd_128620/moog_tests/out_s841_mg055_i09_67_75_rv0', sep="     ", header=None, skiprows = [0,1])
+    except:
+        #Mac computer paths
+        #Load the raw files
+        raw1 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_102870/hd_102870_5100-5200.txt', sep="	", header=None,skiprows = [0,1])
+        raw2 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_157244/hd_157244_5100-5200.txt', sep="	", header=None,skiprows = [0,1])
+        raw3 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_128620/hd_128620_5100-5200.txt', sep="	", header=None,skiprows = [0,1])
+        #Load hd_102870 fit
+        smoothed1 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_102870/moog_tests/out_s841_mg11_i15_5_8_rv0', sep="     ", header=None, skiprows = [0,1])
+        #Load hd_157244 fit
+        smoothed2 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_157244/moog_tests/out_s841_mg0001_i35_30_50_rv0', sep="     ", header=None, skiprows = [0,1])
+        #Load hd_128620 fit
+        smoothed3 = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_128620/moog_tests/out_s841_mg055_i09_67_75_rv0', sep="     ", header=None, skiprows = [0,1])
     
     plt.plot(raw1[0],raw1[1]+0.2,linestyle='--',color='#377eb8')
-    plt.plot(raw2[0],raw2[1],linestyle='--',color='#4daf4a')   
-    plt.plot(raw3[0],raw3[1]+0.1,linestyle='--',color='#ff7f00')
+    plt.plot(raw3[0],raw3[1]+0.1-0.05,linestyle='--',color='#ff7f00')
+    plt.plot(raw2[0],raw2[1]-0.05,linestyle='--',color='#4daf4a')   
     plt.plot(smoothed1[0],smoothed1[1]+0.2,color='#377eb8')
-    plt.plot(smoothed2[0],smoothed2[1],color='#4daf4a')
     plt.plot(smoothed3[0],smoothed3[1]+0.1,color='#ff7f00')
-    plt.legend(['hd_157244_Raw','hd_128620_Raw','hd_102870_Raw','hd_157244_model','hd_128620_model','hd_102870_model'],loc='lower left')
+    plt.plot(smoothed2[0],smoothed2[1],color='#4daf4a')
+    plt.legend(['hd_102870_Raw','hd_128620_Raw','hd_157244_Raw','hd_102870_model','hd_128620_model','hd_157244_model'],loc='lower left')
     plt.xlim(5134, 5135)
     # plt.xlim(5134,5140)
     plt.ylim(0.65, 1.25)
@@ -1003,6 +1003,10 @@ for star_name in star:
     plt.yticks([])
     plt.ylabel('Normalized Flux',fontsize=14)
     start_pos+=0.1
-    
-plt.savefig('/Users/quin/quin-masters-code/Masters_Figures/Isotope_fit_3_stars.png', dpi=300, bbox_inches='tight')
+    try:
+        # UNI COMPUTER SAVE
+        plt.savefig('/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Method/Isotope_fit_3_stars.png', dpi=300, bbox_inches='tight')
+    except:
+        #MAC
+        plt.savefig('/Users/quin/quin-masters-code/Masters_Figures/Isotope_fit_3_stars.png', dpi=300, bbox_inches='tight')
 # %%

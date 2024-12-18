@@ -36,7 +36,7 @@ def interp_atmos(star):
 # star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621','hd_11695','hd_146233','hd_156098','hd_157244','hd_160691','moon']
 
     '''Function for running in parameters_pipeline file'''
-#%%
+
     """TEST: using hd_45588 as a test star, Manual input of 102870"""
     # star_name = 'hd_102870'
     # star = ['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621','hd_11695','hd_146233','hd_156098','hd_157244','hd_160691','moon']
@@ -77,25 +77,27 @@ def interp_atmos(star):
         model = ispec_dir + "/input/atmospheres/ATLAS9.Castelli/"
         # interpolate(model, star_name, save_path, params=None, code='moog')
         '''This function will interpolate the atmosphere layers for a given set of parameters'''
-        # teff = float(params[1][-1:].values[0])
+        teff = float(params[1][-1:].values[0])
         # print(teff)
-        teff = 6093
-        # logg = float(params[2][-1:].values[0])
+        # teff = 6093
+        logg = float(params[2][-1:].values[0])
         # print(logg)
-        logg = 	4.08
-        # MH = float(params[3][-1:].values[0])
+        # logg = 	4.08
+        Mh = float(params[3][-1:].values[0])
         # print(MH)
-        MH = 0.13
-        # alpha = float(params[4][-1:].values[0])
+        # MH = 0.13
+        #its alpha enhancement only so check and if less than zero set to 0.0
+        alpha = float(params[4][-1:].values[0])
+        if alpha < 0:
+            alpha = 0.0
         # print(alpha)
         vmic = 1.5
-        alpha = 0.0
         # Load model atmospheres
         modeled_layers_pack = ispec.load_modeled_layers_pack(model)
-        atmosphere_layers = ispec.interpolate_atmosphere_layers(modeled_layers_pack, {'teff':teff, 'logg':logg, 'MH':MH, 'alpha':alpha}, code=code)
+        atmosphere_layers = ispec.interpolate_atmosphere_layers(modeled_layers_pack, {'teff':teff, 'logg':logg, 'MH':Mh, 'alpha':alpha}, code=code)
         atmosphere_layers_file = save_path + star_name + "_atmosphere.moog"
-        atmosphere_layers_file = ispec.write_atmosphere(atmosphere_layers, teff, logg, MH, atmosphere_filename=atmosphere_layers_file, code=code)
-        print(f"{star}Atmosphere interpolated successfully!")
+        atmosphere_layers_file = ispec.write_atmosphere(atmosphere_layers, teff, logg, Mh, atmosphere_filename=atmosphere_layers_file, code=code)
+        print(f"{star_name}Atmosphere interpolated successfully!")
 
         '''Add the molecules to the atmosphere file by reopeneing the file and adding the molecules'''
         """FROM moog.py lines 134-158 in iSpec"""
@@ -116,6 +118,6 @@ def interp_atmos(star):
         moog_atmosphere.write("  6.1     7.1     8.1   12.1  20.1  22.1  23.1  26.1  40.1\n")
         moog_atmosphere.close()
         
-        print(f"{star}Text appended successfully!")
+        print(f"{star_name}Text appended successfully!")
 
 # %%
