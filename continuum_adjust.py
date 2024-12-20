@@ -361,7 +361,7 @@ def continuum_adjust(star_name):
             continue
             
         # Check if the new chi-squared value is smaller than the initial value, and if the iteration number is less than 15
-        if ((chi2_df.loc[len(chi2_df)-1,'chi2'] - chi2_df.loc[len(chi2_df)-2,'chi2']) < 5) and (iteration_number < 5):
+        if ((chi2_df.loc[len(chi2_df)-1,'chi2'] - chi2_df.loc[len(chi2_df)-2,'chi2']) < 5) and (iteration_number < 2):
             #prints the chi2 value for the iteration
             print(chi2_df.loc[len(chi2_df)-1,'chi2'])
             continue
@@ -371,9 +371,9 @@ def continuum_adjust(star_name):
             print(params_df)
             break
     
-    chi2_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_chi2.txt')
-    errors_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_errors.txt')
-    params_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_params.txt')
+    # chi2_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_chi2.txt')
+    # errors_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_errors.txt')
+    # params_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_params.txt')
     try:
         #Uni computer
         star_filename = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/'+ f"{star_name}_adjusted.fits" 

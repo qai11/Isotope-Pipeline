@@ -201,6 +201,44 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     # print(str(par['rv']))
     # print(wavelength_region)
     #t4070g040m18.newmod
+    ###HD_157244
+    # par_string = "synth\n" +\
+    # "standard_out   '" + standard_out +"'\n"                    + \
+    # "summary_out    '" + summary_out +"'\n"                     + \
+    # "smoothed_out   '" + out_filename +"'\n"                    + \
+    # f"model_in       '{star_name}_atmosphere.moog'\n"                          + \
+    # f"lines_in       '{linelist}'\n"                           + \
+    # "observed_in    '" + raw_spec_filename +"'\n"               + \
+    # "atmosphere    1\n"                                         + \
+    # "molecules     2\n"                                         + \
+    # "lines         2\n"                                         + \
+    # "flux/int      0\n"                                         + \
+    # "plotpars      1\n"                                         + \
+    # wavelength_region + " 0.15 1.05\n"                          + \
+    # str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
+    # "d          0.047 0.0 0.0 "+ str(par['s']) +" 0.0\n"        + \
+    # "abundances   8    1\n"                                     + \
+    # "6            0.2000000\n"                                  + \
+    # "12           " + str(par['mg']) + "\n"                     + \
+    # "22           0.20000\n"                                    + \
+    # "24           0.50000\n"                                    + \
+    # "26           0.18000\n"                                    + \
+    # "39           1.10000\n"                                    + \
+    # "42           2.10000\n"                                    + \
+    # "71           1.20000\n"                                    + \
+    # "isotopes      5    1\n"                                    + \
+    # "607.01214     0.2\n"                                       + \
+    # "606.01212     4.0\n"                                       + \
+    # "112.00124     "+ str(par['i_24']) +"\n"                    + \
+    # "112.00125     "+ str(par['i_25']) +"\n"                    + \
+    # "112.00126     "+ str(par['i_26']) +"\n"                    + \
+    # "obspectrum 5\n"                                            + \
+    # "synlimits\n"                                               + \
+    # wavelength_region + " 0.01 5.0\n"                           + \
+    # "plot 2\n"                                                  + \
+    # "damping 2\n"
+
+    #THE SUN
     par_string = "synth\n" +\
     "standard_out   '" + standard_out +"'\n"                    + \
     "summary_out    '" + summary_out +"'\n"                     + \
@@ -216,13 +254,18 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     wavelength_region + " 0.15 1.05\n"                          + \
     str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
     "d          0.047 0.0 0.0 "+ str(par['s']) +" 0.0\n"        + \
-    "abundances   4    1\n"                                     + \
-    "6            0.0500000\n"                                  + \
+    "abundances   8    1\n"                                     + \
+    "6            0.1500000\n"                                  + \
     "12           " + str(par['mg']) + "\n"                     + \
+    "22           0.20000\n"                                    + \
     "24           0.50000\n"                                    + \
-    "26           0.20000\n"                                    + \
-    "isotopes      4    1\n"                                    + \
-    "606.01212     5.0\n"                                       + \
+    "26           0.18000\n"                                    + \
+    "39           1.00000\n"                                    + \
+    "42           1.00000\n"                                    + \
+    "71           1.00000\n"                                    + \
+    "isotopes      5    1\n"                                    + \
+    "607.01214     2.0\n"                                       + \
+    "606.01212     4.0\n"                                       + \
     "112.00124     "+ str(par['i_24']) +"\n"                    + \
     "112.00125     "+ str(par['i_25']) +"\n"                    + \
     "112.00126     "+ str(par['i_26']) +"\n"                    + \
@@ -231,8 +274,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     wavelength_region + " 0.01 5.0\n"                           + \
     "plot 2\n"                                                  + \
     "damping 2\n"
-
-
+    
     # writing that string to a file 
     par_file  = open(in_filename, "w+") 
     par_file.write(par_string)
@@ -294,12 +336,19 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
                          }, index=[1])
     
 def initial_guess():
-
-    s = 8.41 #has to be here for some reason or it breaks, seems to break move below 1.4
-    mg = 1.1
-    i_24 = 1.5
-    i_25 = 5
-    i_26 = 8
+    #hd_156244
+    # s = 8.81 #has to be here for some reason or it breaks, seems to break move below 1.4
+    # mg = 0.06
+    # i_24 = 8
+    # i_25 = 35
+    # i_26 = 27.5
+    # rv = 0
+    #SUN
+    s = 8.81 #has to be here for some reason or it breaks, seems to break move below 1.4
+    mg = 1.07
+    i_24 = 7.4
+    i_25 = 35
+    i_26 = 27.5
     rv = 0
 
     # return the guess as a dictionary
@@ -357,7 +406,7 @@ def model_finder(star_name,linelist):
     # i_25 = 6.7
     # i_26 = 7.5
     # rv = 0
-star_name = 'hd_102870' #67.23_20.17_12.61
+# star_name = 'hd_102870' #67.23_20.17_12.61
 # s = 8.41 #has to be here for some reason or it breaks, seems to break move below 1.4
 #     mg = 1.1
 #     i_24 = 1.5
@@ -365,6 +414,7 @@ star_name = 'hd_102870' #67.23_20.17_12.61
 #     i_26 = 8
 #     rv = 0
 #
+star_name = 'moon'
 linelist = 'quinlinelist.in'
 # linelist = 'quinlist.MgH'
 model_finder(star_name,linelist)
@@ -375,7 +425,8 @@ mg25 = str(mg['i_25']).replace('.', '')
 mg26 = str(mg['i_26']).replace('.', '')
 mg_all= str(mg['mg']).replace('.', '')
 s_all = str(mg['s']).replace('.', '')
-
+if mg['mg'] < 0.001:
+    mg_all = '00'
 #HD 102870
 # smoothed = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/hd_102870/out_s841_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
 # raw = pd.read_csv('/home/users/qai11/Documents/Fixed_fits_files/hd_102870/hd_102870_5100-5200.txt', sep="	", header=None)
@@ -400,7 +451,7 @@ plt.xlim(5134, 5135.3) #Region 1
 # plt.xlim(5140.04, 5140.46) #Region 3
 # plt.xlim(5138.59,5138.95)
 #HD102870
-plt.ylim(0.86, 1) #Region 1
+# plt.ylim(0.86, 1) #Region 1
 # plt.ylim(0.9,1.05) #Region 2 change
 # plt.ylim(0.92, 1) #Region 2
 # plt.ylim(0.94, 1) #Region 3
@@ -409,7 +460,9 @@ plt.ylim(0.86, 1) #Region 1
 # plt.ylim(0.8, 1) #Region 2
 # plt.ylim(0.85, 1) #Region 3
 #HD157244
-# plt.ylim(0.65, 1.01) #Region 1
+# plt.ylim(0.55, 1.01) #Region 1
+#SUN
+plt.ylim(0.8, 1.01) #Region 1
 
 # plt.xlim(5133.8, 5135.46)
 
@@ -460,10 +513,14 @@ def calc_ratio(i_24, i_25, i_26):
 
 mg_ratio = calc_ratio(mg['i_24'], mg['i_25'], mg['i_26'])
 print(mg_ratio)
-
-# #MAC save all
-plt.savefig(f'/Users/quin/quin-masters-code/Masters_Figures/Model_Mg24_Mg25_Mg26{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}.png', dpi=300, bbox_inches='tight')
-plt.show()
+try:
+    #UNIPC save
+    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}.png', dpi=300, bbox_inches='tight')
+except:
+    # # #MAC save all
+    # plt.savefig(f'/Users/quin/quin-masters-code/Masters_Figures/Model_Mg24_Mg25_Mg26{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}.png', dpi=300, bbox_inches='tight')
+    None
+# plt.show()
 #%%
 spec = ispec.read_spectrum('/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_157244/moog_tests/hd_157244_5100-5200.txt')
 plt.figure()
@@ -856,6 +913,7 @@ for star_name in merged_data['star']:
     # plt.text(5134.734, 0.87, 'Mg26 \n5134.734', fontsize=12, color='black',horizontalalignment='center')
     plt.axvline(x=5134.376, ymin=0, color='black',lw=1,alpha=0.05)
     plt.axvline(x=5134.734, ymin=0, color='black',lw=1,alpha=0.05)
+    plt.axvline(x=5135.24, ymin=0, color='black',lw=1,alpha=0.05)
     #plot the mg25 lines
     # plt.text(5134.295, 0.87, 'Mg25 \n5134.295', fontsize=12, color='black',horizontalalignment='center')
     # plt.text(5134.656, 0.87, 'Mg25 \n5134.656', fontsize=12, color='black',horizontalalignment='center')

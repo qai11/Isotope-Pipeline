@@ -216,7 +216,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     "standard_out   '" + standard_out +"'\n"                    + \
     "summary_out    '" + summary_out +"'\n"                     + \
     "smoothed_out   '" + out_filename +"'\n"                    + \
-    "model_in       'hd_157244_atmosphere.moog'\n"                          + \
+    "model_in       'moon_atmosphere.moog'\n"                          + \
     "lines_in       'quinlinelist.in'\n"                           + \
     "observed_in    '" + raw_spec_filename +"'\n"               + \
     "atmosphere    1\n"                                         + \
@@ -227,13 +227,18 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     wavelength_region + " 0.15 1.05\n"                          + \
     str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
     "d          0.047 0.0 0.0 "+ str(par['s']) +" 0.0\n"        + \
-    "abundances   4    1\n"                                     + \
-    "6            0.0500000\n"                                  + \
+    "abundances   8    1\n"                                     + \
+    "6            0.1500000\n"                                  + \
     "12           " + str(par['mg']) + "\n"                     + \
+    "22           0.20000\n"                                    + \
     "24           0.50000\n"                                    + \
-    "26           0.20000\n"                                    + \
-    "isotopes      4    1\n"                                    + \
-    "606.01212     5.0\n"                                       + \
+    "26           0.18000\n"                                    + \
+    "39           1.00000\n"                                    + \
+    "42           1.00000\n"                                    + \
+    "71           1.00000\n"                                    + \
+    "isotopes      5    1\n"                                    + \
+    "607.01214     2.0\n"                                       + \
+    "606.01212     4.0\n"                                       + \
     "112.00124     "+ str(par['i_24']) +"\n"                    + \
     "112.00125     "+ str(par['i_25']) +"\n"                    + \
     "112.00126     "+ str(par['i_26']) +"\n"                    + \
@@ -387,12 +392,12 @@ def make_filenames(par, prefix):
 def get_wavelength_region(raw_wavelength):
     '''Try cutting out the range'''
     # lower_wavelength = raw_wavelength[0]
-    '''retion 1'''
-    # lower_wavelength = 5131
-    # upper_wavelength = 5138
+    '''region 1'''
+    lower_wavelength = 5131
+    upper_wavelength = 5138
     '''region 2'''
-    lower_wavelength =  5135
-    upper_wavelength = 5142
+    # lower_wavelength =  5135
+    # upper_wavelength = 5142
     # '''region 3'''
     # lower_wavelength = 5136
     # upper_wavelength = 5143
@@ -516,17 +521,19 @@ def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, re
 
 def model_finder():
     
-    # data_path = '/home/users/qai11/Documents/Fixed_fits_files/hd_102870/test_2/'
-    data_path = '/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_157244/moog_tests/'
+    # data_path = '/home/users/qai11/Documents/Fixed_fits_files/hd_157244/moog_tests/'
+    data_path = '/home/users/qai11/Documents/Fixed_fits_files/moon/moog_tests/'
+    # data_path = '/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_157244/moog_tests/'
     'change wavelength range'
-    region = 2
+    region = 1
     os.chdir(data_path)
     os.system('mkdir plots')
     # initial guesses as a dictionary
     guess = initial_guess()
 
     # raw_spec_filename = 'hd_102870_5100-5200_adjusted.txt'
-    raw_spec_filename = 'hd_157244_5100-5200.txt'
+    # raw_spec_filename = 'hd_157244_5100-5200.txt'
+    raw_spec_filename = 'moon_5100-5200.txt'
     raw_spectra       = read_raw_spectra(raw_spec_filename)
     wavelength_region = get_wavelength_region(raw_spectra.wavelength)
 
@@ -593,11 +600,11 @@ def calc_moog_string(r_24, r_25, r_26):
 
 def initial_guess():
 
-    s =  8.41
-    mg = 0.6
-    i_24 = 3.5
-    i_25 = 20
-    i_26 = 30
+    s = 8.41 #has to be here for some reason or it breaks, seems to break move below 1.4
+    mg = 1.05
+    i_24 = 8
+    i_25 = 35
+    i_26 = 27.5
     rv = 0
 
     # return the guess as a dictionary
