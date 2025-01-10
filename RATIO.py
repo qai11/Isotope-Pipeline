@@ -195,7 +195,7 @@ def make_temp_file(filename):
     f.write('')
     f.close() 
 
-def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par):
+def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist):
     # I doubt I'll ever want to change these so initialise them here
     standard_out = 'out1'
     summary_out  = 'out2'
@@ -216,8 +216,8 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     "standard_out   '" + standard_out +"'\n"                    + \
     "summary_out    '" + summary_out +"'\n"                     + \
     "smoothed_out   '" + out_filename +"'\n"                    + \
-    "model_in       'moon_atmosphere.moog'\n"                          + \
-    "lines_in       'quinlinelist.in'\n"                           + \
+    f"model_in       '{star_name}_atmosphere.moog'\n"                          + \
+    f"lines_in       '{linelist}'\n"                           + \
     "observed_in    '" + raw_spec_filename +"'\n"               + \
     "atmosphere    1\n"                                         + \
     "molecules     2\n"                                         + \
@@ -227,18 +227,13 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     wavelength_region + " 0.15 1.05\n"                          + \
     str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
     "d          0.047 0.0 0.0 "+ str(par['s']) +" 0.0\n"        + \
-    "abundances   8    1\n"                                     + \
-    "6            0.1500000\n"                                  + \
+    "abundances   3    1\n"                                     + \
+    "6            0.000001\n"                                  + \
     "12           " + str(par['mg']) + "\n"                     + \
     "22           0.20000\n"                                    + \
-    "24           0.50000\n"                                    + \
-    "26           0.18000\n"                                    + \
-    "39           1.00000\n"                                    + \
-    "42           1.00000\n"                                    + \
-    "71           1.00000\n"                                    + \
     "isotopes      5    1\n"                                    + \
-    "607.01214     2.0\n"                                       + \
-    "606.01212     4.0\n"                                       + \
+    "607.01214     1.0\n"                                       + \
+    "606.01212     3.0\n"                                       + \
     "112.00124     "+ str(par['i_24']) +"\n"                    + \
     "112.00125     "+ str(par['i_25']) +"\n"                    + \
     "112.00126     "+ str(par['i_26']) +"\n"                    + \
@@ -389,23 +384,26 @@ def make_filenames(par, prefix):
     return prefix + '_s'+ str_s +'_mg'+ str_mg + '_i' \
      + str_24 + '_' + str_25  + '_' + str_26 + '_rv' + str_rv
 
-def get_wavelength_region(raw_wavelength):
+def get_wavelength_region(raw_wavelength,region):
     '''Try cutting out the range'''
     # lower_wavelength = raw_wavelength[0]
-    '''region 1'''
-    lower_wavelength = 5131
-    upper_wavelength = 5138
-    '''region 2'''
-    # lower_wavelength =  5135
-    # upper_wavelength = 5142
-    # '''region 3'''
-    # lower_wavelength = 5136
-    # upper_wavelength = 5143
+    if region == 1:
+        '''region 1'''
+        lower_wavelength = 5131
+        upper_wavelength = 5138
+    if region == 2:
+        '''region 2'''
+        lower_wavelength =  5135
+        upper_wavelength = 5142
+    if region == 3:
+        '''region 3'''
+        lower_wavelength = 5136
+        upper_wavelength = 5143
     # upper_wavelength = raw_wavelength[len(raw_wavelength)-1] # -1 isnt working for some reason
     # print(str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) )
     return str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) 
 
-def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess):
+def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist):
 
     # creating the in and out filenames based on the guess parameters
     in_filename  = make_filenames(guess, 'in')
@@ -413,7 +411,7 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
 
 
     # creates a parameter string in the directory that moog can read
-    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess)
+    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist)
 
     # create the smoothed spectra by calling pymoogi
     call_pymoogi(in_filename)
@@ -498,7 +496,7 @@ def reconstruct_min_chi(min):
                  'i_26' : min.i_26, 
                  'rv'   : min.rv}
 
-def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, region, guess, chi_df):
+def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, region, guess, chi_df,star_name,linelist):
 
     # generate neighbours close to the guess (that havent already been run)
     guess_arr = generate_neighbours(guess, region)
@@ -513,19 +511,19 @@ def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, re
     # run optimise_model_fit on the neighbours
     for par in guess_arr:
         # add the new chi squared values to the df
-        chi_of_model = optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, par)
+        chi_of_model = optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, par,star_name,linelist)
         chi_df = pd.concat([chi_df,chi_of_model])
     
     # return chi_df with the results of the new models
     return chi_df
 
-def model_finder():
+def model_finder(star_name,linelist,region):
     
     # data_path = '/home/users/qai11/Documents/Fixed_fits_files/hd_157244/moog_tests/'
-    data_path = '/home/users/qai11/Documents/Fixed_fits_files/moon/moog_tests/'
+    data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/'
     # data_path = '/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_157244/moog_tests/'
     'change wavelength range'
-    region = 1
+    region = region
     os.chdir(data_path)
     os.system('mkdir plots')
     # initial guesses as a dictionary
@@ -533,14 +531,14 @@ def model_finder():
 
     # raw_spec_filename = 'hd_102870_5100-5200_adjusted.txt'
     # raw_spec_filename = 'hd_157244_5100-5200.txt'
-    raw_spec_filename = 'moon_5100-5200.txt'
+    raw_spec_filename = data_path + f'{star_name}_5100-5200.txt'
     raw_spectra       = read_raw_spectra(raw_spec_filename)
-    wavelength_region = get_wavelength_region(raw_spectra.wavelength)
+    wavelength_region = get_wavelength_region(raw_spectra.wavelength,region)
 
 
     # add the first chi_squyared value to the dataframe
     chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, 
-                                region, wavelength_region, guess)
+                                region, wavelength_region, guess,star_name,linelist)
 
     best_guess_chi = chi_df.chi_squared.iloc[0] # should only be 1 thing in the df atm
 
@@ -549,7 +547,7 @@ def model_finder():
     while len(chi_df) < 300:
         # add the neighbours to the dataframe
         chi_df = find_minimum_neighbour(raw_spec_filename, raw_spectra, 
-                        wavelength_region, region, best_guess, chi_df)
+                        wavelength_region, region, best_guess, chi_df,star_name,linelist)
         
         # get the best chi-squared fit
         chi_df = chi_df.sort_values(by = ['chi_squared'])
@@ -600,13 +598,12 @@ def calc_moog_string(r_24, r_25, r_26):
 
 def initial_guess():
 
-    s = 8.41 #has to be here for some reason or it breaks, seems to break move below 1.4
-    mg = 1.05
-    i_24 = 8
-    i_25 = 35
-    i_26 = 27.5
+    s = 8.9 #has to be here for some reason or it breaks, seems to break move below 1.4
+    mg = -0.66
+    i_24 = 3
+    i_25 = 15
+    i_26 = 16.5
     rv = 0
-
     # return the guess as a dictionary
     return {'s'    : s, 
             'mg'   : mg, 
@@ -615,7 +612,10 @@ def initial_guess():
             'i_26' : i_26, 
             'rv'   : rv}
 
-csv_out = model_finder()
+star_name = 'Sun_iSpec'
+linelist = 'quinlinelist.in'
+region = 3
+csv_out = model_finder(star_name,linelist,region)
 print(csv_out)
 
-csv_out.to_csv('all_fits.csv')
+csv_out.to_csv(f'all_fits_region_{region}.csv')
