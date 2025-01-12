@@ -12,9 +12,12 @@ from os import listdir
 import os
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 from astropy.io import fits
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
 
 def velocity_correction(wavelength, rv):
@@ -124,10 +127,10 @@ def make_model_plots(raw, smooth, output_filename, region, rv):
     col25 = '#995C68'
     col26 = '#BA8C95'
     
-    plt.figure(figsize=(10, 5))
+    # plt.figure(figsize=(10, 5))
     
     # for plotting the vertical lines of the isotopes
-    for i in range(len(wl)):
+    # for i in range(len(wl)):
         # if iso[i] == 24:
         #     ax1.plot([wl[i], wl[i]], [min_flux - 0.06, max_flux + 0.05], color = col24, linestyle = '--', dashes=(5, 1))
         #     if not text_24:
@@ -138,25 +141,25 @@ def make_model_plots(raw, smooth, output_filename, region, rv):
         #     if not text_25:
         #         ax1.text(wl[i] - 0.0, min_flux - 0.07, r'$^{25}\rm{MgH}$', color = col25, fontsize=10)
         #         text_25 = True
-        if iso[i] == 26:
-            plt.plot([wl[i], wl[i]], [min_flux - 0.02, max_flux + 0.05], color = col26,linestyle = '--', dashes=(1, 1))
-            if not text_26:
-                plt.text(wl[i] - 0.0, min_flux - 0.05, r'$^{26}\rm{MgH}$', color = col26, fontsize=10)
-                text_26 = True
+        # if iso[i] == 26:
+        #     plt.plot([wl[i], wl[i]], [min_flux - 0.02, max_flux + 0.05], color = col26,linestyle = '--', dashes=(1, 1))
+        #     if not text_26:
+        #         plt.text(wl[i] - 0.0, min_flux - 0.05, r'$^{26}\rm{MgH}$', color = col26, fontsize=10)
+        #         text_26 = True
 
-    plt.plot(wavelength_shifted, raw.model_flux, color ='#E1A4A7', label = 'model')
+    # plt.plot(wavelength_shifted, raw.model_flux, color ='#E1A4A7', label = 'model')
     # plt.plot(smooth.wavelength, smooth.flux, color ='#eca1a6', label = 'model')
-    plt.plot(wavelength_shifted, raw.flux, '.', color ='#2a9d8f', label = 'spectra')
+    # plt.plot(wavelength_shifted, raw.flux, '.', color ='#2a9d8f', label = 'spectra')
     #ax1.plot(smooth.wavelength, smooth.flux, '.', color ='#d6cbd3', label = 'model')
 
     # ax2.plot(wavelength_shifted, raw.flux - raw.model_flux, color ='#ada397')
 
-    plt.legend(frameon=False)
-    plt.set_xlim(lw - 0.2, uw + 0.2)
-    plt.set_xlabel(r'Wavelength ($\AA$)')
+    # plt.legend(frameon=False)
+    # plt.set_xlim(lw - 0.2, uw + 0.2)
+    # plt.set_xlabel(r'Wavelength ($\AA$)')
 
-    plt.set_ylim(min_flux - 0.1, max_flux + 0.03)
-    plt.set_ylabel('Norm. flux')
+    # plt.set_ylim(min_flux - 0.1, max_flux + 0.03)
+    # plt.set_ylabel('Norm. flux')
 
     # Limits for the residual plot
     # ax2.set_ylim(-0.024,0.024)
@@ -184,7 +187,7 @@ def make_temp_file(filename):
     f.write('')
     f.close() 
 
-def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist):
+def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist,stronglines):
     # I doubt I'll ever want to change these so initialise them here
     standard_out = 'out1'
     summary_out  = 'out2'
@@ -207,10 +210,12 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     "smoothed_out   '" + out_filename +"'\n"                    + \
     f"model_in       '{star_name}_atmosphere.moog'\n"                          + \
     f"lines_in       '{linelist}'\n"                           + \
+    f"stronglines_in '{stronglines}'\n"                           + \
     "observed_in    '" + raw_spec_filename +"'\n"               + \
     "atmosphere    1\n"                                         + \
     "molecules     2\n"                                         + \
     "lines         2\n"                                         + \
+    "strong        1\n"                                         + \
     "flux/int      0\n"                                         + \
     "plotpars      1\n"                                         + \
     wavelength_region + " 0.15 1.05\n"                          + \
@@ -304,7 +309,7 @@ def make_filenames(par, prefix):
     return prefix + '_s'+ str_s +'_mg'+ str_mg + '_i' \
      + str_24 + '_' + str_25  + '_' + str_26 + '_rv' + str_rv
      
-def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist):
+def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,stronglines):
 
     # creating the in and out filenames based on the guess parameters
     in_filename  = make_filenames(guess, 'in')
@@ -312,7 +317,7 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
 
 
     # creates a parameter string in the directory that moog can read
-    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist)
+    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist,stronglines)
 
     # create the smoothed spectra by calling pymoogi
     smoothed_spectrum = call_pymoogi(in_filename)
@@ -380,7 +385,7 @@ def get_wavelength_region(raw_wavelength,region):
     # print(str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) )
     return str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) 
 
-def model_finder(star_name,linelist,region):
+def model_finder(star_name,linelist,region,stronglines):
     try:
         #Uni computer
         # data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/'
@@ -407,15 +412,16 @@ def model_finder(star_name,linelist,region):
 
     # add the first chi_squyared value to the dataframe
     chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, 
-                                region, wavelength_region, guess,star_name,linelist)
+                                region, wavelength_region, guess,star_name,linelist,stronglines)
     
     # make_model_plots(raw, smooth, out_filename, region, guess['rv'])
 
 star_name = 'moon'
-linelist = 'quinlinelist_edits.in'
+linelist = 'quinlinelist.in'
+stronglines = 'quinstronglines.in'
 region = 3
 # linelist = 'quinlist.MgH'
-model_finder(star_name,linelist,region)
+model_finder(star_name,linelist,region,stronglines)
 # %%
 '''idk what happened above but it made the output file for some reason so ill print that'''
 mg24 = str(mg['i_24']).replace('.', '')
