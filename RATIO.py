@@ -15,7 +15,19 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
+import sys
 
+#--- iSpec directory -------------------------------------------------------------
+if os.path.exists('/home/users/qai11/iSpec_v20201001'):
+    "Location of the files on Uni computer"
+    ispec_dir = '/home/users/qai11/iSpec_v20201001'
+else:
+    "location of data on Mac"
+    ispec_dir = '/Users/quin/Desktop/2024_Data/iSpec_v20230804'
+sys.path.insert(0, os.path.abspath(ispec_dir))
+import ispec
+
+from ispec.spectrum import __convolve_spectrum
 
 def velocity_correction(wavelength, rv):
     ''' 
@@ -50,11 +62,32 @@ def get_region(r):
         lw = 5134.42
         uw = 5134.85
     elif r == 2:
-        lw = 5138.59
+        lw = 5138.55
         uw = 5138.95
     elif r == 3:
         lw = 5140.04
         uw = 5140.46
+    elif r == 4:
+        lw = 5134.0
+        uw = 5134.4
+    elif r == 5:
+        lw = 5134.9
+        uw = 5135.3
+    elif r == 6:
+        lw = 5135.9
+        uw = 5136.3
+    elif r == 7:
+        lw = 5136.2
+        uw = 5136.6
+    elif r == 8:
+        lw = 5138.2
+        uw = 5138.6
+    elif r == 9:
+        lw = 5141.0
+        uw = 5141.45
+    elif r == 10:
+        lw = 5133.0
+        uw = 5133.4
     else:
         print('wavelength region error')
         lw = 0
@@ -82,7 +115,10 @@ def get_lines(r):
     return wl, iso
 
 def calc_chi(raw, r):
-    
+    # print(raw)
+    # print(len(raw.wavelength))
+    # print(len(raw.flux))
+    # print(len(raw.model_flux))
     # hard coded wavelength bounds
     lw, uw = get_region(r)
 
@@ -90,11 +126,13 @@ def calc_chi(raw, r):
     
     chisquare = np.sum(((raw_flux.flux - raw_flux.model_flux)**2)/ raw_flux.model_flux)
     
-    #chisquare(raw_flux.flux, raw_flux.model_flux)[0]
+    # chisquare(raw_flux.flux, raw_flux.model_flux)[0]
     
-    return chisquare
+    return chisquare #chisquare(raw_flux.flux, raw_flux.model_flux)[0]
 
 def interp_smooth(raw, smooth):
+    # # Restrict the raw wavelengths to the range of smooth wavelengths
+    # raw_filtered = raw[(raw.wavelength >= smooth.wavelength.min()) & (raw.wavelength <= smooth.wavelength.max())]
 
     # perform a cubic spline on the data to make the wavelengths line up with eachother
     tck = interpolate.splrep(smooth.wavelength, smooth.flux, s=0)
@@ -102,6 +140,9 @@ def interp_smooth(raw, smooth):
     # evaluate the value of the spline at the wavelength points of the original spectra
     new_flux = interpolate.splev(raw.wavelength, tck, der=0)
     
+    # Add the interpolated flux to the raw DataFrame
+    # raw_filtered['model_flux'] = pd.Series(new_flux, index=raw_filtered.index)
+
     # add the model flux to the dataframe
     raw['model_flux'] = pd.Series(new_flux, index=raw.index)
     
@@ -195,7 +236,7 @@ def make_temp_file(filename):
     f.write('')
     f.close() 
 
-def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist):
+def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist,vsini):
     # I doubt I'll ever want to change these so initialise them here
     standard_out = 'out1'
     summary_out  = 'out2'
@@ -212,6 +253,36 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     # print(str(par['rv']))
     # print(wavelength_region)
     #t4070g040m18.newmod
+    # par_string = "synth\n" +\
+    # "standard_out   '" + standard_out +"'\n"                    + \
+    # "summary_out    '" + summary_out +"'\n"                     + \
+    # "smoothed_out   '" + out_filename +"'\n"                    + \
+    # f"model_in       '{star_name}_atmosphere.moog'\n"                          + \
+    # f"lines_in       '{linelist}'\n"                           + \
+    # "observed_in    '" + raw_spec_filename +"'\n"               + \
+    # "atmosphere    1\n"                                         + \
+    # "molecules     2\n"                                         + \
+    # "lines         2\n"                                         + \
+    # "flux/int      0\n"                                         + \
+    # "plotpars      1\n"                                         + \
+    # wavelength_region + " 0.15 1.05\n"                          + \
+    # str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
+    # "d          0.047 0.0 0.0 "+ str(par['s']) +" 0.0\n"        + \
+    # "abundances   3    1\n"                                     + \
+    # "6            0.000001\n"                                  + \
+    # "12           " + str(par['mg']) + "\n"                     + \
+    # "22           0.20000\n"                                    + \
+    # "isotopes      5    1\n"                                    + \
+    # "607.01214     1.0\n"                                       + \
+    # "606.01212     3.0\n"                                       + \
+    # "112.00124     "+ str(par['i_24']) +"\n"                    + \
+    # "112.00125     "+ str(par['i_25']) +"\n"                    + \
+    # "112.00126     "+ str(par['i_26']) +"\n"                    + \
+    # "obspectrum 5\n"                                            + \
+    # "synlimits\n"                                               + \
+    # wavelength_region + " 0.01 5.0\n"                           + \
+    # "plot 2\n"                                                  + \
+    # "damping 2\n"
     par_string = "synth\n" +\
     "standard_out   '" + standard_out +"'\n"                    + \
     "summary_out    '" + summary_out +"'\n"                     + \
@@ -226,23 +297,24 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     "plotpars      1\n"                                         + \
     wavelength_region + " 0.15 1.05\n"                          + \
     str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
-    "d          0.047 0.0 0.0 "+ str(par['s']) +" 0.0\n"        + \
-    "abundances   3    1\n"                                     + \
-    "6            0.000001\n"                                  + \
+    "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
+    "abundances   5    1\n"                                     + \
+    "6            0.200000\n"                                  + \
     "12           " + str(par['mg']) + "\n"                     + \
     "22           0.20000\n"                                    + \
+    "24           0.10000\n"                                    + \
+    "26           0.00001\n"                                    + \
     "isotopes      5    1\n"                                    + \
     "607.01214     1.0\n"                                       + \
-    "606.01212     3.0\n"                                       + \
+    "606.01212     4.0\n"                                       + \
     "112.00124     "+ str(par['i_24']) +"\n"                    + \
     "112.00125     "+ str(par['i_25']) +"\n"                    + \
     "112.00126     "+ str(par['i_26']) +"\n"                    + \
     "obspectrum 5\n"                                            + \
     "synlimits\n"                                               + \
     wavelength_region + " 0.01 5.0\n"                           + \
-    "plot 2\n"                                                  + \
-    "damping 2\n"
-
+    "plot 1\n"                                                  + \
+    "damping 0\n"
 
     # writing that string to a file 
     par_file  = open(in_filename, "w+") 
@@ -360,10 +432,30 @@ def read_smoothed_spectra(filename, rv):
     smooth.wavelength = velocity_correction(smooth.wavelength, rv)
     return smooth
     
-def get_chi_squared(raw, out_filename, region, guess, make_plot = True):
+def get_chi_squared(raw, out_filename, region, guess,vsini, make_plot = True):
     
-    # read in the smoothed data, interpolate spectra
+    # read in the smoothed data
     smooth = read_smoothed_spectra(out_filename, guess['rv'])
+    
+    # #Convolve both spectra to the same resolution for chi squared calculation
+    # from_resolution = None
+    # to_resolution = 82000
+    # convolved_star_spectrum_raw = convolve_spectrum(raw, to_resolution, \
+    #                                                 from_resolution=from_resolution)
+    # convolved_star_spectrum_smoothed = convolve_spectrum(smooth, to_resolution, \
+    #                                                 from_resolution=from_resolution)
+    
+    # #Convert to dataframe for interpolation
+    # convolved_star_spectrum_raw = pd.DataFrame(convolved_star_spectrum_raw, columns = ['waveobs', 'flux','err'])
+    # convolved_star_spectrum_raw.columns = ['wavelength', 'flux', 'err'] #Rename the columns to match other code
+    # convolved_star_spectrum_smoothed = pd.DataFrame(convolved_star_spectrum_smoothed, columns = ['waveobs', 'flux','err'])
+    # convolved_star_spectrum_smoothed.columns = ['wavelength', 'flux', 'err'] #Rename the columns to match other code
+   
+    
+    # print(len(convolved_star_spectrum_raw))
+    # print(len(convolved_star_spectrum_smoothed))
+    #interpolate raw spectra to smoothed spectra
+    # raw = interp_smooth(convolved_star_spectrum_raw, convolved_star_spectrum_smoothed)
     raw = interp_smooth(raw, smooth)
     
     # make a plot of the model
@@ -372,6 +464,29 @@ def get_chi_squared(raw, out_filename, region, guess, make_plot = True):
 
     # return the chi quared value over the line
     return calc_chi(raw, region)
+
+
+# def convolve_spectrum(spectrum, to_resolution, from_resolution=None, frame=None):
+#     # print(spectrum)
+#     wavelength = spectrum['wavelength'].values
+#     flux = spectrum['flux'].values
+#     err =  np.zeros(len(wavelength))
+#     #FROM ISPEC EDITED TO WORK HERE
+#     """
+#     Spectra resolution smoothness/degradation.
+
+#     If "from_resolution" is not specified or its equal to "to_resolution", then the spectrum
+#     is convolved with the instrumental gaussian defined by "to_resolution".
+
+#     If "from_resolution" is specified, the convolution is made with the difference of
+#     both resolutions in order to degrade the spectrum.
+#     """
+#     if from_resolution is not None and from_resolution <= to_resolution:
+#         raise Exception("This method cannot deal with final resolutions that are bigger than original")
+
+#     waveobs, flux, err = __convolve_spectrum(wavelength, flux, err, to_resolution, from_resolution=from_resolution, frame=frame)
+#     convolved_spectrum = ispec.create_spectrum_structure(waveobs, flux, err)
+#     return convolved_spectrum
 
 def make_filenames(par, prefix):
     str_s = str(round(par['s'],   2)).replace('.', '')
@@ -399,11 +514,39 @@ def get_wavelength_region(raw_wavelength,region):
         '''region 3'''
         lower_wavelength = 5136
         upper_wavelength = 5143
+    if region == 4:
+        '''region 1'''
+        lower_wavelength = 5131
+        upper_wavelength = 5138
+    if region == 5:
+        '''region 2'''
+        lower_wavelength =  5131
+        upper_wavelength = 5138
+    if region == 6:
+        '''region 3'''
+        lower_wavelength = 5133
+        upper_wavelength = 5139
+    if region == 7:
+        '''region 1'''
+        lower_wavelength = 5133
+        upper_wavelength = 5139
+    if region == 8:
+        '''region 2'''
+        lower_wavelength =  5135
+        upper_wavelength = 5142
+    if region == 9:
+        '''region 3'''
+        lower_wavelength = 5136
+        upper_wavelength = 5143
+    if region == 10:
+        '''region 3'''
+        lower_wavelength = 5131
+        upper_wavelength = 5138 
     # upper_wavelength = raw_wavelength[len(raw_wavelength)-1] # -1 isnt working for some reason
     # print(str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) )
     return str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) 
 
-def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist):
+def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,vsini):
 
     # creating the in and out filenames based on the guess parameters
     in_filename  = make_filenames(guess, 'in')
@@ -411,13 +554,13 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
 
 
     # creates a parameter string in the directory that moog can read
-    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist)
+    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist,vsini)
 
     # create the smoothed spectra by calling pymoogi
     call_pymoogi(in_filename)
 
     # read in the smoothed model spectra and calculate the chi squared value
-    cs = get_chi_squared(raw_spectra, out_filename, region, guess, make_plot = True)
+    cs = get_chi_squared(raw_spectra, out_filename, region, guess,vsini, make_plot = False)
     
     # return a dataframe with a single row (to be added to a larger df later)
     return pd.DataFrame({'filename'   : out_filename, 
@@ -496,7 +639,7 @@ def reconstruct_min_chi(min):
                  'i_26' : min.i_26, 
                  'rv'   : min.rv}
 
-def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, region, guess, chi_df,star_name,linelist):
+def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, region, guess, chi_df,star_name,linelist,vsini):
 
     # generate neighbours close to the guess (that havent already been run)
     guess_arr = generate_neighbours(guess, region)
@@ -511,13 +654,13 @@ def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, re
     # run optimise_model_fit on the neighbours
     for par in guess_arr:
         # add the new chi squared values to the df
-        chi_of_model = optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, par,star_name,linelist)
+        chi_of_model = optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, par,star_name,linelist,vsini)
         chi_df = pd.concat([chi_df,chi_of_model])
     
     # return chi_df with the results of the new models
     return chi_df
 
-def model_finder(star_name,linelist,region):
+def model_finder(star_name,linelist,region,vsini):
     
     # data_path = '/home/users/qai11/Documents/Fixed_fits_files/hd_157244/moog_tests/'
     data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/'
@@ -538,7 +681,7 @@ def model_finder(star_name,linelist,region):
 
     # add the first chi_squyared value to the dataframe
     chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, 
-                                region, wavelength_region, guess,star_name,linelist)
+                                region, wavelength_region, guess,star_name,linelist,vsini)
 
     best_guess_chi = chi_df.chi_squared.iloc[0] # should only be 1 thing in the df atm
 
@@ -547,7 +690,7 @@ def model_finder(star_name,linelist,region):
     while len(chi_df) < 300:
         # add the neighbours to the dataframe
         chi_df = find_minimum_neighbour(raw_spec_filename, raw_spectra, 
-                        wavelength_region, region, best_guess, chi_df,star_name,linelist)
+                        wavelength_region, region, best_guess, chi_df,star_name,linelist,vsini)
         
         # get the best chi-squared fit
         chi_df = chi_df.sort_values(by = ['chi_squared'])
@@ -597,13 +740,27 @@ def calc_moog_string(r_24, r_25, r_26):
     return str(round(i24,2)) + '_' + str(round(i25,2)) + '_' + str(round(i26,2))
 
 def initial_guess():
-
-    s = 8.9 #has to be here for some reason or it breaks, seems to break move below 1.4
-    mg = -0.66
-    i_24 = 3
+    # initial guess for the parameters
+    s = 7.5
+    mg = 0.55
+    i_24 = 2
     i_25 = 15
-    i_26 = 16.5
+    i_26 = 13
     rv = 0
+    # New guess after first pass.
+    # s = 7.5
+    # mg = 0.31
+    # i_24 = 3.5
+    # i_25 = 15
+    # i_26 = 7.5
+    # rv = 0
+    #region best fit first pass
+    # s = 8.9
+    # mg = 0.03
+    # i_24 = 3.7
+    # i_25 = 5.5
+    # i_26 = 15
+    # rv = 0
     # return the guess as a dictionary
     return {'s'    : s, 
             'mg'   : mg, 
@@ -612,10 +769,66 @@ def initial_guess():
             'i_26' : i_26, 
             'rv'   : rv}
 
-star_name = 'Sun_iSpec'
+v_pass = 1
+
+star_name = 'hd_128620'
 linelist = 'quinlinelist.in'
-region = 3
-csv_out = model_finder(star_name,linelist,region)
+region = 5
+vsini = 1.9
+csv_out = model_finder(star_name,linelist,region,vsini)
 print(csv_out)
 
-csv_out.to_csv(f'all_fits_region_{region}.csv')
+csv_out.to_csv(f'all_fits_region_{region}_pass_{v_pass}.csv')
+
+
+# def compute_hessian_from_saved(params, observed_wavelength, observed_flux, uncertainties, saved_models, step_size=0.01):
+#     """Calculate the hessian using previously saved chi-square values and parameters
+#     Must be run for each parameter set to get the full hessian matrix
+#     """
+#     num_params = len(params)
+#     hessian = np.zeros((num_params, num_params))
+
+#     # Compute the second derivatives numerically
+#     for i in range(num_params):
+#         for j in range(i, num_params):  # Use symmetry (Hessian is symmetric)
+#             # Use the saved chi-square for the current parameters
+#             chi2_base = saved_models[tuple(params)]  # Assumes saved_models is a dictionary with parameter sets as keys
+
+#             # Increment both parameters by step_size
+#             params_up = params.copy()
+#             params_up[i] += step_size
+#             params_up[j] += step_size
+#             chi2_up = saved_models.get(tuple(params_up), None)
+
+#             # Decrement both parameters by step_size
+#             params_down = params.copy()
+#             params_down[i] -= step_size
+#             params_down[j] -= step_size
+#             chi2_down = saved_models.get(tuple(params_down), None)
+
+#             # Increment the first parameter only
+#             params_i_up = params.copy()
+#             params_i_up[i] += step_size
+#             chi2_i_up = saved_models.get(tuple(params_i_up), None)
+
+#             # Increment the second parameter only
+#             params_j_up = params.copy()
+#             params_j_up[j] += step_size
+#             chi2_j_up = saved_models.get(tuple(params_j_up), None)
+            
+#             # Only compute second derivatives if we have valid chi2 values
+#             if chi2_up is not None and chi2_down is not None and chi2_i_up is not None and chi2_j_up is not None:
+#                 # Second derivative (numerical)
+#                 hessian[i, j] = (chi2_up - chi2_i_up - chi2_j_up + chi2_down) / (step_size ** 2)
+#                 hessian[j, i] = hessian[i, j]  # Symmetric matrix
+    
+#     return hessian
+
+
+# def compute_covariance_matrix(hessian):
+#     # Invert the Hessian matrix to get the covariance matrix
+#     covariance_matrix = np.linalg.inv(hessian)
+    
+#     return covariance_matrix
+
+

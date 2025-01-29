@@ -12,13 +12,23 @@ from os import listdir
 import os
 import pandas as pd
 import numpy as np
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 from astropy.io import fits
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
+import sys 
+import os
 
+#--- iSpec directory -------------------------------------------------------------
+if os.path.exists('/home/users/qai11/iSpec_v20201001'):
+    "Location of the files on Uni computer"
+    ispec_dir = '/home/users/qai11/iSpec_v20201001'
+else:
+    "location of data on Mac"
+    ispec_dir = '/Users/quin/Desktop/2024_Data/iSpec_v20230804'
+sys.path.insert(0, os.path.abspath(ispec_dir))
+import ispec
+
+# from ispec import apply_post_fundamental_effects
 
 def velocity_correction(wavelength, rv):
     ''' 
@@ -53,11 +63,32 @@ def get_region(r):
         lw = 5134.42
         uw = 5134.85
     elif r == 2:
-        lw = 5138.59
+        lw = 5138.55
         uw = 5138.95
     elif r == 3:
         lw = 5140.04
         uw = 5140.46
+    elif r == 4:
+        lw = 5134.0
+        uw = 5134.4
+    elif r == 5:
+        lw = 5134.9
+        uw = 5135.3
+    elif r == 6:
+        lw = 5135.9
+        uw = 5136.3
+    elif r == 7:
+        lw = 5136.2
+        uw = 5136.6
+    elif r == 8:
+        lw = 5138.2
+        uw = 5138.6
+    elif r == 9:
+        lw = 5141.0
+        uw = 5141.45
+    elif r == 10:
+        lw = 5133.0
+        uw = 5133.4
     else:
         print('wavelength region error')
         lw = 0
@@ -127,10 +158,10 @@ def make_model_plots(raw, smooth, output_filename, region, rv):
     col25 = '#995C68'
     col26 = '#BA8C95'
     
-    # plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(10, 5))
     
     # for plotting the vertical lines of the isotopes
-    # for i in range(len(wl)):
+    for i in range(len(wl)):
         # if iso[i] == 24:
         #     ax1.plot([wl[i], wl[i]], [min_flux - 0.06, max_flux + 0.05], color = col24, linestyle = '--', dashes=(5, 1))
         #     if not text_24:
@@ -141,25 +172,25 @@ def make_model_plots(raw, smooth, output_filename, region, rv):
         #     if not text_25:
         #         ax1.text(wl[i] - 0.0, min_flux - 0.07, r'$^{25}\rm{MgH}$', color = col25, fontsize=10)
         #         text_25 = True
-        # if iso[i] == 26:
-        #     plt.plot([wl[i], wl[i]], [min_flux - 0.02, max_flux + 0.05], color = col26,linestyle = '--', dashes=(1, 1))
-        #     if not text_26:
-        #         plt.text(wl[i] - 0.0, min_flux - 0.05, r'$^{26}\rm{MgH}$', color = col26, fontsize=10)
-        #         text_26 = True
+        if iso[i] == 26:
+            plt.plot([wl[i], wl[i]], [min_flux - 0.02, max_flux + 0.05], color = col26,linestyle = '--', dashes=(1, 1))
+            if not text_26:
+                plt.text(wl[i] - 0.0, min_flux - 0.05, r'$^{26}\rm{MgH}$', color = col26, fontsize=10)
+                text_26 = True
 
-    # plt.plot(wavelength_shifted, raw.model_flux, color ='#E1A4A7', label = 'model')
+    plt.plot(wavelength_shifted, raw.model_flux, color ='#E1A4A7', label = 'model')
     # plt.plot(smooth.wavelength, smooth.flux, color ='#eca1a6', label = 'model')
-    # plt.plot(wavelength_shifted, raw.flux, '.', color ='#2a9d8f', label = 'spectra')
+    plt.plot(wavelength_shifted, raw.flux, '.', color ='#2a9d8f', label = 'spectra')
     #ax1.plot(smooth.wavelength, smooth.flux, '.', color ='#d6cbd3', label = 'model')
 
     # ax2.plot(wavelength_shifted, raw.flux - raw.model_flux, color ='#ada397')
 
-    # plt.legend(frameon=False)
-    # plt.set_xlim(lw - 0.2, uw + 0.2)
-    # plt.set_xlabel(r'Wavelength ($\AA$)')
+    plt.legend(frameon=False)
+    plt.set_xlim(lw - 0.2, uw + 0.2)
+    plt.set_xlabel(r'Wavelength ($\AA$)')
 
-    # plt.set_ylim(min_flux - 0.1, max_flux + 0.03)
-    # plt.set_ylabel('Norm. flux')
+    plt.set_ylim(min_flux - 0.1, max_flux + 0.03)
+    plt.set_ylabel('Norm. flux')
 
     # Limits for the residual plot
     # ax2.set_ylim(-0.024,0.024)
@@ -187,7 +218,7 @@ def make_temp_file(filename):
     f.write('')
     f.close() 
 
-def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist,stronglines):
+def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist,stronglines,vsini):
     # I doubt I'll ever want to change these so initialise them here
     standard_out = 'out1'
     summary_out  = 'out2'
@@ -204,82 +235,111 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     # print(str(par['rv']))
     # print(wavelength_region)
     #t4070g040m18.newmod
-    par_string = "synth\n" +\
-    "standard_out   '" + standard_out +"'\n"                    + \
-    "summary_out    '" + summary_out +"'\n"                     + \
-    "smoothed_out   '" + out_filename +"'\n"                    + \
-    f"model_in       '{star_name}_atmosphere.moog'\n"                          + \
-    f"lines_in       '{linelist}'\n"                           + \
-    f"stronglines_in '{stronglines}'\n"                           + \
-    "observed_in    '" + raw_spec_filename +"'\n"               + \
-    "atmosphere    1\n"                                         + \
-    "molecules     2\n"                                         + \
-    "lines         2\n"                                         + \
-    "strong        1\n"                                         + \
-    "flux/int      0\n"                                         + \
-    "plotpars      1\n"                                         + \
-    wavelength_region + " 0.15 1.05\n"                          + \
-    str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
-    "d          0.047 0.0 0.0 "+ str(par['s']) +" 0.0\n"        + \
-    "abundances   4    1\n"                                     + \
-    "6            0.000001\n"                                  + \
-    "12           " + str(par['mg']) + "\n"                     + \
-    "22           0.20000\n"                                    + \
-    "24           0.10000\n"                                    + \
-    "isotopes      5    1\n"                                    + \
-    "607.01214     8.0\n"                                       + \
-    "606.01212     2.0\n"                                       + \
-    "112.00124     "+ str(par['i_24']) +"\n"                    + \
-    "112.00125     "+ str(par['i_25']) +"\n"                    + \
-    "112.00126     "+ str(par['i_26']) +"\n"                    + \
-    "obspectrum 5\n"                                            + \
-    "synlimits\n"                                               + \
-    wavelength_region + " 0.01 5.0\n"                           + \
-    "plot 2\n"                                                  + \
-    "damping 2\n"
+    if stronglines != None:
+        print(stronglines)
+        par_string = "synth\n" +\
+        "standard_out   '" + standard_out +"'\n"                    + \
+        "summary_out    '" + summary_out +"'\n"                     + \
+        "smoothed_out   '" + out_filename +"'\n"                    + \
+        f"model_in       '{star_name}_atmosphere.moog'\n"                          + \
+        f"lines_in       '{linelist}'\n"                           + \
+        f"stronglines_in '{stronglines}'\n"                           + \
+        "observed_in    '" + raw_spec_filename +"'\n"               + \
+        "atmosphere    1\n"                                         + \
+        "molecules     2\n"                                         + \
+        "lines         2\n"                                         + \
+        "strong        1\n"                                         + \
+        "flux/int      0\n"                                         + \
+        "plotpars      1\n"                                         + \
+        wavelength_region + " 0.15 1.05\n"                          + \
+        str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
+        "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
+        "abundances   4    1\n"                                     + \
+        "6            0.200000\n"                                  + \
+        "12           " + str(par['mg']) + "\n"                     + \
+        "22           0.20000\n"                                    + \
+        "24           0.10000\n"                                    + \
+        "isotopes      5    1\n"                                    + \
+        "607.01214     8.0\n"                                       + \
+        "606.01212     2.0\n"                                       + \
+        "112.00124     "+ str(par['i_24']) +"\n"                    + \
+        "112.00125     "+ str(par['i_25']) +"\n"                    + \
+        "112.00126     "+ str(par['i_26']) +"\n"                    + \
+        "obspectrum 5\n"                                            + \
+        "synlimits\n"                                               + \
+        wavelength_region + " 0.01 5.0\n"                           + \
+        "plot 1\n"                                                  + \
+        "damping 0\n"
+        
+        #  smooth-type  FWHM-Gauss  vsini     LimbDarkeningCoeff    FWHM-Macro     FWHM-Loren
+        
+    elif stronglines == None:
+        print(stronglines)
+        # par_string = "synth\n" +\
+        # "standard_out   '" + standard_out +"'\n"                    + \
+        # "summary_out    '" + summary_out +"'\n"                     + \
+        # "smoothed_out   '" + out_filename +"'\n"                    + \
+        # f"model_in       '{star_name}_atmosphere.moog'\n"                          + \
+        # f"lines_in       '{linelist}'\n"                           + \
+        # "observed_in    '" + raw_spec_filename +"'\n"               + \
+        # "atmosphere    1\n"                                         + \
+        # "molecules     2\n"                                         + \
+        # "lines         2\n"                                         + \
+        # "flux/int      0\n"                                         + \
+        # "plotpars      1\n"                                         + \
+        # wavelength_region + " 0.15 1.05\n"                          + \
+        # str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
+        # "d          0.047 0.0 0.0 "+ str(par['s']) +" 0.0\n"        + \
+        # "abundances   4    1\n"                                     + \
+        # "6            0.000001\n"                                  + \
+        # "12           " + str(par['mg']) + "\n"                     + \
+        # "22           0.20000\n"                                    + \
+        # "24           0.10000\n"                                    + \
+        # "isotopes      5    1\n"                                    + \
+        # "607.01214     8.0\n"                                       + \
+        # "606.01212     2.0\n"                                       + \
+        # "112.00124     "+ str(par['i_24']) +"\n"                    + \
+        # "112.00125     "+ str(par['i_25']) +"\n"                    + \
+        # "112.00126     "+ str(par['i_26']) +"\n"                    + \
+        # "obspectrum 5\n"                                            + \
+        # "synlimits\n"                                               + \
+        # wavelength_region + " 0.01 5.0\n"                           + \
+        # "plot 2\n"                                                  + \
+        # "damping 2\n"
+        par_string = "synth\n" +\
+        "standard_out   '" + standard_out +"'\n"                    + \
+        "summary_out    '" + summary_out +"'\n"                     + \
+        "smoothed_out   '" + out_filename +"'\n"                    + \
+        f"model_in       '{star_name}_atmosphere.moog'\n"                          + \
+        f"lines_in       '{linelist}'\n"                           + \
+        "observed_in    '" + raw_spec_filename +"'\n"               + \
+        "atmosphere    1\n"                                         + \
+        "molecules     2\n"                                         + \
+        "lines         2\n"                                         + \
+        "flux/int      0\n"                                         + \
+        "plotpars      1\n"                                         + \
+        wavelength_region + " 0.15 1.05\n"                          + \
+        str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
+        "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
+        "abundances   5    1\n"                                     + \
+        "6            0.200000\n"                                  + \
+        "12           " + str(par['mg']) + "\n"                     + \
+        "22           0.20000\n"                                    + \
+        "24           0.10000\n"                                    + \
+        "26           0.00001\n"                                    + \
+        "isotopes      5    1\n"                                    + \
+        "607.01214     1.0\n"                                       + \
+        "606.01212     4.0\n"                                       + \
+        "112.00124     "+ str(par['i_24']) +"\n"                    + \
+        "112.00125     "+ str(par['i_25']) +"\n"                    + \
+        "112.00126     "+ str(par['i_26']) +"\n"                    + \
+        "obspectrum 5\n"                                            + \
+        "synlimits\n"                                               + \
+        wavelength_region + " 0.01 5.0\n"                           + \
+        "plot 1\n"                                                  + \
+        "damping 0\n"
 
-    # "24           0.50000\n"                                    + \
-    # "26           0.20000\n"                                    + \
-    # "39           1.00000\n"                                    + \
-    # "42           1.00000\n"                                    + \
-    # "71           0.10000\n"                                    + \
-    #THE SUN
-    # par_string = "synth\n" +\
-    # "standard_out   '" + standard_out +"'\n"                    + \
-    # "summary_out    '" + summary_out +"'\n"                     + \
-    # "smoothed_out   '" + out_filename +"'\n"                    + \
-    # f"model_in       '{star_name}_atmosphere.moog'\n"                          + \
-    # f"lines_in       '{linelist}'\n"                           + \
-    # "observed_in    '" + raw_spec_filename +"'\n"               + \
-    # "atmosphere    1\n"                                         + \
-    # "molecules     2\n"                                         + \
-    # "lines         2\n"                                         + \
-    # "flux/int      0\n"                                         + \
-    # "plotpars      1\n"                                         + \
-    # wavelength_region + " 0.15 1.05\n"                          + \
-    # str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
-    # "d          0.047 0.0 0.0 "+ str(par['s']) +" 0.0\n"        + \
-    # "abundances   8    1\n"                                     + \
-    # "6            0.1500000\n"                                  + \
-    # "12           " + str(par['mg']) + "\n"                     + \
-    # "22           0.20000\n"                                    + \
-    # "24           0.50000\n"                                    + \
-    # "26           0.18000\n"                                    + \
-    # "39           1.00000\n"                                    + \
-    # "42           1.00000\n"                                    + \
-    # "71           0.00000\n"                                    + \
-    # "isotopes      5    1\n"                                    + \
-    # "607.01214     0.5\n"                                       + \
-    # "606.01212     15.0\n"                                       + \
-    # "112.00124     "+ str(par['i_24']) +"\n"                    + \
-    # "112.00125     "+ str(par['i_25']) +"\n"                    + \
-    # "112.00126     "+ str(par['i_26']) +"\n"                    + \
-    # "obspectrum 5\n"                                            + \
-    # "synlimits\n"                                               + \
-    # wavelength_region + " 0.01 5.0\n"                           + \
-    # "plot 2\n"                                                  + \
-    # "damping 2\n"
-    
+
     # writing that string to a file 
     par_file  = open(in_filename, "w+") 
     par_file.write(par_string)
@@ -309,7 +369,7 @@ def make_filenames(par, prefix):
     return prefix + '_s'+ str_s +'_mg'+ str_mg + '_i' \
      + str_24 + '_' + str_25  + '_' + str_26 + '_rv' + str_rv
      
-def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,stronglines):
+def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,stronglines,vsini):
 
     # creating the in and out filenames based on the guess parameters
     in_filename  = make_filenames(guess, 'in')
@@ -317,7 +377,7 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
 
 
     # creates a parameter string in the directory that moog can read
-    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist,stronglines)
+    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist,stronglines,vsini)
 
     # create the smoothed spectra by calling pymoogi
     smoothed_spectrum = call_pymoogi(in_filename)
@@ -341,20 +401,27 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
                          }, index=[1])
     
 def initial_guess():
-    #hd_156244
-    # s = 8.81 #has to be here for some reason or it breaks, seems to break move below 1.4
-    # mg = 0.06
-    # i_24 = 8
-    # i_25 = 35
-    # i_26 = 27.5
-    # rv = 0
     #SUN
-    s = 8.9 #has to be here for some reason or it breaks, seems to break move below 1.4
-    mg = -0.66
-    i_24 = 3
+    # s = 8.9 #has to be here for some reason or it breaks, seems to break move below 1.4
+    # mg = 0.5
+    # i_24 = 3.1
+    # i_25 = 15
+    # i_26 = 16.5
+    # rv = 0
+    #Current star
+    s = 6.1
+    mg = 0.21
+    i_24 = 3.5
     i_25 = 15
-    i_26 = 16.5
+    i_26 = 13
     rv = 0
+
+    # s = 0.0 #has to be here for some reason or it breaks, seems to break move below 1.4
+    # mg = 0.0
+    # i_24 = 3.1
+    # i_25 = 15
+    # i_26 = 18.5
+    # rv = 0
 
     # return the guess as a dictionary
     return {'s'    : s,
@@ -381,11 +448,39 @@ def get_wavelength_region(raw_wavelength,region):
         '''region 3'''
         lower_wavelength = 5136
         upper_wavelength = 5143
+    if region == 4:
+        '''region 1'''
+        lower_wavelength = 5131
+        upper_wavelength = 5138
+    if region == 5:
+        '''region 2'''
+        lower_wavelength =  5131
+        upper_wavelength = 5138
+    if region == 6:
+        '''region 3'''
+        lower_wavelength = 5133
+        upper_wavelength = 5139
+    if region == 7:
+        '''region 1'''
+        lower_wavelength = 5133
+        upper_wavelength = 5139
+    if region == 8:
+        '''region 2'''
+        lower_wavelength =  5135
+        upper_wavelength = 5142
+    if region == 9:
+        '''region 3'''
+        lower_wavelength = 5136
+        upper_wavelength = 5143
+    if region == 10:
+        '''region 3'''
+        lower_wavelength = 5131
+        upper_wavelength = 5138 
     # upper_wavelength = raw_wavelength[len(raw_wavelength)-1] # -1 isnt working for some reason
     # print(str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) )
     return str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) 
 
-def model_finder(star_name,linelist,region,stronglines):
+def model_finder(star_name,linelist,region,stronglines,vsini):
     try:
         #Uni computer
         # data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/'
@@ -412,16 +507,19 @@ def model_finder(star_name,linelist,region,stronglines):
 
     # add the first chi_squyared value to the dataframe
     chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, 
-                                region, wavelength_region, guess,star_name,linelist,stronglines)
+                                region, wavelength_region, guess,star_name,linelist,stronglines,vsini)
     
     # make_model_plots(raw, smooth, out_filename, region, guess['rv'])
 
-star_name = 'moon'
+star_name = 'hd_128620'
 linelist = 'quinlinelist.in'
-stronglines = 'quinstronglines.in'
-region = 3
+# stronglines = 'quinstronglines.in'
+# stronglines = 'quinbarklem.in'
+stronglines= None
+region = 5
+vsini = 1.9
 # linelist = 'quinlist.MgH'
-model_finder(star_name,linelist,region,stronglines)
+model_finder(star_name,linelist,region, stronglines,vsini)
 # %%
 '''idk what happened above but it made the output file for some reason so ill print that'''
 mg24 = str(mg['i_24']).replace('.', '')
@@ -446,6 +544,12 @@ except:
 
 print(f'out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0')
 
+'''Interpolating the model to make it fit the observed data better'''
+# apply_post_fundamental_effects(waveobs, fluxes, segments, macroturbulence = 3.0, vsini = 2.0, limb_darkening_coeff = 0.60, R=500000, vrad=(0,), verbose=0)
+
+# segments = ispec_dir + '/Quin_segments.txt'
+# fluxes = ispec.apply_post_fundamental_effects(smoothed[0], smoothed[1], segments, macroturbulence = 4.21, vsini = 1.6, limb_darkening_coeff = 0.60, R=82000, vrad=(0,), verbose=0)
+
 '''Plotting the model and observed spectra'''
 plt.figure(figsize=(8, 4))
 
@@ -453,13 +557,27 @@ plt.figure(figsize=(8, 4))
 plt.xlabel('Wavelength ($\AA$)',fontsize=14)
 plt.ylabel('Norm. Flux',fontsize=14)
 
+save = True
+# save = False
+# region = 10
 '''Region 1,9,10'''
-if region == 1:
+if region == 1:     
     plt.plot(smoothed[0], smoothed[1])
     plt.plot(raw[0], raw[1])
     plt.legend(['Model', 'Observed'])
-    plt.xlim(5134, 5135.3)
-    plt.ylim(0.80, 1.01)
+    # plt.xlim(5134, 5135.3)
+    # plt.xlim(5130,5140)
+    # plt.ylim(0.05, 1.01)
+    # plt.ylim(0.75,1.01)
+    #Find min wavelength
+    lw, uw = get_region(region)
+    cropped_flux = raw[(raw[0] > lw) & (raw[0] < uw)][1]
+    min_flux = cropped_flux.min()
+    max_flux = cropped_flux.max()
+    plt.ylim(min_flux-0.05,1.01)
+    plt.xlim(lw - 0.4, uw + 0.5)
+    #Plot the box where the fitting region is
+    plt.fill_between([lw, uw], min_flux - 0.01, 1, facecolor = '#CCDBFD', alpha = 0.3)
     #plot mg24 lines
     plt.axvline(x=5134.208, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
     plt.axvline(x=5134.570, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
@@ -478,10 +596,21 @@ if region == 2:
     plt.plot(smoothed[0], smoothed[1])
     plt.plot(raw[0], raw[1])
     plt.legend(['Model', 'Observed'])    
-    plt.xlim(5138.59, 5138.95)
+    # plt.xlim(5138.59, 5138.95)
+    # plt.xlim(5130,5140)
     # plt.xlim(5138,5140)
-    plt.ylim(0.89, 0.98)
-    # plt.ylim(0.75, 1)
+    # plt.ylim(0.89, 0.98)
+    
+    #Find min wavelength
+    lw, uw = get_region(region)
+    cropped_flux = raw[(raw[0] > lw) & (raw[0] < uw)][1]
+    min_flux = cropped_flux.min()
+    max_flux = cropped_flux.max()
+    plt.ylim(min_flux-0.05,1.01)
+    plt.xlim(lw - 0.4, uw + 0.4)
+    #Plot the box where the fitting region is
+    plt.fill_between([lw, uw], min_flux - 0.01, 1, facecolor = '#CCDBFD', alpha = 0.3)
+    
     #mg24
     plt.axvline(x=5138.710, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
     #mg25
@@ -496,45 +625,257 @@ if region == 3:
     plt.plot(smoothed[0], smoothed[1])
     plt.plot(raw[0], raw[1])
     plt.legend(['Model', 'Observed'])
-    plt.xlim(5140.04, 5140.46)
+    # plt.xlim(5140.04, 5140.46)
     # plt.xlim(5139.04, 5141.46)
-    plt.ylim(0.90, 1.01)
-    # plt.ylim(0.4,1.01)
+    # plt.ylim(0.90, 1.01)
+    
+    #Find min wavelength
+    lw, uw = get_region(region)
+    cropped_flux = raw[(raw[0] > lw) & (raw[0] < uw)][1]
+    min_flux = cropped_flux.min()
+    max_flux = cropped_flux.max()
+    plt.ylim(min_flux-0.05,1.01)
+    plt.xlim(lw - 0.4, uw + 0.4)
+    #Plot the box where the fitting region is
+    plt.fill_between([lw, uw], min_flux - 0.01, 1, facecolor = '#CCDBFD', alpha = 0.3)
+    
     #mg24
-    plt.axvline(x=5140.206, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    # plt.axvline(x=5140.206, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
     plt.axvline(x=5140.229, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
     #mg25
-    plt.axvline(x=5140.253, ymin=0, linestyle='--', color='black',lw=1,alpha=0.5)
+    # plt.axvline(x=5140.253, ymin=0, linestyle='--', color='black',lw=1,alpha=0.5)
     plt.axvline(x=5140.286, ymin=0, linestyle='--', color='black',lw=1,alpha=0.5)
     #mg26
-    plt.axvline(x=5140.302, ymin=0, color='black',lw=1,alpha=0.5)
+    # plt.axvline(x=5140.302, ymin=0, color='black',lw=1,alpha=0.5)
     plt.axvline(x=5140.359, ymin=0, color='black',lw=1,alpha=0.5)
 
-#%%
-def calc_ratio(i_24, i_25, i_26):
-    i24_percentage=1/(0.01*i_24)
-    i25_percentage=1/(0.01*i_25)
-    i26_percentage=1/(0.01*i_26)
-
-    isotope_sum = i24_percentage + i25_percentage + i26_percentage
-
-    i24_ratio = (i24_percentage/isotope_sum) * 100
-    i25_ratio = (i25_percentage/isotope_sum) * 100
-    i26_ratio = (i26_percentage/isotope_sum) * 100
+'''Region 4'''
+if region == 4:
+    plt.plot(smoothed[0], smoothed[1])
+    plt.plot(raw[0], raw[1])
+    plt.legend(['Model', 'Observed'])
+    # plt.xlim(5134.04, 5134.4)
+    # plt.ylim(0.90, 1.01)
+    # plt.ylim(0.4,1.01)
     
-    return str(round(i24_ratio,2)) + '_' + str(round(i25_ratio,2)) + '_' + str(round(i26_ratio,2))
+    #Find min wavelength
+    lw, uw = get_region(region)
+    cropped_flux = raw[(raw[0] > lw) & (raw[0] < uw)][1]
+    min_flux = cropped_flux.min()
+    max_flux = cropped_flux.max()
+    plt.ylim(min_flux-0.05,1.01)
+    plt.xlim(lw - 0.4, uw + 0.4)
+    #Plot the box where the fitting region is
+    plt.fill_between([lw, uw], min_flux - 0.01, 1, facecolor = '#CCDBFD', alpha = 0.3)
+    
+    #mg24
+    plt.axvline(x=5134.208, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    #mg25
+    plt.axvline(x=5134.295, ymin=0, linestyle='--', color='black',lw=1,alpha=0.5)
+    #mg26
+    plt.axvline(x=5134.376, ymin=0, color='black',lw=1,alpha=0.5)
+    
+'''Region 5'''
+if region == 5:
+    plt.plot(smoothed[0], smoothed[1])
+    plt.plot(raw[0], raw[1])
+    plt.legend(['Model', 'Observed'])
+    # plt.xlim(5134.95,5135.32)
+    # plt.ylim(0.93, 1.01)
+    # plt.ylim(0.4,1.01)
+    
+    #Find min wavelength
+    lw, uw = get_region(region)
+    cropped_flux = raw[(raw[0] > lw) & (raw[0] < uw)][1]
+    min_flux = cropped_flux.min()
+    max_flux = cropped_flux.max()
+    plt.ylim(min_flux-0.05,1.01)
+    plt.xlim(lw - 0.4, uw + 0.4)
+    #Plot the box where the fitting region is
+    plt.fill_between([lw, uw], min_flux - 0.01, 1, facecolor = '#CCDBFD', alpha = 0.3)
+    
+    #mg24
+    # plt.axvline(x=5135.072, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    plt.axvline(x=5135.111, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    # plt.axvline(x=5135.178, ymin=0, linestyle='--', color='black',lw=1,alpha=0.5)
+    #mg25
+    plt.axvline(x=5135.160, ymin=0, linestyle='--', color='black',lw=1,alpha=0.5)
+    #mg26
+    plt.axvline(x=5135.240, ymin=0, color='black',lw=1,alpha=0.5)
 
-mg_ratio = calc_ratio(mg['i_24'], mg['i_25'], mg['i_26'])
-print(mg_ratio)
+'''Region 6'''
+if region == 6:
+    plt.plot(smoothed[0], smoothed[1])
+    plt.plot(raw[0], raw[1])
+    plt.legend(['Model', 'Observed'])
+    # plt.xlim(5135.97, 5136.2)
+    # plt.ylim(0.8, 1.01)
+    # plt.ylim(0.4,1.01)
+    
+    #Find min wavelength
+    lw, uw = get_region(region)
+    cropped_flux = raw[(raw[0] > lw) & (raw[0] < uw)][1]
+    min_flux = cropped_flux.min()
+    max_flux = cropped_flux.max()
+    plt.ylim(min_flux-0.05,1.01)
+    plt.xlim(lw - 0.4, uw + 0.4)
+    #Plot the box where the fitting region is
+    plt.fill_between([lw, uw], min_flux - 0.01, 1, facecolor = '#CCDBFD', alpha = 0.3)
+    
+    #mg24
+    # plt.axvline(x=5136.025, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    # plt.axvline(x=5136.080, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    plt.axvline(x=5136.123, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    # plt.axvline(x=5136.229, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    # plt.axvline(x=5136.258, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    # plt.axvline(x=5136.294, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    #mg25
+    plt.axvline(x=5136.087, ymin=0, linestyle='--', color='black',lw=1,alpha=0.5)
+    # plt.axvline(x=5136.318, ymin=0, linestyle='--', color='black',lw=1,alpha=0.5)
+    #mg26
+    plt.axvline(x=5136.144 , ymin=0, color='black',lw=1,alpha=0.5)
 
-try:
-    #UNIPC save
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
-except:
-    # # #MAC save all
-    # plt.savefig(f'/Users/quin/quin-masters-code/Masters_Figures/Model_Mg24_Mg25_Mg26{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}.png', dpi=300, bbox_inches='tight')
-    None
-# plt.show()
+'''Region 7'''
+if region == 7:
+    plt.plot(smoothed[0], smoothed[1])
+    plt.plot(raw[0], raw[1])
+    plt.legend(['Model', 'Observed'])
+    # plt.xlim(5136.33,5136.55)
+    # plt.ylim(0.90, 1.01)
+    # plt.ylim(0.4,1.01)
+    
+    #Find min wavelength
+    lw, uw = get_region(region)
+    cropped_flux = raw[(raw[0] > lw) & (raw[0] < uw)][1]
+    min_flux = cropped_flux.min()
+    max_flux = cropped_flux.max()
+    plt.ylim(min_flux-0.05,1.01)
+    plt.xlim(lw - 0.4, uw + 0.4)
+    #Plot the box where the fitting region is
+    plt.fill_between([lw, uw], min_flux - 0.01, 1, facecolor = '#CCDBFD', alpha = 0.3)
+    43
+    #mg24
+    # plt.axvline(x=5136.229, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    # plt.axvline(x=5136.258, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    # plt.axvline(x=5136.294, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    plt.axvline(x=5136.439, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    #mg25
+    plt.axvline(x=5136.502, ymin=0, linestyle='--', color='black',lw=1,alpha=0.5)
+    #mg26
+    plt.axvline(x=5136.560, ymin=0, color='black',lw=1,alpha=0.5)
+
+'''Region 8'''
+if region == 8:
+    plt.plot(smoothed[0], smoothed[1])
+    plt.plot(raw[0], raw[1])
+    plt.legend(['Model', 'Observed'])
+    # plt.xlim(5138.2,5138.62)
+    # plt.ylim(0.90, 1.01)
+    # plt.ylim(0.4,1.01)
+    
+    #Find min wavelength
+    lw, uw = get_region(region)
+    cropped_flux = raw[(raw[0] > lw) & (raw[0] < uw)][1]
+    min_flux = cropped_flux.min()
+    max_flux = cropped_flux.max()
+    plt.ylim(min_flux-0.05,1.01)
+    plt.xlim(lw - 0.4, uw + 0.4)
+    #Plot the box where the fitting region is
+    plt.fill_between([lw, uw], min_flux - 0.01, 1, facecolor = '#CCDBFD', alpha = 0.3)
+    
+    #mg24
+    plt.axvline(x=5138.486, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    #mg25
+    plt.axvline(x=5138.427, ymin=0, linestyle='--', color='black',lw=1,alpha=0.5)
+    #mg26
+    plt.axvline(x=5138.501, ymin=0, color='black',lw=1,alpha=0.5)
+
+
+'''Region 9'''
+if region == 9:
+    plt.plot(smoothed[0], smoothed[1])
+    plt.plot(raw[0], raw[1])
+    plt.legend(['Model', 'Observed'])
+    # plt.xlim(5140.8,5141.2)
+    # plt.ylim(0.80, 1.01)
+    # plt.ylim(0.4,1.01)
+    
+    #Find min wavelength
+    lw, uw = get_region(region)
+    cropped_flux = raw[(raw[0] > lw) & (raw[0] < uw)][1]
+    min_flux = cropped_flux.min()
+    max_flux = cropped_flux.max()
+    plt.ylim(min_flux-0.05,1.01)
+    plt.xlim(lw - 0.4, uw + 0.4)
+    #Plot the box where the fitting region is
+    plt.fill_between([lw, uw], min_flux - 0.01, 1, facecolor = '#CCDBFD', alpha = 0.3)
+    
+    #mg24
+    plt.axvline(x=5141.234, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    #mg25
+    plt.axvline(x=5141.288, ymin=0, linestyle='--', color='black',lw=1,alpha=0.5)
+    #mg26
+    plt.axvline(x=5141.338, ymin=0, color='black',lw=1,alpha=0.5)
+
+'''Region 10'''
+if region == 10:
+    plt.plot(smoothed[0], smoothed[1])
+    plt.plot(raw[0], raw[1])
+    plt.legend(['Model', 'Observed'])
+    # plt.xlim(5133.0,5133.4)
+    # plt.ylim(0.80, 1.01)
+    # plt.ylim(0.4,1.01)
+    
+    #Find min wavelength
+    lw, uw = get_region(region)
+    cropped_flux = raw[(raw[0] > lw) & (raw[0] < uw)][1]
+    min_flux = cropped_flux.min()
+    max_flux = cropped_flux.max()
+    plt.ylim(min_flux-0.05,1.01)
+    plt.xlim(lw - 0.4, uw + 0.4)
+    #Plot the box where the fitting region is
+    plt.fill_between([lw, uw], min_flux - 0.01, 1, facecolor = '#CCDBFD', alpha = 0.3)
+    
+    #mg24
+    plt.axvline(x=5133.174, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.5)
+    #mg25
+    plt.axvline(x=5133.231, ymin=0, linestyle='--', color='black',lw=1,alpha=0.5)
+    #mg26
+    plt.axvline(x=5133.292, ymin=0, color='black',lw=1,alpha=0.5)
+
+if save == True:
+    def calc_ratio(i_24, i_25, i_26):
+        i24_percentage=1/(0.01*i_24)
+        i25_percentage=1/(0.01*i_25)
+        i26_percentage=1/(0.01*i_26)
+
+        isotope_sum = i24_percentage + i25_percentage + i26_percentage
+        print(f"sum {isotope_sum}")
+
+        i24_ratio = (i24_percentage/isotope_sum) * 100
+        i25_ratio = (i25_percentage/isotope_sum) * 100
+        i26_ratio = (i26_percentage/isotope_sum) * 100
+        
+        return str(round(i24_ratio,2)) + '_' + str(round(i25_ratio,2)) + '_' + str(round(i26_ratio,2))
+
+    mg_ratio = calc_ratio(mg['i_24'], mg['i_25'], mg['i_26'])
+    print(mg_ratio)
+
+    try:
+        os.mkdir(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Dwarfs/{star_name}')
+    except:
+        None
+    try:
+        #UNIPC save
+        # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Giants/{star_name}/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
+        # print("Figure saved")
+        plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Dwarfs/{star_name}/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
+        print("Figure saved")
+    except:
+        # # #MAC save all
+        # plt.savefig(f'/Users/quin/quin-masters-code/Masters_Figures/Results/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
+        plt.savefig(f'/Users/quin/quin-masters-code/Masters_Figures/Results/Giants/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
+    # plt.show()
    
 #%%
 # plt.xlim(5134, 5135.3) #Region 1

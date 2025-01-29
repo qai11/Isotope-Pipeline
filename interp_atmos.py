@@ -149,9 +149,6 @@ def interp_atmos(star):
             save_path = '/Users/quin/Desktop/2024_Data/Fixed_fits_files/' + star_name + '/'
         
     code='moog'
-    # model = ispec_dir + "/input/atmospheres/MARCS.GES/"
-    model = ispec_dir + "/input/atmospheres/ATLAS9.Castelli/"
-    # interpolate(model, star_name, save_path, params=None, code='moog')
     '''This function will interpolate the atmosphere layers for a given set of parameters'''
     # Read the CSV file
     params = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', header='infer')
@@ -160,6 +157,13 @@ def interp_atmos(star):
     for star_name in star:
         # Filter the DataFrame for the current star
         star_data = params[params['ID2'] == star_name]
+        if star_data['TEFF'].values[0] < 3500:
+            print({star_name} + " is less than 3500K")
+            model = ispec_dir + "/input/atmospheres/MARCS.GES/"
+        # model = ispec_dir + "/input/atmospheres/MARCS.GES/"
+        else:
+            model = ispec_dir + "/input/atmospheres/ATLAS9.Castelli/"
+        # interpolate(model, star_name, save_path, params=None, code='moog')
         
         if not star_data.empty:
             # Extract TEFF, LOGG, and FEH for the star

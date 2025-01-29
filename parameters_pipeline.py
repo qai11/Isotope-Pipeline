@@ -78,10 +78,11 @@ import ispec
 # star =['hd_100407','hd_102870','hd_128620','hd_128621','hd_146233','hd_157244','hd_160691','moon',
     #    'hd_2151','hd_18907','hd_10700','hd_23249','hd_22049','hd_18884']
   
-star = ['hd_10700']
+star = ['hd_128620']
   
 # star = ['hd_2151']
 # element = ["Mg", "Si", "Ca", "Ti", "Sc","V","Cr","Mn","Co", "Ni", "Y", "Ba", "La", "Nd", "Eu", "Sr", "Zr"]#Rb isnt included
+# element = ["C"]
 #%%
 # start = time.time()
 '''finish setting up parallel pools for each thing'''
@@ -169,7 +170,7 @@ interp_atmos(star)
 
 #     print(f"Data for {star_name} saved successfully.")
 
-star = ['hd_10700']
+# star = ['hd_157244']
 # Load and save the stars with a cut wavelength range for MgH fitting
 for star_name in star:
     try:
