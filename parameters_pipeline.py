@@ -78,11 +78,14 @@ import ispec
 # star =['hd_100407','hd_102870','hd_128620','hd_128621','hd_146233','hd_157244','hd_160691','moon',
     #    'hd_2151','hd_18907','hd_10700','hd_23249','hd_22049','hd_18884']
   
-star = ['hd_128620']
+# star = ['hd_156098']
   
 # star = ['hd_2151']
+star = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+    'hd_102870','hd_45588','hd_156098']
 # element = ["Mg", "Si", "Ca", "Ti", "Sc","V","Cr","Mn","Co", "Ni", "Y", "Ba", "La", "Nd", "Eu", "Sr", "Zr"]#Rb isnt included
-# element = ["C"]
+element = ["Mg","Eu","Ba"]
 #%%
 # start = time.time()
 '''finish setting up parallel pools for each thing'''
@@ -103,96 +106,40 @@ star = ['hd_128620']
 #     pool.close()
 #     pool.join()
 # # Run the abundance finding
-# try:
-#     pool = Pool(os.cpu_count()-1)
-#     pool.map(partial(find_abundance, elements=element), star)
-# finally:
-#     pool.close()
-#     pool.join()
+try:
+    pool = Pool(os.cpu_count()-1)
+    pool.map(partial(find_abundance, elements=element), star)
+finally:
+    pool.close()
+    pool.join()
 #Run the interpolation of the atmospheres
-interp_atmos(star)
+# interp_atmos(star)
+
 
 #%%
-# '''Caculate the final abundances from the line by line abundances'''
-# import pandas as pd
-
-# # Define the list of stars and elements
-# # stars = ['hd_45588']
-
-# # Create an empty dataframe with the desired columns
-# new_abund_df = pd.DataFrame(columns=['element', 'code', 'Abund', 'A(X)', '[X/H]', '[X/Fe]', 'eAbund', 'eA(X)', 'e[X/H]', 'e[X/Fe]'])
-
-# # Iterate over each star and element
-# for star_name in star:
-#     for el in element:
-#         # Read the data for the current star and element
-#         line_abund = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/line_by_line_{el}.txt', delimiter=' ')
-        
-#         # If there are at least 3 data points, use median and mad, otherwise use mean and mad
-#         if len(line_abund) >= 3:
-#             median_XH = line_abund['[X/H]'].median()
-#             mad_XH = line_abund['[X/H]'].mad()
-#             median_XFe = line_abund['[X/Fe]'].median()
-#             mad_XFe = line_abund['[X/Fe]'].mad()
-#             median_Abund = line_abund['Abund'].median()
-#             mad_Abund = line_abund['Abund'].mad()
-#             median_A = line_abund['A(X)'].median()
-#             mad_A = line_abund['A(X)'].mad()
-#         else:
-#             median_XH = line_abund['[X/H]'].mean()
-#             mad_XH = line_abund['[X/H]'].mad()
-#             median_XFe = line_abund['[X/Fe]'].mean()
-#             mad_XFe = line_abund['[X/Fe]'].mad()
-#             median_Abund = line_abund['Abund'].mean()
-#             mad_Abund = line_abund['Abund'].mad()
-#             median_A = line_abund['A(X)'].mean()
-#             mad_A = line_abund['A(X)'].mad()
-        
-#         # Extract the code for the current element
-#         code = line_abund['code'].iloc[0]
-        
-#         # Append the calculated values to the dataframe
-#         new_abund_df = new_abund_df.append({
-#             'element': el, 
-#             'code': code, 
-#             'Abund': median_Abund, 
-#             'A(X)': median_A, 
-#             '[X/H]': median_XH, 
-#             '[X/Fe]': median_XFe, 
-#             'eAbund': mad_Abund, 
-#             'eA(X)': mad_A, 
-#             'e[X/H]': mad_XH, 
-#             'e[X/Fe]': mad_XFe
-#         }, ignore_index=True)
-
-#     # Save the dataframe to a txt file for the current star
-#     df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/summary_abundances_{star_name}.txt', sep=' ', index=False)
-
-#     print(f"Data for {star_name} saved successfully.")
-
 # star = ['hd_157244']
 # Load and save the stars with a cut wavelength range for MgH fitting
-for star_name in star:
-    try:
-        #Uni PC
-        #  spectrum = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_adjusted.fits')
-        spectrum = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/rv_corrected/median_spectrum_{star_name}.txt')
-    except:
-        #MAC
-        spectrum = ispec.read_spectrum(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/{star_name}_adjusted.fits')
+# for star_name in star:
+#     try:
+#         #Uni PC
+#         #  spectrum = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_adjusted.fits')
+#         spectrum = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/rv_corrected/median_spectrum_{star_name}.txt')
+#     except:
+#         #MAC
+#         spectrum = ispec.read_spectrum(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/{star_name}_adjusted.fits')
         
-    spectrum['waveobs'] = spectrum['waveobs']*10
-    #Cut the spectrum to be between 5100 and 5200
-    wfilter = ispec.create_wavelength_filter(spectrum, wave_base=5100, wave_top=5200)
-    cutted_star_spectrum = spectrum[wfilter]
-    #Save the cut spectrum
-    try:
-        #Uni PC
-        ispec.write_spectrum(cutted_star_spectrum,f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_5100-5200.txt')
-    except:
-        #MAC
-        ispec.write_spectrum(cutted_star_spectrum,f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/{star_name}_5100-5200.txt')
-    print(f"{star_name} saved successfully.")
+#     spectrum['waveobs'] = spectrum['waveobs']*10
+#     #Cut the spectrum to be between 5100 and 5200
+#     wfilter = ispec.create_wavelength_filter(spectrum, wave_base=5100, wave_top=5200)
+#     cutted_star_spectrum = spectrum[wfilter]
+#     #Save the cut spectrum
+#     try:
+#         #Uni PC
+#         ispec.write_spectrum(cutted_star_spectrum,f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_5100-5200.txt')
+#     except:
+#         #MAC
+#         ispec.write_spectrum(cutted_star_spectrum,f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/{star_name}_5100-5200.txt')
+#     print(f"{star_name} saved successfully.")
     
 # end = time.time()
 

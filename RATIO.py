@@ -303,10 +303,10 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     "12           " + str(par['mg']) + "\n"                     + \
     "22           0.20000\n"                                    + \
     "24           0.10000\n"                                    + \
-    "26           0.00001\n"                                    + \
+    "26           0.35000\n"                                    + \
     "isotopes      5    1\n"                                    + \
-    "607.01214     1.0\n"                                       + \
-    "606.01212     4.0\n"                                       + \
+    "607.01214     0.35\n"                                       + \
+    "606.01212     5.5\n"                                       + \
     "112.00124     "+ str(par['i_24']) +"\n"                    + \
     "112.00125     "+ str(par['i_25']) +"\n"                    + \
     "112.00126     "+ str(par['i_26']) +"\n"                    + \
@@ -741,19 +741,19 @@ def calc_moog_string(r_24, r_25, r_26):
 
 def initial_guess():
     # initial guess for the parameters
-    s = 7.5
-    mg = 0.55
-    i_24 = 2
-    i_25 = 15
-    i_26 = 13
-    rv = 0
-    # New guess after first pass.
     # s = 7.5
-    # mg = 0.31
-    # i_24 = 3.5
+    # mg = 0.55
+    # i_24 = 2
     # i_25 = 15
-    # i_26 = 7.5
+    # i_26 = 13
     # rv = 0
+    # New guess after first pass.
+    s = 8.9
+    mg = 0.05
+    i_24 = 8.5
+    i_25 = 35
+    i_26 = 20
+    rv = 0
     #region best fit first pass
     # s = 8.9
     # mg = 0.03
@@ -771,64 +771,17 @@ def initial_guess():
 
 v_pass = 1
 
-star_name = 'hd_128620'
+star_name = 'hd_157244'
 linelist = 'quinlinelist.in'
-region = 5
-vsini = 1.9
-csv_out = model_finder(star_name,linelist,region,vsini)
-print(csv_out)
+# region = 4
+regions = [1,3,4,5,10]
+vsini = 5.4
+for region in regions:
+    csv_out = model_finder(star_name,linelist,region,vsini)
+    print(csv_out)
 
-csv_out.to_csv(f'all_fits_region_{region}_pass_{v_pass}.csv')
-
-
-# def compute_hessian_from_saved(params, observed_wavelength, observed_flux, uncertainties, saved_models, step_size=0.01):
-#     """Calculate the hessian using previously saved chi-square values and parameters
-#     Must be run for each parameter set to get the full hessian matrix
-#     """
-#     num_params = len(params)
-#     hessian = np.zeros((num_params, num_params))
-
-#     # Compute the second derivatives numerically
-#     for i in range(num_params):
-#         for j in range(i, num_params):  # Use symmetry (Hessian is symmetric)
-#             # Use the saved chi-square for the current parameters
-#             chi2_base = saved_models[tuple(params)]  # Assumes saved_models is a dictionary with parameter sets as keys
-
-#             # Increment both parameters by step_size
-#             params_up = params.copy()
-#             params_up[i] += step_size
-#             params_up[j] += step_size
-#             chi2_up = saved_models.get(tuple(params_up), None)
-
-#             # Decrement both parameters by step_size
-#             params_down = params.copy()
-#             params_down[i] -= step_size
-#             params_down[j] -= step_size
-#             chi2_down = saved_models.get(tuple(params_down), None)
-
-#             # Increment the first parameter only
-#             params_i_up = params.copy()
-#             params_i_up[i] += step_size
-#             chi2_i_up = saved_models.get(tuple(params_i_up), None)
-
-#             # Increment the second parameter only
-#             params_j_up = params.copy()
-#             params_j_up[j] += step_size
-#             chi2_j_up = saved_models.get(tuple(params_j_up), None)
-            
-#             # Only compute second derivatives if we have valid chi2 values
-#             if chi2_up is not None and chi2_down is not None and chi2_i_up is not None and chi2_j_up is not None:
-#                 # Second derivative (numerical)
-#                 hessian[i, j] = (chi2_up - chi2_i_up - chi2_j_up + chi2_down) / (step_size ** 2)
-#                 hessian[j, i] = hessian[i, j]  # Symmetric matrix
-    
-#     return hessian
+    csv_out.to_csv(f'all_fits_region_{region}_pass_{v_pass}.csv')
 
 
-# def compute_covariance_matrix(hessian):
-#     # Invert the Hessian matrix to get the covariance matrix
-#     covariance_matrix = np.linalg.inv(hessian)
-    
-#     return covariance_matrix
 
 

@@ -58,7 +58,11 @@ time_start = time.time()
 
 def find_abundance(star, elements=None, overwrite_line_regions=False):
     spectrum = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star}/{star}_adjusted.fits')
-    parameters = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star}_final_params.txt', sep=',',index_col=0)
+    # parameters = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star}_final_params.txt', sep=',',index_col=0)
+    #open the masters_stars file to get the parameters
+    parameters = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',',index_col=0)
+    
+    
     if elements is None:
         raise ValueError('Element must be specified')
 
@@ -66,16 +70,16 @@ def find_abundance(star, elements=None, overwrite_line_regions=False):
     code = 'MOOG'
     free_params = []
     
-    # Set up the parameters
-    teff = parameters['teff'].values[0]
-    logg = parameters['logg'].values[0]
-    m_h = parameters['MH'].values[0]
-    alpha = parameters['alpha'].values[0]
-    vmic = parameters['vmic'].values[0]
-    vmac = parameters['vmac'].values[0]
-    vsini = parameters['vsini'].values[0]
-    limb_darkening_coeff = parameters['limb_darkening_coeff'].values[0]
-    resolving_power = parameters['R'].values[0]
+    # Set up the parameters checking against the Masters_stars file ID2
+    teff = parameters[parameters['ID2'] == star]['TEFF'].values[0]
+    logg = parameters[parameters['ID2'] == star]['LOGG'].values[0]
+    m_h = parameters[parameters['ID2'] == star]['FEH'].values[0]
+    alpha = 0
+    vmic = parameters[parameters['ID2'] == star]['VMIC'].values[0]
+    vmac = None
+    limb_darkening_coeff = 0.6
+    resolving_power = 82000
+    vsini = parameters[parameters['ID2'] == star]['VSINI'].values[0]
     vrad = 0
     max_iterations = 20
    
@@ -113,7 +117,7 @@ def find_abundance(star, elements=None, overwrite_line_regions=False):
             
         line_regions = ispec.read_line_regions(line_regions)
         
-        output_dir = f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star}/'
+        output_dir = f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star}/new_lbl_abundances/'
         ispec.mkdir_p(output_dir)
         
         i = 0
