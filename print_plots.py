@@ -2482,20 +2482,20 @@ def isotope_regions(star_name,regions):
         i = iteration
         #Load the best fit values for the region
         try:
-            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/all_fits_region_{region}_pass_{v_pass}.csv', sep=',')
+            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{v_pass}.csv', sep=',')
         except:
-            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/all_fits_region_{region}.csv', sep=',')
+            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}.csv', sep=',')
         
         #Create a dataframe with the name of the best fit file
         best_fit = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['filename']
         #Open the best fit file
-        model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{best_fit}', sep="     ", header=None, skiprows = [0,1])
+        model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{best_fit}', sep="     ", header=None, skiprows = [0,1])
         # Plot each region in subsequent subplots
         #Call region_plots
         region_plots(region, raw, ax[i])
         
         # plot the synthetic spectrum
-        ax[i].plot(model_spectra[0], model_spectra[1]+0.1, label='Synthetic Spectrum')
+        ax[i].plot(model_spectra[0], model_spectra[1], label='Synthetic Spectrum')
         # plot the observed spectrum
         ax[i].plot(raw['waveobs'], raw['flux'] , label='Observed Spectrum', c=star_colour)
         ax[i].set_xlabel('Wavelength ($\AA$)',fontsize=12)
@@ -2511,17 +2511,17 @@ def isotope_regions(star_name,regions):
 
         
     #Save the plot
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
-    plt.close()
+    # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
+    # plt.close()
     
     
 # regions = [3,4,5,6,7,8]
 # All stars
 import ast
-# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-#     'hd_10700','hd_100407','moon','hd_146233','hd_165499','hd_2151',
-#     'hd_102870','hd_45588'] #removed the ones with only 1
-star_list = ['hd_157244']
+star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407','moon','hd_146233','hd_165499','hd_2151',
+    'hd_102870','hd_45588'] #removed the ones with only 1
+# star_list = ['hd_157244']
 for star in star_list:
     #open masters stars csv
     star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
@@ -2532,6 +2532,7 @@ for star in star_list:
     print(f'{star} Done')
     
 # %% """replot bc regions with only one dont work"""
+
 
 def region_1_5(star_name,regions):
     if region == 1:    
@@ -2615,7 +2616,7 @@ for star_name in star_list:
     region_1_5(star,region)
     plt.legend(loc='upper right')
     
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
+    # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
 
 
 

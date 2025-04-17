@@ -5,7 +5,7 @@
 # Optimisation  #
 #################
 # From https://github.com/madeleine-mckenzie/RAtIO/blob/main/RAtIO.py
-
+#%%
 #from my_imports import *
 from scipy.stats import chisquare
 from scipy import interpolate
@@ -16,6 +16,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 import sys
+import ast
 
 #--- iSpec directory -------------------------------------------------------------
 if os.path.exists('/home/users/qai11/iSpec_v20201001'):
@@ -236,7 +237,7 @@ def make_temp_file(filename):
     f.write('')
     f.close() 
 
-def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist,vsini):
+def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist,vsini,Fe,CN,CC):
     # I doubt I'll ever want to change these so initialise them here
     standard_out = 'out1'
     summary_out  = 'out2'
@@ -303,10 +304,10 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     "12           " + str(par['mg']) + "\n"                     + \
     "22           0.20000\n"                                    + \
     "24           0.10000\n"                                    + \
-    "26           0.35000\n"                                    + \
+    "26           " + str(Fe) + "\n"                            + \
     "isotopes      5    1\n"                                    + \
-    "607.01214     0.35\n"                                       + \
-    "606.01212     5.5\n"                                       + \
+    "607.01214     " + str(CN) + "\n"                            + \
+    "606.01212     " + str(CC) + "\n"                            + \
     "112.00124     "+ str(par['i_24']) +"\n"                    + \
     "112.00125     "+ str(par['i_25']) +"\n"                    + \
     "112.00126     "+ str(par['i_26']) +"\n"                    + \
@@ -337,22 +338,22 @@ def change_s(d, increase=True):
     else:
         return None
 
-def change_mg(d, increase=True):
-    change_by = 0.02
-    ll = -1 # lower limit 
-    ul = 1.5 # upper limit
+# def change_mg(d, increase=True):
+#     change_by = 0.02
+#     ll = -1 # lower limit 
+#     ul = 1.5 # upper limit
 
-    # if changing the values is within the limits for that parameter
-    if increase and d['mg'] + change_by <= ul:
-        d['mg'] += change_by
-        d['mg'] = round(d['mg'], 2)
-        return d
-    elif not increase and d['mg'] - change_by >= ll:
-        d['mg'] -= change_by
-        d['mg'] = round(d['mg'], 2)
-        return d
-    else:
-        return None
+#     # if changing the values is within the limits for that parameter
+#     if increase and d['mg'] + change_by <= ul:
+#         d['mg'] += change_by
+#         d['mg'] = round(d['mg'], 2)
+#         return d
+#     elif not increase and d['mg'] - change_by >= ll:
+#         d['mg'] -= change_by
+#         d['mg'] = round(d['mg'], 2)
+#         return d
+#     else:
+#         return None
 
 def change_24(d, increase=True):
     change_by = 0.1
@@ -546,7 +547,7 @@ def get_wavelength_region(raw_wavelength,region):
     # print(str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) )
     return str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) 
 
-def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,vsini):
+def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC):
 
     # creating the in and out filenames based on the guess parameters
     in_filename  = make_filenames(guess, 'in')
@@ -554,7 +555,7 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
 
 
     # creates a parameter string in the directory that moog can read
-    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist,vsini)
+    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC)
 
     # create the smoothed spectra by calling pymoogi
     call_pymoogi(in_filename)
@@ -585,8 +586,8 @@ def generate_neighbours(guess, region):
     new_guesses.append(change_s(guess.copy(), True))  # increase 
     new_guesses.append(change_s(guess.copy(), False)) # decrease 
 
-    new_guesses.append(change_mg(guess.copy(), True))  # increase 
-    new_guesses.append(change_mg(guess.copy(), False)) # decrease 
+    # new_guesses.append(change_mg(guess.copy(), True))  # increase 
+    # new_guesses.append(change_mg(guess.copy(), False)) # decrease 
 
     # only optimise for these for the individual regions, not the whole thing
     if not region == -1:
@@ -639,7 +640,7 @@ def reconstruct_min_chi(min):
                  'i_26' : min.i_26, 
                  'rv'   : min.rv}
 
-def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, region, guess, chi_df,star_name,linelist,vsini):
+def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, region, guess, chi_df,star_name,linelist,vsini,Fe,CN,CC):
 
     # generate neighbours close to the guess (that havent already been run)
     guess_arr = generate_neighbours(guess, region)
@@ -654,23 +655,23 @@ def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, re
     # run optimise_model_fit on the neighbours
     for par in guess_arr:
         # add the new chi squared values to the df
-        chi_of_model = optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, par,star_name,linelist,vsini)
+        chi_of_model = optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, par,star_name,linelist,vsini,Fe,CN,CC)
         chi_df = pd.concat([chi_df,chi_of_model])
     
     # return chi_df with the results of the new models
     return chi_df
 
-def model_finder(star_name,linelist,region,vsini):
+def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC):
     
     # data_path = '/home/users/qai11/Documents/Fixed_fits_files/hd_157244/moog_tests/'
-    data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/'
+    data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/'
     # data_path = '/Users/quin/Desktop/2024_Data/Fixed_fits_files/hd_157244/moog_tests/'
     'change wavelength range'
     region = region
     os.chdir(data_path)
     os.system('mkdir plots')
     # initial guesses as a dictionary
-    guess = initial_guess()
+    guess = initial_guess(MgH)
 
     # raw_spec_filename = 'hd_102870_5100-5200_adjusted.txt'
     # raw_spec_filename = 'hd_157244_5100-5200.txt'
@@ -681,7 +682,7 @@ def model_finder(star_name,linelist,region,vsini):
 
     # add the first chi_squyared value to the dataframe
     chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, 
-                                region, wavelength_region, guess,star_name,linelist,vsini)
+                                region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC)
 
     best_guess_chi = chi_df.chi_squared.iloc[0] # should only be 1 thing in the df atm
 
@@ -690,7 +691,7 @@ def model_finder(star_name,linelist,region,vsini):
     while len(chi_df) < 300:
         # add the neighbours to the dataframe
         chi_df = find_minimum_neighbour(raw_spec_filename, raw_spectra, 
-                        wavelength_region, region, best_guess, chi_df,star_name,linelist,vsini)
+                        wavelength_region, region, best_guess, chi_df,star_name,linelist,vsini,Fe,CN,CC)
         
         # get the best chi-squared fit
         chi_df = chi_df.sort_values(by = ['chi_squared'])
@@ -739,21 +740,21 @@ def calc_moog_string(r_24, r_25, r_26):
     i26=1/(0.01*r_24)
     return str(round(i24,2)) + '_' + str(round(i25,2)) + '_' + str(round(i26,2))
 
-def initial_guess():
+def initial_guess(MgH):
     # initial guess for the parameters
-    # s = 7.5
-    # mg = 0.55
-    # i_24 = 2
-    # i_25 = 15
-    # i_26 = 13
-    # rv = 0
-    # New guess after first pass.
-    s = 8.9
-    mg = 0.05
-    i_24 = 8.5
-    i_25 = 35
-    i_26 = 20
+    s = 7.5
+    mg = MgH
+    i_24 = 2
+    i_25 = 15
+    i_26 = 13
     rv = 0
+    # New guess after first pass.
+    # s = 8.9
+    # mg = 0.05
+    # i_24 = 8.5
+    # i_25 = 35
+    # i_26 = 20
+    # rv = 0
     #region best fit first pass
     # s = 8.9
     # mg = 0.03
@@ -769,19 +770,42 @@ def initial_guess():
             'i_26' : i_26, 
             'rv'   : rv}
 
+#OLD INPUTS
+# v_pass = 1
+# star_name = 'hd_157244'
+# linelist = 'quinlinelist.in'
+# # region = 4
+# regions = [1,3,4,5,10]
+# vsini = 5.4
+# for region in regions:
+#     csv_out = model_finder(star_name,linelist,region,vsini)
+#     print(csv_out)
+
+#     csv_out.to_csv(f'all_fits_region_{region}_pass_{v_pass}.csv')
+#%%
+# star_list = ['hd_11695','hd_18884']
+star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+    'hd_102870','hd_45588','hd_156098']
 v_pass = 1
-
-star_name = 'hd_157244'
 linelist = 'quinlinelist.in'
-# region = 4
-regions = [1,3,4,5,10]
-vsini = 5.4
-for region in regions:
-    csv_out = model_finder(star_name,linelist,region,vsini)
-    print(csv_out)
-
-    csv_out.to_csv(f'all_fits_region_{region}_pass_{v_pass}.csv')
-
-
-
-
+for star_name in star_list:
+    #open masters stars csv
+    star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+    #get the star regions
+    regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
+    #extract the vsini
+    vsini = star_info[star_info['ID2'] == star_name]['VSINI'].values[0]
+    Fe = star_info[star_info['ID2'] == star_name]['Fe'].values[0]
+    CN = star_info[star_info['ID2'] == star_name]['CN'].values[0]
+    CC = star_info[star_info['ID2'] == star_name]['CC'].values[0]
+    
+    #Open summary abundances file for Mg abundance
+    summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
+    #Extract the Mg [X/H] and error
+    MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
+    MgH = MgH['[X/H]'].values[0]
+    for region in regions:
+        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC)
+        csv_out.to_csv(f'all_fits_region_{region}_pass_{v_pass}.csv')
+# %%

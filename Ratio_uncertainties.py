@@ -7,17 +7,6 @@ Description: This code takes some of the ratio calulations and calculated the un
 
 """
 #%%
-
-from scipy.stats import chisquare
-from scipy import interpolate
-from os import listdir
-import os
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.ticker import AutoMinorLocator
-import sys
-
 #Regenerate the spectra to get the chi squared values for the hessian
 
 from scipy.stats import chisquare
@@ -31,6 +20,7 @@ from matplotlib.ticker import AutoMinorLocator
 from astropy.io import fits
 import sys 
 import os
+import ast
 
 #--- iSpec directory -------------------------------------------------------------
 if os.path.exists('/home/users/qai11/iSpec_v20201001'):
@@ -149,7 +139,7 @@ def make_temp_file(filename):
     f.write('')
     f.close() 
 
-def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist,stronglines,vsini):
+def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist,vsini,Fe,CN,CC):
     # I doubt I'll ever want to change these so initialise them here
     standard_out = 'out1'
     summary_out  = 'out2'
@@ -158,86 +148,38 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     make_temp_file(standard_out)
     make_temp_file(summary_out)
     make_temp_file(out_filename)
-    #par inputs the percentage ratios of the isotopes
-    # print(str(par['i_24']))
-    # print(str(par['i_25']))
-    # print(str(par['i_26']))
-    # print(str(par['mg']))
-    # print(str(par['rv']))
-    # print(wavelength_region)
-    #t4070g040m18.newmod
-    if stronglines != None:
-        print(stronglines)
-        par_string = "synth\n" +\
-        "standard_out   '" + standard_out +"'\n"                    + \
-        "summary_out    '" + summary_out +"'\n"                     + \
-        "smoothed_out   '" + out_filename +"'\n"                    + \
-        f"model_in       '{star_name}_atmosphere.moog'\n"                          + \
-        f"lines_in       '{linelist}'\n"                           + \
-        f"stronglines_in '{stronglines}'\n"                           + \
-        "observed_in    '" + raw_spec_filename +"'\n"               + \
-        "atmosphere    1\n"                                         + \
-        "molecules     2\n"                                         + \
-        "lines         2\n"                                         + \
-        "strong        1\n"                                         + \
-        "flux/int      0\n"                                         + \
-        "plotpars      1\n"                                         + \
-        wavelength_region + " 0.15 1.05\n"                          + \
-        str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
-        "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
-        "abundances   4    1\n"                                     + \
-        "6            0.200000\n"                                  + \
-        "12           " + str(par['mg']) + "\n"                     + \
-        "22           0.20000\n"                                    + \
-        "24           0.10000\n"                                    + \
-        "isotopes      5    1\n"                                    + \
-        "607.01214     8.0\n"                                       + \
-        "606.01212     2.0\n"                                       + \
-        "112.00124     "+ str(par['i_24']) +"\n"                    + \
-        "112.00125     "+ str(par['i_25']) +"\n"                    + \
-        "112.00126     "+ str(par['i_26']) +"\n"                    + \
-        "obspectrum 5\n"                                            + \
-        "synlimits\n"                                               + \
-        wavelength_region + " 0.01 5.0\n"                           + \
-        "plot 1\n"                                                  + \
-        "damping 0\n"
-        
-        #  smooth-type  FWHM-Gauss  vsini     LimbDarkeningCoeff    FWHM-Macro     FWHM-Loren
-        
-    elif stronglines == None:
-        print(stronglines)
-        par_string = "synth\n" +\
-        "standard_out   '" + standard_out +"'\n"                    + \
-        "summary_out    '" + summary_out +"'\n"                     + \
-        "smoothed_out   '" + out_filename +"'\n"                    + \
-        f"model_in       '{star_name}_atmosphere.moog'\n"                          + \
-        f"lines_in       '{linelist}'\n"                           + \
-        "observed_in    '" + raw_spec_filename +"'\n"               + \
-        "atmosphere    1\n"                                         + \
-        "molecules     2\n"                                         + \
-        "lines         2\n"                                         + \
-        "flux/int      0\n"                                         + \
-        "plotpars      1\n"                                         + \
-        wavelength_region + " 0.15 1.05\n"                          + \
-        str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
-        "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
-        "abundances   5    1\n"                                     + \
-        "6            0.200000\n"                                  + \
-        "12           " + str(par['mg']) + "\n"                     + \
-        "22           0.20000\n"                                    + \
-        "24           0.10000\n"                                    + \
-        "26           0.00001\n"                                    + \
-        "isotopes      5    1\n"                                    + \
-        "607.01214     1.0\n"                                       + \
-        "606.01212     4.0\n"                                       + \
-        "112.00124     "+ str(par['i_24']) +"\n"                    + \
-        "112.00125     "+ str(par['i_25']) +"\n"                    + \
-        "112.00126     "+ str(par['i_26']) +"\n"                    + \
-        "obspectrum 5\n"                                            + \
-        "synlimits\n"                                               + \
-        wavelength_region + " 0.01 5.0\n"                           + \
-        "plot 1\n"                                                  + \
-        "damping 0\n"
+    par_string = "synth\n" +\
+    "standard_out   '" + standard_out +"'\n"                    + \
+    "summary_out    '" + summary_out +"'\n"                     + \
+    "smoothed_out   '" + out_filename +"'\n"                    + \
+    f"model_in       '{star_name}_atmosphere.moog'\n"                          + \
+    f"lines_in       '{linelist}'\n"                           + \
+    "observed_in    '" + raw_spec_filename +"'\n"               + \
+    "atmosphere    1\n"                                         + \
+    "molecules     2\n"                                         + \
+    "lines         2\n"                                         + \
+    "flux/int      0\n"                                         + \
+    "plotpars      1\n"                                         + \
+    wavelength_region + " 0.15 1.05\n"                          + \
+    str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
+    "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
+    "abundances   5    1\n"                                     + \
+    "6            0.200000\n"                                  + \
+    "12           " + str(par['mg']) + "\n"                     + \
+    "22           0.20000\n"                                    + \
+    "24           0.10000\n"                                    + \
+    "26           " + str(Fe) + "\n"                            + \
+    "isotopes      5    1\n"                                    + \
+    "607.01214     " + str(CN) + "\n"                            + \
+    "606.01212     " + str(CC) + "\n"                            + \
+    "112.00124     "+ str(par['i_24']) +"\n"                    + \
+    "112.00125     "+ str(par['i_25']) +"\n"                    + \
+    "112.00126     "+ str(par['i_26']) +"\n"                    + \
+    "obspectrum 5\n"                                            + \
+    "synlimits\n"                                               + \
+    wavelength_region + " 0.01 5.0\n"                           + \
+    "plot 1\n"                                                  + \
+    "damping 0\n"
 
 
     # writing that string to a file 
@@ -290,7 +232,7 @@ def make_filenames(par, prefix):
     return prefix + '_s'+ str_s +'_mg'+ str_mg + '_i' \
      + str_24 + '_' + str_25  + '_' + str_26 + '_rv' + str_rv
      
-def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,stronglines,vsini):
+def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC):
 
     # creating the in and out filenames based on the guess parameters
     in_filename  = make_filenames(guess, 'in')
@@ -298,7 +240,7 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
 
 
     # creates a parameter string in the directory that moog can read
-    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist,stronglines,vsini)
+    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC)
 
     # create the smoothed spectra by calling pymoogi
     smoothed_spectrum = call_pymoogi(in_filename)
@@ -321,11 +263,11 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
                         #  'ratio'      : calc_ratio(guess['i_24'], guess['i_25'], guess['i_26'])
                          }, index=[1])
     
-def initial_guess(guess_params):
+def initial_guess(guess_params,MgH):
 
     #Current star
     s = guess_params['s']
-    mg = guess_params['mg']
+    mg = MgH
     i_24 = guess_params['i_24']
     i_25 = guess_params['i_25']
     i_26 = guess_params['i_26']
@@ -389,26 +331,26 @@ def get_wavelength_region(raw_wavelength,region):
     # print(str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) )
     return str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) 
 
-def model_finder(star_name,linelist,region,stronglines,vsini,guess_params):
+def model_finder(star_name,linelist,region,vsini,guess_params,Fe,CN,CC,MgH):
     try:
         #Uni computer
-        # data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/'
-        data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/'
+        # data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/'
+        data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/'
         os.chdir(data_path)
     except:
         #MAC
-        if os.path.exists(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/'):
-            data_path = f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/'
+        if os.path.exists(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/'):
+            data_path = f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/'
             os.chdir(data_path)
         else:
-            os.mkdir(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/')
-            data_path = f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/'
+            os.mkdir(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/')
+            data_path = f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/'
             os.chdir(data_path)
     region = region
     
     # os.system('mkdir plots')
     # initial guesses as a dictionary
-    guess = initial_guess(guess_params)
+    guess = initial_guess(guess_params,MgH)
 
     raw_spec_filename = data_path + f'{star_name}_5100-5200.txt'
     raw_spectra       = read_raw_spectra(raw_spec_filename)
@@ -416,7 +358,7 @@ def model_finder(star_name,linelist,region,stronglines,vsini,guess_params):
 
     # add the first chi_squyared value to the dataframe
     chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, 
-                                region, wavelength_region, guess,star_name,linelist,stronglines,vsini)
+                                region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC)
     
     # make_model_plots(raw, smooth, out_filename, region, guess['rv'])
     best_guess_chi = chi_df.chi_squared.iloc[0] # should only be 1 thing in the df atm
@@ -435,7 +377,7 @@ def model_finder(star_name,linelist,region,stronglines,vsini,guess_params):
 # vsini = 9.2
 # linelist = 'quinlist.MgH'
 
-def compute_hessian_from_saved(params, saved_models, step_sizes, chi_sq, max_step_size=0.01):
+def compute_hessian_from_saved(params, saved_models, step_sizes, chi_sq,Fe,CN,CC,MgH, max_step_size=0.01):
     """
     Compute the Hessian matrix using pre-saved chi-square values for different parameter sets.
     
@@ -448,10 +390,10 @@ def compute_hessian_from_saved(params, saved_models, step_sizes, chi_sq, max_ste
     Returns:
     - Hessian matrix: A 5x5 NumPy array
     """
-    if len(params) != 5:
-        raise ValueError("Expected 5 parameters (s, mg, i24, i25, i26), but received {}".format(len(params)))
+    if len(params) != 4:
+        raise ValueError("Expected 4 parameters (s, i24, i25, i26), but received {}".format(len(params)))
 
-    num_params = 5
+    num_params = 4
     hessian = np.zeros((num_params, num_params))
 
     # Ensure step_sizes is a list of length 5
@@ -474,7 +416,7 @@ def compute_hessian_from_saved(params, saved_models, step_sizes, chi_sq, max_ste
             params_up[i] += step_i
             params_up[j] += step_j
             #generate the model for the chi squrared value
-            model_up = model_finder(star_name,linelist,region, stronglines,vsini, params_up)
+            model_up = model_finder(star_name,linelist,region,vsini, params_up,Fe,CN,CC,MgH)
             #Add the chi squared value to the model
             chi2_up = model_up['chi_squared'].iloc[0]
 
@@ -483,7 +425,7 @@ def compute_hessian_from_saved(params, saved_models, step_sizes, chi_sq, max_ste
             params_down[i] -= step_i
             params_down[j] -= step_j
             #generate the model for the chi squrared value
-            model_down = model_finder(star_name,linelist,region, stronglines,vsini, params_down)
+            model_down = model_finder(star_name,linelist,region,vsini, params_down,Fe,CN,CC,MgH)
             #Add the chi squared value to the model
             chi2_down = model_down['chi_squared'].iloc[0]
             # chi2_down = saved_models.get(tuple(params_down), None)
@@ -492,7 +434,7 @@ def compute_hessian_from_saved(params, saved_models, step_sizes, chi_sq, max_ste
             params_i_up = params.copy()
             params_i_up[i] += step_i
             #generate the model for the chi squrared value
-            model_i_up = model_finder(star_name,linelist,region, stronglines,vsini, params_i_up)
+            model_i_up = model_finder(star_name,linelist,region,vsini, params_i_up,Fe,CN,CC,MgH)
             #Add the chi squared value to the model
             chi2_i_up = model_i_up['chi_squared'].iloc[0]
             # chi2_i_up = saved_models.get(tuple(params_i_up), None)
@@ -503,7 +445,7 @@ def compute_hessian_from_saved(params, saved_models, step_sizes, chi_sq, max_ste
             params_j_up[j] += step_j
             chi2_j_up = saved_models.get(tuple(params_j_up), None)
             #Generate the model for the chi squrared value
-            model_j_up = model_finder(star_name,linelist,region, stronglines,vsini, params_j_up)
+            model_j_up = model_finder(star_name,linelist,region,vsini, params_j_up,Fe,CN,CC,MgH)
             #Add the chi squared value to the model
             chi2_j_up = model_j_up['chi_squared'].iloc[0]
 
@@ -567,69 +509,96 @@ def calc_ratio(i_24, i_25, i_26, sigma_i24, sigma_i25, sigma_i26):
     return ratios
 
 
-step_sizes = [0.0001, 0.01, 0.1, 0.001, 0.01]  # Default step sizes for each parameter (s, mg, i24, i25, i26)
-regions = [9]
-vsini = 1.6
-star_name = 'moon'
-v_pass = 1
+# step_sizes = [0.0001, 0.01, 0.1, 0.001, 0.01]  # Default step sizes for each parameter (s, mg, i24, i25, i26)
+# regions = [9]
+# vsini = 1.6
+# star_name = 'moon'
+# v_pass = 1
 
-linelist = 'quinlinelist.in'
+# linelist = 'quinlinelist.in'
+
 stronglines= None
 
+step_sizes = [0.0001, 0.05, 0.1, 0.1]  # step sizes for each parameter (mg, i24, i25, i26)
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
+star_list = ['hd_2151','hd_102870','hd_45588','hd_156098']
+# star_list = ['hd_102870','hd_45588','hd_156098']
+v_pass = 1
+linelist = 'quinlinelist.in'
+for star_name in star_list:
+    #open masters stars csv
+    star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+    #get the star regions
+    regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
+    #extract the vsini
+    vsini = star_info[star_info['ID2'] == star_name]['VSINI'].values[0]
+    Fe = star_info[star_info['ID2'] == star_name]['Fe'].values[0]
+    CN = star_info[star_info['ID2'] == star_name]['CN'].values[0]
+    CC = star_info[star_info['ID2'] == star_name]['CC'].values[0]
+    
+    #Open summary abundances file for Mg abundance
+    summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
+    #Extract the Mg [X/H] and error
+    MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
+    MgH = MgH['[X/H]'].values[0]
+        
+        
 # for star in star_name:
 #Setup df to save the best fit uncertainties
-par_unc_df = pd.DataFrame(columns=['s','d_s', 'mg','d_mg', 'i_24','d_i_24','i_25', 'd_i_25', 'i_26','d_i_26','d_R_24', 'd_R_25', 'd_R_26'])
-for region in regions:
-    #Load saved chi-square values
-    #Load the best fit values for the region
-    fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/all_fits_region_{region}_pass_{v_pass}.csv', sep=',')
-    # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/all_fits_region_{region}.csv', sep=',')
-    #Create a dictionary mapping parameter tuples to chi-square values
-    saved_models = dict(zip(fit_pass[['s', 'mg', 'i_24', 'i_25', 'i_26']].itertuples(index=False), fit_pass['chi_squared']))
-    #Create a dataframe with the best fit values in it
-    best_params = fit_pass.loc[fit_pass['chi_squared'].idxmin()][['s', 'mg', 'i_24', 'i_25', 'i_26']]
-    best_ratio = fit_pass.loc[fit_pass['chi_squared'].idxmin()][['ratio']]
-    #split the ratio into the individual isotopes
-    best_ratio = best_ratio['ratio'].split('_')
-    # print(best_params['mg'])
-    
-    #Compute the Hessian matrix
+    par_unc_df = pd.DataFrame(columns=['s','d_s', 'i_24','d_i_24','i_25', 'd_i_25', 'i_26','d_i_26','d_R_24', 'd_R_25', 'd_R_26'])
+    for region in regions:
+        #Load saved chi-square values
+        #Load the best fit values for the region
+        fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{v_pass}.csv', sep=',')
+        # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}.csv', sep=',')
+        #Create a dictionary mapping parameter tuples to chi-square values
+        saved_models = dict(zip(fit_pass[['s', 'i_24', 'i_25', 'i_26']].itertuples(index=False), fit_pass['chi_squared']))
+        #Create a dataframe with the best fit values in it
+        best_params = fit_pass.loc[fit_pass['chi_squared'].idxmin()][['s', 'i_24', 'i_25', 'i_26']]
+        best_ratio = fit_pass.loc[fit_pass['chi_squared'].idxmin()][['ratio']]
+        #split the ratio into the individual isotopes
+        best_ratio = best_ratio['ratio'].split('_')
+        # print(best_params['mg'])
+        
+        #Compute the Hessian matrix
 
-    hessian = compute_hessian_from_saved(best_params, saved_models, step_sizes, fit_pass['chi_squared'].min())
+        hessian = compute_hessian_from_saved(best_params, saved_models, step_sizes, fit_pass['chi_squared'].min(),Fe,CN,CC,MgH)
 
-    par_unc = compute_covariance_matrix(hessian)
-    
-    #Calculate the ratios and uncertainties
-    mg_ratio_unc = calc_ratio(best_params['i_24'], best_params['i_25'], best_params['i_26'], par_unc[2], par_unc[3], par_unc[4])
-    
-    #Add the best fit parameters from S, Mg, i24, i25, i26 and the mg ratio to the dataframe
-    par_unc_df = par_unc_df.append({
-        'region': region,
-        'pass': v_pass,
-        's': best_params['s'],
-        'd_s': par_unc[0],
-        'mg': best_params['mg'],
-        'd_mg': par_unc[1],
-        'i_24': best_params['i_24'],
-        'd_i_24': par_unc[2],
-        'i_25': best_params['i_25'],
-        'd_i_25': par_unc[3],
-        'i_26': best_params['i_26'],
-        'd_i_26': par_unc[4],
-        'R_24': best_ratio[0],
-        'd_R_24': mg_ratio_unc[0],
-        'R_25': best_ratio[1],
-        'd_R_25': mg_ratio_unc[1],
-        'R_26': best_ratio[2],
-        'd_R_26': mg_ratio_unc[2]
-    }, ignore_index=True)
+        par_unc = compute_covariance_matrix(hessian)
+        
+        #Calculate the ratios and uncertainties
+        mg_ratio_unc = calc_ratio(best_params['i_24'], best_params['i_25'], best_params['i_26'], par_unc[1], par_unc[2], par_unc[3])
+        
+        #Add the best fit parameters from S, Mg, i24, i25, i26 and the mg ratio to the dataframe
+        par_unc_df = par_unc_df.append({
+            'region': region,
+            'pass': v_pass,
+            's': best_params['s'],
+            'd_s': par_unc[0],
+            # 'mg': best_params['mg'],
+            # 'd_mg': par_unc[1],
+            'i_24': best_params['i_24'],
+            'd_i_24': par_unc[1],
+            'i_25': best_params['i_25'],
+            'd_i_25': par_unc[2],
+            'i_26': best_params['i_26'],
+            'd_i_26': par_unc[3],
+            'R_24': best_ratio[0],
+            'd_R_24': mg_ratio_unc[0],
+            'R_25': best_ratio[1],
+            'd_R_25': mg_ratio_unc[1],
+            'R_26': best_ratio[2],
+            'd_R_26': mg_ratio_unc[2]
+        }, ignore_index=True)
+    #Save the df to a csv file
+    par_unc_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/par_unc_{star_name}.csv')
 
 
 # mg_ratio = calc_ratio(par_unc[2], par_unc[3], par_unc[4])
 # print(mg_ratio)
 
-#Save the df to a csv file
-par_unc_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/par_unc_{star_name}.csv')
 
 # %%
 

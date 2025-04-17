@@ -274,7 +274,7 @@ def calc_ratio(i_24, i_25, i_26):
     i26_percentage=1/(0.01*i_26)
 
     isotope_sum = i24_percentage + i25_percentage + i26_percentage
-    # print(f"sum {isotope_sum}")
+    print(f"sum {isotope_sum}")
 
     i24_ratio = (i24_percentage/isotope_sum) * 100
     i25_ratio = (i25_percentage/isotope_sum) * 100
@@ -284,7 +284,7 @@ def calc_ratio(i_24, i_25, i_26):
     
 for star_name in star_list:
     # Read all the abundance data for the star (across all regions)
-    iso_abund_params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/par_unc_{star_name}.csv', delimiter=',', index_col=0)
+    iso_abund_params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/par_unc_{star_name}.csv', delimiter=',', index_col=0)
     
     #open masters stars csv
     star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
@@ -329,7 +329,7 @@ abundance_df = pd.DataFrame(abundance_dict).T
 
 
 # Create a structured DataFrame to hold the final results
-final_df = pd.DataFrame(columns=['s', 'mg', 'i_24', 'i_25','i_26','R_24','R_25','R_26','d_s','d_mg', 
+final_df = pd.DataFrame(columns=['s','i_24', 'i_25','i_26','R_24','R_25','R_26','d_s', 
                                  'd_i_24', 'd_i_25','d_i_26','d_R_24','d_R_25','d_R_26','mg24','mg25','mg26'
                                  ,'d_mg24','d_mg25','d_mg26','MgH','d_MgH','MgH24','MgH25','MgH26','d_MgH24','d_MgH25','d_MgH26',
                                  'MgFe','d_MgFe','MgFe24','MgFe25','MgFe26','d_MgFe24','d_MgFe25','d_MgFe26'])
@@ -345,6 +345,7 @@ for star_name in star_list:
     feh = star_info[star_info['ID2'] == star_name]['FEH'].values[0]
     # Extract the abundance and error data for the current star
     abundances = abundance_df.loc[star_name, 'abundance']
+
     errors = abundance_df.loc[star_name, 'error']
     #Open summary abundances file
     summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
@@ -358,8 +359,11 @@ for star_name in star_list:
     # MgH['[X/H]'] = MgH['[X/H]'] - feh
     # print(MgH)
     # print(MgH)
-    mg_24,mg_25,mg_26 = calc_ratio(abundances[2], abundances[3], abundances[4])
-
+    mg_24,mg_25,mg_26 = calc_ratio(abundances[1], abundances[2], abundances[3])
+    # print(mg_24)
+    # print(abundances[4])
+    # print(errors[4], errors[5], errors[6])
+    
     #calculate the log abundances
     log_solar_mg = abundances[1]+7.53
     log_solar_i_24 = log_solar_mg * (mg_24/100)
@@ -369,12 +373,6 @@ for star_name in star_list:
     mg_24_H_is = log_solar_i_24 - (7.53*0.7899)
     mg_25_H_is = log_solar_i_25 - (7.53*0.1000)
     mg_26_H_is = log_solar_i_26 - (7.53*0.1101) 
-    
-    
-    
-    
-    
-    
     
     #Do the same for the errors
     #calculate the log abundances
@@ -421,20 +419,20 @@ for star_name in star_list:
     # Create a new row for the structured DataFrame
     new_row = {
         's': round(abundances[0], 4), 'd_s': round(errors[0], 4),
-        'mg': round(abundances[1], 4), 'd_mg': round(errors[1], 4),
-        'mg_fe': round(abundances[1]-feh, 4), 'd_mg_fe': round(errors[1]-feh, 4),
+        # 'mg': round(abundances[1], 4), 'd_mg': round(errors[1], 4),
+        # 'mg_fe': round(abundances[1]-feh, 4), 'd_mg_fe': round(errors[1]-feh, 4),
         'mg_fe24': round(mg_24_H_is-feh, 4), 'd_mg_fe24': round( mg_24_H_is_err, 4),
         'mg_fe25': round(mg_25_H_is-feh, 4), 'd_mg_fe25': round( mg_25_H_is_err, 4),
         'mg_fe26': round(mg_26_H_is-feh, 4), 'd_mg_fe26': round( mg_26_H_is_err, 4),
-        'i_24': round(abundances[2], 4), 'd_i_24': round(errors[2], 4),
-        'i_25': round(abundances[3], 4), 'd_i_25': round(errors[3], 4),
-        'i_26': round(abundances[4], 4), 'd_i_26': round(errors[4], 4),
-        'R_24': mg_24, 'd_R_24': round(errors[5], 4),
-        'R_25': mg_25, 'd_R_25': round(errors[6], 4),
-        'R_26': mg_26, 'd_R_26': round(errors[7], 4),
-        'mg24': round(mg_24_H_is,4), 'd_mg24': round(mg_24_H_is*errors[1],4),
-        'mg25': round(mg_25_H_is,4), 'd_mg25': round(mg_25_H_is*errors[1],4),
-        'mg26': round(mg_26_H_is,4), 'd_mg26': round(mg_26_H_is*errors[1],4),
+        'i_24': round(abundances[1], 4), 'd_i_24': round(errors[1], 4),
+        'i_25': round(abundances[2], 4), 'd_i_25': round(errors[2], 4),
+        'i_26': round(abundances[3], 4), 'd_i_26': round(errors[3], 4),
+        'R_24': mg_24, 'd_R_24': round(errors[4], 4),
+        'R_25': mg_25, 'd_R_25': round(errors[5], 4),
+        'R_26': mg_26, 'd_R_26': round(errors[6], 4),
+        'mg24': round(mg_24_H_is,4), 'd_mg24': round(mg_24_H_is_err,4),
+        'mg25': round(mg_25_H_is,4), 'd_mg25': round(mg_25_H_is_err,4),
+        'mg26': round(mg_26_H_is,4), 'd_mg26': round(mg_26_H_is_err,4),
         'MgH': MgH['[X/H]'].values[0], 'd_MgH': MgH['e[X/H]'].values[0], #The lbl tests with H
         'MgH24': round(mg_24_H_is_lbl,4), 'd_MgH24': round(mg_24_H_is_lbl_err,4),
         'MgH25': round(mg_25_H_is_lbl,4), 'd_MgH25': round(mg_25_H_is_lbl_err,4),
@@ -449,7 +447,7 @@ for star_name in star_list:
     final_df = final_df.append(pd.Series(new_row, name=star_name))
     
 #save the final_df to a csv file
-final_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund.csv')
+# final_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund_paper.csv')
 
 
 
