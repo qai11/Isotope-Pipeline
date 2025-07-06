@@ -1,6 +1,6 @@
 """
 Title: Ratio_uncertainties.py
-Author: Ethan Bull, Quin Aicken Davies
+Author: nQuin Aicken Davies
 Date: 05/02/25
 
 Description: This code takes some of the ratio calulations and calculated the uncertainties.
@@ -513,7 +513,7 @@ def calc_ratio(i_24, i_25, i_26, sigma_i24, sigma_i25, sigma_i26):
 # regions = [9]
 # vsini = 1.6
 # star_name = 'moon'
-# v_pass = 1
+# vpass = 1
 
 # linelist = 'quinlinelist.in'
 
@@ -523,9 +523,16 @@ step_sizes = [0.0001, 0.05, 0.1, 0.1]  # step sizes for each parameter (mg, i24,
 # star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
 #     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
 #     'hd_102870','hd_45588','hd_156098']
-star_list = ['hd_2151','hd_102870','hd_45588','hd_156098']
+# star_list = ['hd_2151','hd_102870','hd_45588','hd_156098']
 # star_list = ['hd_102870','hd_45588','hd_156098']
-v_pass = 1
+
+
+# star_list = ['moon','hd_18907']
+star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407']
+vpass = 6
+
+
 linelist = 'quinlinelist.in'
 for star_name in star_list:
     #open masters stars csv
@@ -547,17 +554,18 @@ for star_name in star_list:
         
 # for star in star_name:
 #Setup df to save the best fit uncertainties
-    par_unc_df = pd.DataFrame(columns=['s','d_s', 'i_24','d_i_24','i_25', 'd_i_25', 'i_26','d_i_26','d_R_24', 'd_R_25', 'd_R_26'])
+    par_unc_df = pd.DataFrame(columns=['s','mg','d_s', 'i_24','d_i_24','i_25', 'd_i_25', 'i_26','d_i_26','d_R_24', 'd_R_25', 'd_R_26'])
     for region in regions:
         #Load saved chi-square values
         #Load the best fit values for the region
-        fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{v_pass}.csv', sep=',')
+        fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}.csv', sep=',')
         # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}.csv', sep=',')
         #Create a dictionary mapping parameter tuples to chi-square values
         saved_models = dict(zip(fit_pass[['s', 'i_24', 'i_25', 'i_26']].itertuples(index=False), fit_pass['chi_squared']))
         #Create a dataframe with the best fit values in it
         best_params = fit_pass.loc[fit_pass['chi_squared'].idxmin()][['s', 'i_24', 'i_25', 'i_26']]
         best_ratio = fit_pass.loc[fit_pass['chi_squared'].idxmin()][['ratio']]
+        best_mg = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['mg']
         #split the ratio into the individual isotopes
         best_ratio = best_ratio['ratio'].split('_')
         # print(best_params['mg'])
@@ -574,10 +582,10 @@ for star_name in star_list:
         #Add the best fit parameters from S, Mg, i24, i25, i26 and the mg ratio to the dataframe
         par_unc_df = par_unc_df.append({
             'region': region,
-            'pass': v_pass,
+            'pass': vpass,
             's': best_params['s'],
             'd_s': par_unc[0],
-            # 'mg': best_params['mg'],
+            'mg': best_mg,
             # 'd_mg': par_unc[1],
             'i_24': best_params['i_24'],
             'd_i_24': par_unc[1],
@@ -593,7 +601,7 @@ for star_name in star_list:
             'd_R_26': mg_ratio_unc[2]
         }, ignore_index=True)
     #Save the df to a csv file
-    par_unc_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/par_unc_{star_name}.csv')
+    par_unc_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/par_unc_{star_name}_paper_vpass_{vpass}_2.csv')
 
 
 # mg_ratio = calc_ratio(par_unc[2], par_unc[3], par_unc[4])

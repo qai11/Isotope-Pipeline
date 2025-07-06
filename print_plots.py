@@ -262,7 +262,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
         "isotopes      5    1\n"                                    + \
         "607.01214     0.2\n"                                       + \
         "606.01212     2.0\n"                                       + \
-        "112.00124     "+ str(par['i_24']) +"\n"                    + \
+        "112.00124     2\n"                    + \
         "112.00125     "+ str(par['i_25']) +"\n"                    + \
         "112.00126     "+ str(par['i_26']) +"\n"                    + \
         "obspectrum 5\n"                                            + \
@@ -408,11 +408,11 @@ def initial_guess():
     # i_26 = 16.5
     # rv = 0
     #Current star
-    s = 8.9
-    mg = -0.21
-    i_24 = 6.4
-    i_25 = 35
-    i_26 = 20
+    s = 7.5
+    mg = 0.00
+    i_24 = 2
+    i_25 = 15
+    i_26 = 13
     rv = 0
 
     # s = 0.0 #has to be here for some reason or it breaks, seems to break move below 1.4
@@ -510,13 +510,13 @@ def model_finder(star_name,linelist,region,stronglines,vsini):
     
     # make_model_plots(raw, smooth, out_filename, region, guess['rv'])
 
-star_name = 'hd_157244'
+star_name = 'moon'
 linelist = 'quinlinelist.in'
 # stronglines = 'quinstronglines.in'
 # stronglines = 'quinbarklem.in'
 stronglines= None
 region = 1
-vsini = 5.4
+vsini = 1.6
 # linelist = 'quinlist.MgH'
 model_finder(star_name,linelist,region, stronglines,vsini)
 # %%
@@ -558,10 +558,10 @@ plt.ylabel('Norm. Flux',fontsize=14)
 
 save = True
 # save = False
-# region = 10
+region = 1
 '''Region 1,9,10'''
 if region == 1:     
-    plt.plot(smoothed[0], smoothed[1]-0.02)
+    plt.plot(smoothed[0], smoothed[1])
     plt.plot(raw[0], raw[1])
     plt.legend(['Model', 'Observed'])
     # plt.xlim(5134, 5135.3)
@@ -867,9 +867,9 @@ if save == True:
     try:
         #UNIPC save
         # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Giants/{star_name}/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
-        plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Giants/{star_name}/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}_fudged.png', dpi=300, bbox_inches='tight')
+        # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Giants/{star_name}/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}_fudged.png', dpi=300, bbox_inches='tight')
         print("Figure saved")
-        # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Dwarfs/{star_name}/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
+        plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Dwarfs/{star_name}/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
         # print("Figure saved")
     except:
         # # #MAC save all
@@ -2513,7 +2513,9 @@ def isotope_regions(star_name,regions):
     #Save the plot
     # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
     # plt.close()
-    
+    #Save for the papers
+    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Paper_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
+    plt.close()
     
 # regions = [3,4,5,6,7,8]
 # All stars
@@ -2522,6 +2524,9 @@ star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249',
     'hd_10700','hd_100407','moon','hd_146233','hd_165499','hd_2151',
     'hd_102870','hd_45588'] #removed the ones with only 1
 # star_list = ['hd_157244']
+# star_list = ['hd_18884'] #there is a problem here
+# star_list = ['hd_157244'] #Same here
+# star_list = ['moon']
 for star in star_list:
     #open masters stars csv
     star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
@@ -2580,7 +2585,9 @@ def region_1_5(star_name,regions):
         #mg26
         plt.axvline(x=5135.240, ymin=0, color='black',lw=1,alpha=0.5)
 
-star_list = ['hd_128620','hd_156098','hd_160691']
+# star_list = ['hd_128620','hd_156098','hd_160691']
+# star_list = ['hd_156098']
+star_list = ['hd_160691']
 v_pass = 1
 
 for star_name in star_list:
@@ -2594,15 +2601,20 @@ for star_name in star_list:
     region = regions[0]
     #Load the best fit values for the region
     try:
-        fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/all_fits_region_{region}_pass_{v_pass}.csv', sep=',')
+        # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/all_fits_region_{region}_pass_{v_pass}.csv', sep=',')
+        fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{v_pass}.csv', sep=',')
     except:
-        fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/all_fits_region_{region}.csv', sep=',')
-    
+        # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/all_fits_region_{region}.csv', sep=',')
+        # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}.csv', sep=',')
+        None
+ 
     #Create a dataframe with the name of the best fit file
     best_fit = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['filename']
+    # print(best_fit)
     #Open the best fit file
-    model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{best_fit}', sep="     ", header=None, skiprows = [0,1])
-
+    # model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{best_fit}', sep="     ", header=None, skiprows = [0,1])
+    model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{best_fit}', sep="     ", header=None, skiprows = [0,1])
+    
     # Spectrum from uni computer
     raw = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_5100-5200.txt')
         
@@ -2617,7 +2629,9 @@ for star_name in star_list:
     plt.legend(loc='upper right')
     
     # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
-
+    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Paper_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
+    plt.close()
+    
 
 
 

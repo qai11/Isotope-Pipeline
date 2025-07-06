@@ -937,8 +937,8 @@ for region in range(1,11):
     plt.text((lw+uw)/2, -8, f'R{region}', fontsize=12, ha='center')
 
 #Save the plot
-plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Isotope_Percentage_vs_wavelength.png', dpi=300, bbox_inches='tight')
-
+# plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Isotope_Percentage_vs_wavelength.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Paper_Figures/Results/Isotope_Percentage_vs_wavelength.png', dpi=300, bbox_inches='tight')
 
 # %% X/H with shuffling of figures
 import pandas as pd

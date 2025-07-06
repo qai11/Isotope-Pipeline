@@ -298,7 +298,7 @@ for star_name in star_list:
     params = iso_abund_params.drop(columns=errors.columns).drop(columns=['region', 'pass'])
     
     # Calculate the weighted average of isotopic abundance ratios for the entire star
-    weighted_avg = np.average(params, axis=0, weights=1/errors**2)
+    weighted_avg = np.average(params, axis=0, weights=1/(errors**2))
     
     
     # # Re Normalize so ratios sum to 100%
@@ -309,7 +309,7 @@ for star_name in star_list:
     #     weighted_avg[ratio_columns] *= normalization_factor  # Normalize abundances
 
     # Calculate propagated uncertainties
-    summed_inv_error_sq = np.nansum(1 / errors**2, axis=0)  
+    summed_inv_error_sq = np.nansum(1 / (errors**2), axis=0)  
     weighted_avg_error = np.sqrt(1 / summed_inv_error_sq)
     
     # # **Normalize errors using the same factor applied to abundances**
@@ -568,7 +568,7 @@ isotope_df = pd.DataFrame(columns=['star_name','s','mg','d_mg', 'i_24', 'i_25', 
                                    'pass','region','ratio'])
 for star_name in star_list:
     # Read all the abundance data for the star (across all regions)
-    iso_abund_params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/par_unc_{star_name}.csv', delimiter=',', index_col=0)
+    iso_abund_params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/par_unc_{star_name}.csv', delimiter=',', index_col=0)
    
     # Add the information to the isotope_df
     for i in range(len(iso_abund_params)):
@@ -576,8 +576,8 @@ for star_name in star_list:
             'star_name': star_name,
             's': iso_abund_params['s'][i],
             'd_s': iso_abund_params['d_s'][i],
-            'mg': iso_abund_params['mg'][i],
-            'd_mg': iso_abund_params['d_mg'][i],
+            # 'mg': iso_abund_params['mg'][i],
+            # 'd_mg': iso_abund_params['d_mg'][i],
             'i_24': iso_abund_params['i_24'][i],
             'd_i_24': iso_abund_params['d_i_24'][i],
             'i_25': iso_abund_params['i_25'][i],
@@ -597,7 +597,7 @@ for star_name in star_list:
         isotope_df = isotope_df.append(pd.Series(new_row), ignore_index=True)
         
 #save the isotope_df to a csv file
-isotope_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/All_isotope_ratios_pre_avg.csv')
+isotope_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/All_isotope_ratios_pre_avg_vpass_{iso_abund_params['pass']}.csv')
 
 # %%
 import pandas as pd

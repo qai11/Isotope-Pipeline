@@ -5,6 +5,14 @@
 # Optimisation  #
 #################
 # From https://github.com/madeleine-mckenzie/RAtIO/blob/main/RAtIO.py
+"""
+Title: Isotope_pipeline_V1.py
+Author: Quin Aicken Davies
+Date: May 2024
+
+Description: With Failure of Isotope_pipeline_V1.py, this script is a rework of the original pipeline.
+Initially based on RATIO.py by Madeline Mckenzie, This work improves on the original with addition of automation
+and extention to more isotope regions."""
 #%%
 #from my_imports import *
 from scipy.stats import chisquare
@@ -308,7 +316,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     "isotopes      5    1\n"                                    + \
     "607.01214     " + str(CN) + "\n"                            + \
     "606.01212     " + str(CC) + "\n"                            + \
-    "112.00124     "+ str(par['i_24']) +"\n"                    + \
+    "112.00124     2\n"                                        + \
     "112.00125     "+ str(par['i_25']) +"\n"                    + \
     "112.00126     "+ str(par['i_26']) +"\n"                    + \
     "obspectrum 5\n"                                            + \
@@ -356,7 +364,7 @@ def change_s(d, increase=True):
 #         return None
 
 def change_24(d, increase=True):
-    change_by = 0.1
+    change_by = 0.2
     ll = 0.1 # lower limit 
     ul = 8 # upper limit
 
@@ -371,9 +379,9 @@ def change_24(d, increase=True):
         return None
 
 def change_25(d, increase=True):
-    change_by = 0.5
+    change_by = 0.2
     ll = 1 # lower limit 
-    ul = 15 # upper limit
+    ul = 8 # upper limit
 
     # if changing the values is within the limits for that parameter
     if increase and d['i_25'] + change_by <= ul:
@@ -388,9 +396,9 @@ def change_25(d, increase=True):
         return None
 
 def change_26(d, increase=True):
-    change_by = 0.5
+    change_by = 0.2
     ll = 1 # lower limit 
-    ul = 15 # upper limit
+    ul = 8 # upper limit
 
     # if changing the values is within the limits for that parameter
     if increase and d['i_26'] + change_by <= ul:
@@ -750,10 +758,10 @@ def initial_guess(MgH):
     rv = 0
     # New guess after first pass.
     # s = 8.9
-    # mg = 0.05
-    # i_24 = 8.5
-    # i_25 = 35
-    # i_26 = 20
+    # mg = MgH
+    # i_24 = 0.8
+    # i_25 = 15
+    # i_26 = 3.6
     # rv = 0
     #region best fit first pass
     # s = 8.9
@@ -771,7 +779,7 @@ def initial_guess(MgH):
             'rv'   : rv}
 
 #OLD INPUTS
-# v_pass = 1
+# vpass = 1
 # star_name = 'hd_157244'
 # linelist = 'quinlinelist.in'
 # # region = 4
@@ -781,13 +789,16 @@ def initial_guess(MgH):
 #     csv_out = model_finder(star_name,linelist,region,vsini)
 #     print(csv_out)
 
-#     csv_out.to_csv(f'all_fits_region_{region}_pass_{v_pass}.csv')
+#     csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}.csv')
 #%%
 # star_list = ['hd_11695','hd_18884']
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
+# star_list = ['moon','hd_18907']
 star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-    'hd_102870','hd_45588','hd_156098']
-v_pass = 1
+    'hd_10700','hd_100407']
+vpass = 6
 linelist = 'quinlinelist.in'
 for star_name in star_list:
     #open masters stars csv
@@ -807,5 +818,11 @@ for star_name in star_list:
     MgH = MgH['[X/H]'].values[0]
     for region in regions:
         csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC)
-        csv_out.to_csv(f'all_fits_region_{region}_pass_{v_pass}.csv')
+        csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}.csv')
 # %%
+#%% --------------------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------------------
+
+
+
