@@ -586,7 +586,7 @@ for star_name in star_list:
             's': best_params['s'],
             'd_s': par_unc[0],
             'mg': best_mg,
-            # 'd_mg': par_unc[1],
+            'd_mg': 1,
             'i_24': best_params['i_24'],
             'd_i_24': par_unc[1],
             'i_25': best_params['i_25'],

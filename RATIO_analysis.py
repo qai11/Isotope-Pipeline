@@ -75,8 +75,11 @@ import ast
 #     'hd_10700','hd_100407']
 # star_list = ['hd_11695']
 star_list = ['hd_10700']
+# star_list = ['hd_18884']
 # Initialize an empty dictionary to hold abundance data for each star
 abundance_dict = {}
+
+vpass = '6_2'
 
 def calc_ratio(i_24, i_25, i_26):
     i24_percentage=1/(0.01*i_24)
@@ -108,8 +111,8 @@ for star_name in star_list:
     # Separate the error and parameter columns
     errors = iso_abund_params.filter(like='d_')
     params = iso_abund_params.drop(columns=errors.columns).drop(columns=['region', 'pass'])
-    # print(params)
-    # print(errors)
+    print(params)
+    print(errors)
     # Calculate the weighted average of isotopic abundance ratios for the entire star
     weighted_avg = np.average(params, axis=0, weights=1/(errors**2))
     
@@ -172,7 +175,7 @@ for star_name in star_list:
     # MgH['[X/H]'] = MgH['[X/H]'] - feh
     # print(MgH)
     # print(MgH)
-    mg_24,mg_25,mg_26 = calc_ratio(abundances[1], abundances[2], abundances[3])
+    mg_24,mg_25,mg_26 = calc_ratio(abundances[2], abundances[3], abundances[4])
     # print(mg_24)
     # print(abundances[4])
     # print(errors[4], errors[5], errors[6])
@@ -232,17 +235,17 @@ for star_name in star_list:
     # Create a new row for the structured DataFrame
     new_row = {
         's': round(abundances[0], 4), 'd_s': round(errors[0], 4),
-        # 'mg': round(abundances[1], 4), 'd_mg': round(errors[1], 4),
+        'mg': round(abundances[1], 4), 'd_mg': round(errors[1], 4),
         # 'mg_fe': round(abundances[1]-feh, 4), 'd_mg_fe': round(errors[1]-feh, 4),
         'mg_fe24': round(mg_24_H_is-feh, 4), 'd_mg_fe24': round( mg_24_H_is_err, 4),
         'mg_fe25': round(mg_25_H_is-feh, 4), 'd_mg_fe25': round( mg_25_H_is_err, 4),
         'mg_fe26': round(mg_26_H_is-feh, 4), 'd_mg_fe26': round( mg_26_H_is_err, 4),
-        'i_24': round(abundances[1], 4), 'd_i_24': round(errors[1], 4),
-        'i_25': round(abundances[2], 4), 'd_i_25': round(errors[2], 4),
-        'i_26': round(abundances[3], 4), 'd_i_26': round(errors[3], 4),
-        'R_24': mg_24, 'd_R_24': round(errors[4], 4),
-        'R_25': mg_25, 'd_R_25': round(errors[5], 4),
-        'R_26': mg_26, 'd_R_26': round(errors[6], 4),
+        'i_24': round(abundances[2], 4), 'd_i_24': round(errors[2], 4),
+        'i_25': round(abundances[3], 4), 'd_i_25': round(errors[3], 4),
+        'i_26': round(abundances[4], 4), 'd_i_26': round(errors[4], 4),
+        'R_24': mg_24, 'd_R_24': round(errors[5], 4),
+        'R_25': mg_25, 'd_R_25': round(errors[6], 4),
+        'R_26': mg_26, 'd_R_26': round(errors[7], 4),
         'mg24': round(mg_24_H_is,4), 'd_mg24': round(mg_24_H_is_err,4),
         'mg25': round(mg_25_H_is,4), 'd_mg25': round(mg_25_H_is_err,4),
         'mg26': round(mg_26_H_is,4), 'd_mg26': round(mg_26_H_is_err,4),
@@ -258,9 +261,10 @@ for star_name in star_list:
     
     # Append the new row to the structured DataFrame with star_name as the index
     final_df = final_df.append(pd.Series(new_row, name=star_name))
-    
+
+# print(final_df)
 #save the final_df to a csv file
-final_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv')
+# final_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv')
 
 #%% Plot the things here to not haveto look later
 # ----------------------------------------------------------------------------------------------
