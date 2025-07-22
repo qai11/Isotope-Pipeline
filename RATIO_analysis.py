@@ -71,15 +71,16 @@ import ast
 #     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
 #     'hd_102870','hd_45588','hd_156098']
 # star_list = ['moon','hd_18907']
-# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-#     'hd_10700','hd_100407']
+star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407']
 # star_list = ['hd_11695']
-star_list = ['hd_10700']
+# star_list = ['hd_10700']
+# star_list = ['hd_23249','hd_128621','hd_10700']
 # star_list = ['hd_18884']
 # Initialize an empty dictionary to hold abundance data for each star
 abundance_dict = {}
 
-vpass = '6_2'
+vpass = '6'
 
 def calc_ratio(i_24, i_25, i_26):
     i24_percentage=1/(0.01*i_24)
@@ -99,7 +100,7 @@ for star_name in star_list:
     # Read all the abundance data for the star (across all regions)
     # iso_abund_params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/par_unc_{star_name}_paper_vpass_{vpass}.csv', delimiter=',', index_col=0)
     # print(iso_abund_params)
-    iso_abund_params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/par_unc_{star_name}_paper_vpass_6_2.csv', delimiter=',', index_col=0)
+    iso_abund_params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/par_unc_{star_name}_paper_vpass_{vpass}.csv', delimiter=',', index_col=0)
     
     #open masters stars csv
     star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
@@ -161,7 +162,7 @@ for star_name in star_list:
     feh = star_info[star_info['ID2'] == star_name]['FEH'].values[0]
     # Extract the abundance and error data for the current star
     abundances = abundance_df.loc[star_name, 'abundance']
-
+    
     errors = abundance_df.loc[star_name, 'error']
     #Open summary abundances file
     summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
@@ -172,21 +173,29 @@ for star_name in star_list:
     #Extract the Mg [X/H] and error
     MgFe = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/Fe]','e[X/Fe]']]
     MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
+    print(MgH)
     # MgH['[X/H]'] = MgH['[X/H]'] - feh
     # print(MgH)
     # print(MgH)
-    mg_24,mg_25,mg_26 = calc_ratio(abundances[2], abundances[3], abundances[4])
+    mg_24,mg_25,mg_26 = calc_ratio(abundances[1], abundances[2], abundances[3])
     # print(mg_24)
     # print(abundances[4])
     # print(errors[4], errors[5], errors[6])
     
+    #Open summary abundances file for Mg abundance
+    summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
+    #Extract the Mg [X/H] and error
+    Mg_lbl_abundance = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
+    Mg_lbl_abundance = Mg_lbl_abundance['[X/H]'].values[0]
+    
     #calculate the log abundances
-    log_solar_mg = abundances[1]+7.53
+    log_solar_mg = Mg_lbl_abundance+7.53
     log_solar_i_24 = log_solar_mg * (mg_24/100)
     log_solar_i_25 = log_solar_mg * (mg_25/100)
     log_solar_i_26 = log_solar_mg * (mg_26/100)
     #convert to Mg/H
     mg_24_H_is = log_solar_i_24 - (7.53*0.7899)
+    print(mg_24_H_is)
     mg_25_H_is = log_solar_i_25 - (7.53*0.1000)
     mg_26_H_is = log_solar_i_26 - (7.53*0.1101) 
     
@@ -235,17 +244,23 @@ for star_name in star_list:
     # Create a new row for the structured DataFrame
     new_row = {
         's': round(abundances[0], 4), 'd_s': round(errors[0], 4),
-        'mg': round(abundances[1], 4), 'd_mg': round(errors[1], 4),
+        # 'mg': round(abundances[1], 4), 'd_mg': round(errors[1], 4),
         # 'mg_fe': round(abundances[1]-feh, 4), 'd_mg_fe': round(errors[1]-feh, 4),
         'mg_fe24': round(mg_24_H_is-feh, 4), 'd_mg_fe24': round( mg_24_H_is_err, 4),
         'mg_fe25': round(mg_25_H_is-feh, 4), 'd_mg_fe25': round( mg_25_H_is_err, 4),
         'mg_fe26': round(mg_26_H_is-feh, 4), 'd_mg_fe26': round( mg_26_H_is_err, 4),
-        'i_24': round(abundances[2], 4), 'd_i_24': round(errors[2], 4),
-        'i_25': round(abundances[3], 4), 'd_i_25': round(errors[3], 4),
-        'i_26': round(abundances[4], 4), 'd_i_26': round(errors[4], 4),
-        'R_24': mg_24, 'd_R_24': round(errors[5], 4),
-        'R_25': mg_25, 'd_R_25': round(errors[6], 4),
-        'R_26': mg_26, 'd_R_26': round(errors[7], 4),
+        # 'i_24': round(abundances[2], 4), 'd_i_24': round(errors[2], 4),
+        # 'i_25': round(abundances[3], 4), 'd_i_25': round(errors[3], 4),
+        # 'i_26': round(abundances[4], 4), 'd_i_26': round(errors[4], 4),
+        # 'R_24': mg_24, 'd_R_24': round(errors[5], 4),
+        # 'R_25': mg_25, 'd_R_25': round(errors[6], 4),
+        # 'R_26': mg_26, 'd_R_26': round(errors[7], 4),
+        'i_24': round(abundances[1], 4), 'd_i_24': round(errors[1], 4),
+        'i_25': round(abundances[2], 4), 'd_i_25': round(errors[2], 4),
+        'i_26': round(abundances[3], 4), 'd_i_26': round(errors[3], 4),
+        'R_24': mg_24, 'd_R_24': round(errors[4], 4),
+        'R_25': mg_25, 'd_R_25': round(errors[5], 4),
+        'R_26': mg_26, 'd_R_26': round(errors[6], 4),
         'mg24': round(mg_24_H_is,4), 'd_mg24': round(mg_24_H_is_err,4),
         'mg25': round(mg_25_H_is,4), 'd_mg25': round(mg_25_H_is_err,4),
         'mg26': round(mg_26_H_is,4), 'd_mg26': round(mg_26_H_is_err,4),
@@ -264,7 +279,7 @@ for star_name in star_list:
 
 # print(final_df)
 #save the final_df to a csv file
-# final_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv')
+final_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund_paper_vpass_{vpass}_test.csv')
 
 #%% Plot the things here to not haveto look later
 # ----------------------------------------------------------------------------------------------

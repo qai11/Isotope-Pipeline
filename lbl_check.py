@@ -31,19 +31,21 @@ abunds_loc = '/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/'
 obs_spectra_loc = '/home/users/qai11/Documents/Fixed_fits_files/' #final fitting spectrum
 synth_spectra_loc = abunds_loc # for now
 line_regions_loc = '/home/users/qai11/Documents/quin-masters-code/Linelists/'
-save_loc = '/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/LBL_CHECK_NEW'
+save_loc = '/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/LBL_CHECK_NEW/paper/'
 
 # First, open abundance lbl file to check wavelengths
 # element = 'Ti' # put element name here
-element = ["Eu","Ba","Mg"]#Rb isnt included
+# element = ["Eu","Ba","Mg"]#Rb isnt included
+element = ["Mg"]
 #"Nd", "Eu", "Sr", "Zr"
 for element in element:
     # if not os.path.exists(save_loc + element):
     #     os.mkdir(save_loc + element)
-    #LIST OF STAR NAMES
-    stars =['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621','hd_146233','hd_157244'
-            ,'hd_160691','moon','hd_2151','hd_11695','hd_18907','hd_10700','hd_23249','hd_22049'
-            ,'hd_18884','hd_165499','hd_156098']
+    # #LIST OF STAR NAMES
+    # stars =['hd_45588','hd_100407','hd_102870','hd_128620','hd_128621','hd_146233','hd_157244'
+    #         ,'hd_160691','moon','hd_2151','hd_11695','hd_18907','hd_10700','hd_23249','hd_22049'
+    #         ,'hd_18884','hd_165499','hd_156098']
+    stars = ['hd_10700']
     for star_name in stars:
         # star_name = 'hd_134606'
         abunds = pd.read_csv(abunds_loc + star_name + '/good_lbl/line_by_line_' + element + '.txt', sep=' ')

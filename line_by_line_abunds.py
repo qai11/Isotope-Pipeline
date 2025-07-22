@@ -55,14 +55,14 @@ sys.path.insert(0, os.path.abspath(ispec_dir))
 import ispec
 
 time_start = time.time()
-
+print(' is this working?')
 def find_abundance(star, elements=None, overwrite_line_regions=False):
     spectrum = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star}/{star}_adjusted.fits')
     # parameters = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/parameters/{star}_final_params.txt', sep=',',index_col=0)
     #open the masters_stars file to get the parameters
     parameters = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',',index_col=0)
     
-    
+    print(f'Finding abundances for {star}')
     if elements is None:
         raise ValueError('Element must be specified')
 
@@ -85,7 +85,8 @@ def find_abundance(star, elements=None, overwrite_line_regions=False):
    
 #    wave_base = wave_min
 #    wave_top = wave_max 
-    for element in elements:    
+    for element in elements:  
+        print(f'Finding abundances for {element} in {star}')  
         # atomic_linelist_file = ispec_dir + "/input/linelists/transitions/Quin_GES_LIST.420_920nm/atomic_lines.tsv"
         atomic_linelist_file = ispec_dir + "/input/linelists/transitions/VALD.300_1100nm/atomic_lines.tsv"
         atomic_linelist = ispec.read_atomic_linelist(atomic_linelist_file, wave_base=np.min(spectrum['waveobs']), wave_top=np.max(spectrum['waveobs']))
@@ -117,7 +118,7 @@ def find_abundance(star, elements=None, overwrite_line_regions=False):
             
         line_regions = ispec.read_line_regions(line_regions)
         
-        output_dir = f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star}/new_lbl_abundances/'
+        output_dir = f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star}/'
         ispec.mkdir_p(output_dir)
         
         i = 0
@@ -173,7 +174,7 @@ def find_abundance(star, elements=None, overwrite_line_regions=False):
                 os.mkdir(synth_folder)
             filename_synth = f'{synth_folder}'+ f'synth_{element}' + '_' + str(line['wave_peak']) + '.txt'
             synth.to_csv(filename_synth, sep=' ', index=False, mode='w', header=True)
-            
+            print("Done")
             
             if i == 0:
                 abundances_found.to_csv(filename + '.txt', sep=' ', index=True, mode='w', header=True)

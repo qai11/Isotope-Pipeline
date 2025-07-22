@@ -796,9 +796,10 @@ def initial_guess(MgH):
 #     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
 #     'hd_102870','hd_45588','hd_156098']
 # star_list = ['moon','hd_18907']
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407']
-vpass = 6
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407']
+star_list = ['hd_18884','hd_157244','hd_23249','hd_128621']
+vpass = 7
 linelist = 'quinlinelist.in'
 for star_name in star_list:
     #open masters stars csv
@@ -810,7 +811,7 @@ for star_name in star_list:
     Fe = star_info[star_info['ID2'] == star_name]['Fe'].values[0]
     CN = star_info[star_info['ID2'] == star_name]['CN'].values[0]
     CC = star_info[star_info['ID2'] == star_name]['CC'].values[0]
-    
+     
     #Open summary abundances file for Mg abundance
     summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
     #Extract the Mg [X/H] and error

@@ -80,12 +80,14 @@ import ispec
   
 # star = ['hd_156098']
   
-# star = ['hd_2151']
-star = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-    'hd_102870','hd_45588','hd_156098']
+# # star = ['hd_2151']
+# star = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
 # element = ["Mg", "Si", "Ca", "Ti", "Sc","V","Cr","Mn","Co", "Ni", "Y", "Ba", "La", "Nd", "Eu", "Sr", "Zr"]#Rb isnt included
-element = ["Mg","Eu","Ba"]
+# element = ["Mg","Eu","Ba"]
+star = ['hd_10700']
+element = ["Mg"]
 #%%
 # start = time.time()
 '''finish setting up parallel pools for each thing'''
