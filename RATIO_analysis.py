@@ -675,12 +675,13 @@ def isotope_regions(star_name,regions):
         i = iteration
         #Load the best fit values for the region
         try:
-            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}.csv', sep=',')
+            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}_fine.csv', sep=',')
         except:
             fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}.csv', sep=',')
         
         #Create a dataframe with the name of the best fit file
         best_fit = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['filename']
+        print(f'Best fit for region {region} is {best_fit}')
         #Open the best fit file
         model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{best_fit}', sep="     ", header=None, skiprows = [0,1])
         # Plot each region in subsequent subplots
@@ -709,6 +710,8 @@ def isotope_regions(star_name,regions):
     #Save for the papers
     plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Paper_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
     plt.close()
+
+vpass = 12
     
 # regions = [3,4,5,6,7,8]
 # All stars
@@ -720,11 +723,13 @@ def isotope_regions(star_name,regions):
 # star_list = ['hd_18884'] #there is a problem here
 # star_list = ['hd_157244'] #Same here
 # star_list = ['moon']
+star_list = ['hd_10700']
 for star in star_list:
     #open masters stars csv
     star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
     #get the star regions
-    regions = star_info[star_info['ID2'] == star]['regions'].apply(ast.literal_eval).values[0]
+    # regions = star_info[star_info['ID2'] == star]['regions'].apply(ast.literal_eval).values[0]
+    regions = [1]
     # print(regions)
     isotope_regions(star,regions)
     print(f'{star} Done')
@@ -794,7 +799,7 @@ for star_name in star_list:
     #Load the best fit values for the region
     try:
         # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/all_fits_region_{region}_pass_{vpass}.csv', sep=',')
-        fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}.csv', sep=',')
+        fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}_fine.csv', sep=',')
     except:
         # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/all_fits_region_{region}.csv', sep=',')
         # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}.csv', sep=',')
@@ -803,6 +808,8 @@ for star_name in star_list:
     #Create a dataframe with the name of the best fit file
     best_fit = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['filename']
     # print(best_fit)
+    
+    
     #Open the best fit file
     # model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{best_fit}', sep="     ", header=None, skiprows = [0,1])
     model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{best_fit}', sep="     ", header=None, skiprows = [0,1])

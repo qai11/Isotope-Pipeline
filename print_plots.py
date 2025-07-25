@@ -409,10 +409,10 @@ def initial_guess():
     # rv = 0
     #Current star
     s = 4.1
-    mg = -0.233
-    i_24 = 0.6
-    i_25 = 2
-    i_26 = 3.5
+    mg = -0.09
+    i_24 = 0.2
+    i_25 = 1
+    i_26 = 8.4
     rv = 0
 
     # s = 0.0 #has to be here for some reason or it breaks, seems to break move below 1.4
@@ -483,16 +483,16 @@ def model_finder(star_name,linelist,region,stronglines,vsini):
     try:
         #Uni computer
         # data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/'
-        data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/'
+        data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/'
         os.chdir(data_path)
     except:
         #MAC
-        if os.path.exists(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/'):
-            data_path = f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/'
+        if os.path.exists(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/'):
+            data_path = f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/'
             os.chdir(data_path)
         else:
-            os.mkdir(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/')
-            data_path = f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/'
+            os.mkdir(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/')
+            data_path = f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/'
             os.chdir(data_path)
     region = region
     
@@ -528,20 +528,26 @@ mg_all= str(mg['mg']).replace('.', '')
 s_all = str(mg['s']).replace('.', '')
 if -0.001 < mg['mg'] < 0.001 :
     mg_all = '00'
+    
+print(mg25)
 #HD 102870
 # smoothed = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/hd_102870/out_s841_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
 # raw = pd.read_csv('/home/users/qai11/Documents/Fixed_fits_files/hd_102870/hd_102870_5100-5200.txt', sep="	", header=None)
 #HD128620
-try:
+# try:
     #Uni Computer paths
-    smoothed = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
-    raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{star_name}_5100-5200.txt', sep="	", header=None)
-except:
+    # smoothed = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
+    # raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{star_name}_5100-5200.txt', sep="	", header=None)
+# except:
     #Mac computer paths
-    smoothed = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
-    raw = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests/{star_name}_5100-5200.txt', sep="	", header=None)
+    # smoothed = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
+    # raw = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/{star_name}_5100-5200.txt', sep="	", header=None)
 
-print(f'out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0')
+# print(f'out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0')
+
+outfile = 'out_s41_mg-009_i02_1_84_rv0'
+raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{star_name}_5100-5200.txt', sep="	", header=None)
+smoothed = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{outfile}', sep="     ", header=None, skiprows = [0,1])
 #%%
 '''Interpolating the model to make it fit the observed data better'''
 # apply_post_fundamental_effects(waveobs, fluxes, segments, macroturbulence = 3.0, vsini = 2.0, limb_darkening_coeff = 0.60, R=500000, vrad=(0,), verbose=0)
