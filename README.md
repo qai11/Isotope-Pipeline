@@ -53,9 +53,9 @@ Let people know what your project can do specifically. Provide context and add a
 The analysis of Magnesium Isotopes in M,F and G stars. 
 
 #### Continuum Normilization and Abundances 
-Contains multiple scripts for taking first pass continuum fit data from "Deinira.py" redution pipeline for HERCULES data and performing post redtuction passes along with finding and checking abundances using iSpec.
+Contains multiple scripts for taking first pass continuum fit data from `Deinira.py` redution pipeline for HERCULES data and performing post redtuction passes along with finding and checking abundances using iSpec.
 
-File: "parameters_pipeline.py" is the main running script for these files. It will first call rv_combine.py to perform any barrycentric correction and proper motion adjustment, then continuum_adjust.py to correct the normilization of the spectrum, it will then run find_params.py to find the stellar parameters for each given star and finally find the abundance for given elements.
+File: `parameters_pipeline.py` is the main running script for these files. It will first call `rv_combine.py` to perform any barrycentric correction and proper motion adjustment as needed, then `continuum_adjust.py` to correct the normilization of the spectrum, it will then run `find_params.py` to find the stellar parameters for each given star and finally find the abundance for given elements.
 
 All scripts use iSpec and require the ges linelist for finding abundances from the ges_v2 paper.
 
@@ -71,19 +71,19 @@ Contains some code to extract specific flagged lines from the ges line lists.
 
 Isotope pipeline contains four main files which calculate the magneisum isotopic abundance for up to 10 spectral features, finds the uncertainties and combines all files into larger ones for plotting and making of tables. 
 
-Isotope_pipline_v1.py is the main file. This requires input of star fits or text files a linelist constructed in the MOOG format and information including approximate Fe, CO2 and C0 abundances in the X/H format along with the vsini. It will also require the use of pymoogi found: https://github.com/madamow/pymoogi/
+`Isotope_pipline_v1.py` is the main file. This requires input of star fits or text files a linelist constructed in the MOOG format and information including approximate Fe, CO2 and C0 abundances in the X/H format along with the vsini. It will also require the use of pymoogi found: https://github.com/madamow/pymoogi/
 
-The code is loosely based off of Madline Mckenzies Ratio.py. https://github.com/madeleine-mckenzie/RAtIO/
+The code is based off of Madeleine Mckenzie's Ratio.py. https://github.com/madeleine-mckenzie/RAtIO/
 
 Each folder must contain the model atmosphere the linelist and spectrum (as .txt is preferred)
 
-Isotope_uncertainties.py must be run before Isotope_analysis.py to ensure all files exist. This calculates the uncertainties using the diagonal of the Hessian Matrix for each entry into MOOG.
+`Isotope_uncertainties.py` must be run before `Isotope_analysis.py` to ensure all files exist. This calculates the uncertainties using the diagonal of the Hessian Matrix for each entry into MOOG.
 
-Isotope_analysis.py organises all the files into one location for making tables and plotting. 
+`Isotope_analysis.py` organises all the files into one location for making tables and plotting. 
 
-print_params.py and print_plots.py both plot various kinds of plots for checking.
+`print_params.py` and `print_plots.py` both plot various kinds of plots for checking.
 
-Isotope_pipline_v2.py is a work in progress and should not be used currently.
+`Isotope_pipline_v2.py` is a work in progress and should not be used currently.
 
 
 #### Test scripts
@@ -102,7 +102,11 @@ Depending on what you are making, it can be a good idea to include screenshots o
 
 Built to run with MOOG, pymoogi and iSpec. Must have all libraries installed for functionallity. 
 
+Pymoogi: https://github.com/madamow/pymoogi/
 
+iSpec: https://ui.adsabs.harvard.edu/abs/2014ASInC..11...85B
+
+MOOG: https://ui.adsabs.harvard.edu/abs/2012ascl.soft02009S/abstract
 ## How to clone repositiory
 
 - [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
