@@ -1,6 +1,6 @@
 """
-Title: Ratio_uncertainties.py
-Author: nQuin Aicken Davies
+Title: Isotope_pipeline_uncertainties.py
+Author: Quin Aicken Davies
 Date: 05/02/25
 
 Description: This code takes some of the ratio calulations and calculated the uncertainties.

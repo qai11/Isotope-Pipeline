@@ -3,9 +3,11 @@ Title: Isotope_pipeline_V2.py
 Author: Quin Aicken Davies
 Date: 17/06/2025
 
-Description: With Failure of Isotope_pipeline_V1.py, this script is a rework of the original pipeline.
+Description: With issues of Isotope_pipeline_V1.py, this script is a rework of the original pipeline.
 This pipeline reworks the fitting routine to use a more robust fitting method, 
 and includes additional features such as: Giant or Dwarf star Selection.
+
+CURRENTLY A WORK IN PROGRESS DOES NOT FUNCTION COMPLETELY
 """
 
 #%%

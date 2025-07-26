@@ -1,9 +1,9 @@
 """
-Title: RATIO_analysis.py
+Title: Isotope_pipeline_analysis.py
 Author: Quin Aicken Davies
 Date: 12/06/2025
 
-Description: Run adter Ratio_uncertainties to calculate the final abundances into csv forms.
+Description: Run after Isotope_pipeline_uncertainties to calculate the final abundances into csv forms.
 """
 # %% """Make a table for the isotopic ratios"""
 # """Makes the All_isotope_ratios_pre_avg file"""

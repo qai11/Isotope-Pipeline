@@ -7,6 +7,8 @@ Description: This is the main script for the find_ratio project.
 This uses parameters found from find_params.py and find_abund.py
 to calculate the ratio of the isotopes of interest. It requires 
 the input of the fits files from the previous scripts.
+
+THIS DOES NOT FUNCTION COMPLETELY, CURRENTLY IT IS A MOTHBALLED SCRIPT.
 """
 #%%
 import os
