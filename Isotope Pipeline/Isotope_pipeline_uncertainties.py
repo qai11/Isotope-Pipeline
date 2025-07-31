@@ -528,15 +528,16 @@ step_sizes = [0.0001, 0.05, 0.1, 0.1]  # step sizes for each parameter (mg, i24,
 
 
 # star_list = ['moon','hd_18907']
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407']
-vpass = 6
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407']
+star_list = ['hd_10700']
+vpass = 18
 
 
 linelist = 'quinlinelist.in'
 for star_name in star_list:
     #open masters stars csv
-    star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+    star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #get the star regions
     regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
     #extract the vsini
@@ -558,7 +559,7 @@ for star_name in star_list:
     for region in regions:
         #Load saved chi-square values
         #Load the best fit values for the region
-        fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}.csv', sep=',')
+        fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}_fine.csv', sep=',')
         # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}.csv', sep=',')
         #Create a dictionary mapping parameter tuples to chi-square values
         saved_models = dict(zip(fit_pass[['s', 'i_24', 'i_25', 'i_26']].itertuples(index=False), fit_pass['chi_squared']))
@@ -601,7 +602,7 @@ for star_name in star_list:
             'd_R_26': mg_ratio_unc[2]
         }, ignore_index=True)
     #Save the df to a csv file
-    par_unc_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/par_unc_{star_name}_paper_vpass_{vpass}_2.csv')
+    par_unc_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/par_unc_{star_name}_paper_vpass_{vpass}.csv')
 
 
 # mg_ratio = calc_ratio(par_unc[2], par_unc[3], par_unc[4])

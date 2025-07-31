@@ -8,7 +8,7 @@ Description: Run after Isotope_pipeline_uncertainties to calculate the final abu
 # %% """Make a table for the isotopic ratios"""
 # """Makes the All_isotope_ratios_pre_avg file"""
 
-vpass = '6_2'
+vpass = '18'
 
 import pandas as pd
 import numpy as np
@@ -71,16 +71,16 @@ import ast
 #     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
 #     'hd_102870','hd_45588','hd_156098']
 # star_list = ['moon','hd_18907']
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407']
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407']
 # star_list = ['hd_11695']
 # star_list = ['hd_10700']
 # star_list = ['hd_23249','hd_128621','hd_10700']
 # star_list = ['hd_18884']
 # Initialize an empty dictionary to hold abundance data for each star
 abundance_dict = {}
-
-vpass = '6'
+star_list = ['hd_10700']
+# vpass = '6'
 
 def calc_ratio(i_24, i_25, i_26):
     i24_percentage=1/(0.01*i_24)
@@ -103,7 +103,7 @@ for star_name in star_list:
     iso_abund_params = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/par_unc_{star_name}_paper_vpass_{vpass}.csv', delimiter=',', index_col=0)
     
     #open masters stars csv
-    star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+    star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #get the star regions
     regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
     
@@ -151,7 +151,7 @@ final_df = pd.DataFrame(columns=['s','i_24', 'i_25','i_26','R_24','R_25','R_26',
                                  ,'d_mg24','d_mg25','d_mg26','MgH','d_MgH','MgH24','MgH25','MgH26','d_MgH24','d_MgH25','d_MgH26',
                                  'MgFe','d_MgFe','MgFe24','MgFe25','MgFe26','d_MgFe24','d_MgFe25','d_MgFe26'])
 #Open masters stars csv
-star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
 #remove the 10th row
 star_info = star_info.drop(10)
 #reset index
@@ -177,7 +177,7 @@ for star_name in star_list:
     # MgH['[X/H]'] = MgH['[X/H]'] - feh
     # print(MgH)
     # print(MgH)
-    mg_24,mg_25,mg_26 = calc_ratio(abundances[1], abundances[2], abundances[3])
+    mg_24,mg_25,mg_26 = calc_ratio(abundances[2], abundances[3], abundances[4])
     # print(mg_24)
     # print(abundances[4])
     # print(errors[4], errors[5], errors[6])
@@ -249,18 +249,18 @@ for star_name in star_list:
         'mg_fe24': round(mg_24_H_is-feh, 4), 'd_mg_fe24': round( mg_24_H_is_err, 4),
         'mg_fe25': round(mg_25_H_is-feh, 4), 'd_mg_fe25': round( mg_25_H_is_err, 4),
         'mg_fe26': round(mg_26_H_is-feh, 4), 'd_mg_fe26': round( mg_26_H_is_err, 4),
-        # 'i_24': round(abundances[2], 4), 'd_i_24': round(errors[2], 4),
-        # 'i_25': round(abundances[3], 4), 'd_i_25': round(errors[3], 4),
-        # 'i_26': round(abundances[4], 4), 'd_i_26': round(errors[4], 4),
-        # 'R_24': mg_24, 'd_R_24': round(errors[5], 4),
-        # 'R_25': mg_25, 'd_R_25': round(errors[6], 4),
-        # 'R_26': mg_26, 'd_R_26': round(errors[7], 4),
-        'i_24': round(abundances[1], 4), 'd_i_24': round(errors[1], 4),
-        'i_25': round(abundances[2], 4), 'd_i_25': round(errors[2], 4),
-        'i_26': round(abundances[3], 4), 'd_i_26': round(errors[3], 4),
-        'R_24': mg_24, 'd_R_24': round(errors[4], 4),
-        'R_25': mg_25, 'd_R_25': round(errors[5], 4),
-        'R_26': mg_26, 'd_R_26': round(errors[6], 4),
+        'i_24': round(abundances[2], 4), 'd_i_24': round(errors[2], 4),
+        'i_25': round(abundances[3], 4), 'd_i_25': round(errors[3], 4),
+        'i_26': round(abundances[4], 4), 'd_i_26': round(errors[4], 4),
+        'R_24': mg_24, 'd_R_24': round(errors[5], 4),
+        'R_25': mg_25, 'd_R_25': round(errors[6], 4),
+        'R_26': mg_26, 'd_R_26': round(errors[7], 4),
+        # 'i_24': round(abundances[1], 4), 'd_i_24': round(errors[1], 4),
+        # 'i_25': round(abundances[2], 4), 'd_i_25': round(errors[2], 4),
+        # 'i_26': round(abundances[3], 4), 'd_i_26': round(errors[3], 4),
+        # 'R_24': mg_24, 'd_R_24': round(errors[4], 4),
+        # 'R_25': mg_25, 'd_R_25': round(errors[5], 4),
+        # 'R_26': mg_26, 'd_R_26': round(errors[6], 4),
         'mg24': round(mg_24_H_is,4), 'd_mg24': round(mg_24_H_is_err,4),
         'mg25': round(mg_25_H_is,4), 'd_mg25': round(mg_25_H_is_err,4),
         'mg26': round(mg_26_H_is,4), 'd_mg26': round(mg_26_H_is_err,4),
@@ -279,7 +279,7 @@ for star_name in star_list:
 
 # print(final_df)
 #save the final_df to a csv file
-final_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund_paper_vpass_{vpass}_test.csv')
+final_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv')
 
 #%% Plot the things here to not haveto look later
 # ----------------------------------------------------------------------------------------------
@@ -647,7 +647,7 @@ import ispec
 def isotope_regions(star_name,regions):
     all_params = pd.DataFrame()
     #Read in star_colour information
-    star_colour = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+    star_colour = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     star_colour = star_colour[star_colour['ID2'] == star_name]
     star_colour = star_colour['colour'].values[0]
     #set up plots
@@ -677,7 +677,7 @@ def isotope_regions(star_name,regions):
         try:
             fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}_fine.csv', sep=',')
         except:
-            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}.csv', sep=',')
+            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_fine.csv', sep=',')
         
         #Create a dataframe with the name of the best fit file
         best_fit = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['filename']
@@ -705,13 +705,13 @@ def isotope_regions(star_name,regions):
 
         
     #Save the plot
-    # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
+    # plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
     # plt.close()
     #Save for the papers
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Paper_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
     plt.close()
 
-vpass = 12
+# vpass = 12
     
 # regions = [3,4,5,6,7,8]
 # All stars
@@ -726,10 +726,10 @@ vpass = 12
 star_list = ['hd_10700']
 for star in star_list:
     #open masters stars csv
-    star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+    star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #get the star regions
-    # regions = star_info[star_info['ID2'] == star]['regions'].apply(ast.literal_eval).values[0]
-    regions = [1]
+    regions = star_info[star_info['ID2'] == star]['regions'].apply(ast.literal_eval).values[0]
+    # regions = [1]
     # print(regions)
     isotope_regions(star,regions)
     print(f'{star} Done')
@@ -789,7 +789,7 @@ def region_1_5(star_name,regions):
 
 for star_name in star_list:
     #open masters stars csv
-    star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+    star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #get colours
     star_colour = star_info[star_info['ID2'] == star_name]
     star_colour = star_colour['colour'].values[0]
@@ -827,8 +827,8 @@ for star_name in star_list:
     region_1_5(star,region)
     plt.legend(loc='upper right')
     
-    # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Paper_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
+    # plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/all_fits/Isotope_fits_{star_name}.png', dpi=300, bbox_inches='tight')
     plt.close()
     
 # %% isotope abundance vs wavelength
@@ -924,7 +924,7 @@ isotope_df = pd.DataFrame(columns=['star_name','s','mg','d_mg', 'i_24', 'i_25', 
                                    'pass','region','ratio'])
 
 #Open the Masters_stars csv
-star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
 
 Mg24_df = pd.DataFrame(columns=['star_name','R_24', 'd_R_24','region','wavelength'])
 Mg25_df = pd.DataFrame(columns=['star_name','R_25', 'd_R_25','region','wavelength'])
@@ -993,5 +993,5 @@ for region in range(1,11):
     plt.text((lw+uw)/2, -8, f'R{region}', fontsize=12, ha='center')
 
 #Save the plot
-# plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Isotope_Percentage_vs_wavelength.png', dpi=300, bbox_inches='tight')
-plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Paper_Figures/Results/Isotope_Percentage_vs_wavelength_{vpass}.png', dpi=300, bbox_inches='tight')
+# plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_Figures/Results/Isotope_Percentage_vs_wavelength.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Isotope_Percentage_vs_wavelength_{vpass}.png', dpi=300, bbox_inches='tight')

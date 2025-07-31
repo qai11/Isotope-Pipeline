@@ -262,7 +262,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
         "isotopes      5    1\n"                                    + \
         "607.01214     0.2\n"                                       + \
         "606.01212     2.0\n"                                       + \
-        "112.00124     2\n"                    + \
+        "112.00124     "+ str(par['i_24']) +"\n"                    + \
         "112.00125     "+ str(par['i_25']) +"\n"                    + \
         "112.00126     "+ str(par['i_26']) +"\n"                    + \
         "obspectrum 5\n"                                            + \
@@ -322,7 +322,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
         str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
         "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
         "abundances   5    1\n"                                     + \
-        "6            0.200000\n"                                  + \
+        "6            0.100000\n"                                  + \
         "12           " + str(par['mg']) + "\n"                     + \
         "22           0.20000\n"                                    + \
         "24           0.10000\n"                                    + \
@@ -408,11 +408,11 @@ def initial_guess():
     # i_26 = 16.5
     # rv = 0
     #Current star
-    s = 4.1
+    s = 6.5
     mg = -0.09
-    i_24 = 0.2
-    i_25 = 1
-    i_26 = 8.4
+    i_24 = 0.6
+    i_25 = 4.4
+    i_26 = 3.8
     rv = 0
 
     # s = 0.0 #has to be here for some reason or it breaks, seems to break move below 1.4
@@ -530,24 +530,24 @@ if -0.001 < mg['mg'] < 0.001 :
     mg_all = '00'
     
 print(mg25)
-#HD 102870
+# HD 102870
 # smoothed = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/hd_102870/out_s841_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
 # raw = pd.read_csv('/home/users/qai11/Documents/Fixed_fits_files/hd_102870/hd_102870_5100-5200.txt', sep="	", header=None)
-#HD128620
-# try:
-    #Uni Computer paths
-    # smoothed = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
-    # raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{star_name}_5100-5200.txt', sep="	", header=None)
-# except:
-    #Mac computer paths
-    # smoothed = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
-    # raw = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/{star_name}_5100-5200.txt', sep="	", header=None)
+# HD128620
+try:
+    # Uni Computer paths
+    smoothed = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
+    raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{star_name}_5100-5200.txt', sep="	", header=None)
+except:
+    # Mac computer paths
+    smoothed = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
+    raw = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/{star_name}_5100-5200.txt', sep="	", header=None)
 
 # print(f'out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0')
 
-outfile = 'out_s41_mg-009_i02_1_84_rv0'
-raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{star_name}_5100-5200.txt', sep="	", header=None)
-smoothed = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{outfile}', sep="     ", header=None, skiprows = [0,1])
+# outfile = 'out_s41_mg-009_i02_1_84_rv0'
+# raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{star_name}_5100-5200.txt', sep="	", header=None)
+# smoothed = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{outfile}', sep="     ", header=None, skiprows = [0,1])
 #%%
 '''Interpolating the model to make it fit the observed data better'''
 # apply_post_fundamental_effects(waveobs, fluxes, segments, macroturbulence = 3.0, vsini = 2.0, limb_darkening_coeff = 0.60, R=500000, vrad=(0,), verbose=0)

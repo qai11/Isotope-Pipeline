@@ -198,7 +198,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
     "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
     "abundances   5    1\n"                                     + \
-    "6            0.200000\n"                                  + \
+    "6            0.100000\n"                                  + \
     "12           " + str(par['mg']) + "\n"                     + \
     "22           0.20000\n"                                    + \
     "24           0.10000\n"                                    + \
@@ -206,7 +206,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     "isotopes      5    1\n"                                    + \
     "607.01214     " + str(CN) + "\n"                            + \
     "606.01212     " + str(CC) + "\n"                            + \
-    "112.00124     2\n"                                        + \
+    "112.00124     "+ str(par['i_24']) +"\n"                    + \
     "112.00125     "+ str(par['i_25']) +"\n"                    + \
     "112.00126     "+ str(par['i_26']) +"\n"                    + \
     "obspectrum 5\n"                                            + \
@@ -222,7 +222,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     return in_filename, out_filename
 
 def change_s(d, increase=True):
-    change_by = 0.2
+    change_by = 0.5
     ll = 4 # lower limit 
     ul = 9 # upper limit
 
@@ -287,7 +287,7 @@ def change_25(d, increase=True):
         return None
 
 def change_26(d, increase=True):
-    change_by = 0.2
+    change_by = 0.4
     ll = 1 # lower limit 
     ul = 8 # upper limit
 
@@ -447,7 +447,7 @@ def generate_neighbours(guess, region,Mg24_step):
     # only optimise for these for the individual regions, not the whole thing
     if not region == -1:
         new_guesses.append(change_24(guess.copy(), Mg24_step, True))  # increase 
-        new_guesses.append(change_24(guess.copy(), Mg24_step,False)) # decrease 
+        new_guesses.append(change_24(guess.copy(), Mg24_step, False)) # decrease 
 
         new_guesses.append(change_25(guess.copy(), True))  # increase 
         new_guesses.append(change_25(guess.copy(), False)) # decrease 
@@ -521,7 +521,7 @@ def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step):
     # change wavelength range
     region = region
     os.chdir(data_path)
-    os.system('mkdir plots')
+    # os.system('mkdir plots')
     # initial guesses as a dictionary
     guess = initial_guess(MgH,Mg24_step)
     
@@ -598,7 +598,7 @@ def initial_guess(MgH,Mg24_step):
     i_26 = 0
     rv = 0
     
-    if Mg24_step == 1:
+    if Mg24_step == 0.5:
         # initial guess for the parameters
         s = 7.5
         mg = MgH
@@ -682,24 +682,30 @@ def initial_guess(MgH,Mg24_step):
 #     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
 #     'hd_102870','hd_45588','hd_156098']
 # star_list = ['moon','hd_18907']
-# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-#     'hd_10700','hd_100407']
-# star_list = ['hd_18884','hd_157244','hd_23249','hd_128621']
-star_list = ['hd_10700']
-vpass = 12
+
+'''all stars below 5300K'''
+star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407'] 
+'''giants which play up'''
+# star_list = ['hd_18884','hd_157244','hd_23249','hd_128621'] 
+'''Test star'''
+# star_list = ['hd_10700']
+#Pass for testing purposes
+vpass = 19
+#name of the linelist it should look for
 linelist = 'quinlinelist.in'
 for star_name in star_list:
-    #open masters stars csv
-    star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+    #open masters stars csv which is a list of stars with regions, abudnaces and vsini
+    star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #get the star regions
-    # regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
+    regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
     #extract the vsini
     vsini = star_info[star_info['ID2'] == star_name]['VSINI'].values[0]
     Fe = star_info[star_info['ID2'] == star_name]['Fe'].values[0]
     CN = star_info[star_info['ID2'] == star_name]['CN'].values[0]
     CC = star_info[star_info['ID2'] == star_name]['CC'].values[0]
      
-    #Open summary abundances file for Mg abundance
+    #Open summary abundances file for Mg abundance(This is a line by line magnesium abundance)
     summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
     #Extract the Mg [X/H] and error
     MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
@@ -708,17 +714,17 @@ for star_name in star_list:
     #     csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC)
     #     csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}.csv')
     #Run a coarse and then fine search for the best fit
-    regions = [1]
+    # regions = [1]
     for region in regions:
         """Add a coarse search to find the best fit for the region. Then run the fine search after wards using the best fit coarse fit.
         This will allow for a more accurate fit to the data but will require a new variable for stepsize for Mg24."""
         # coarse search
-        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step=1)
+        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step=0.5)
         csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}_coarse.csv')
         print('Finished coarse search for region: ', region)
     for region in regions:
         # fine search
-        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step=0.2)
+        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step=0.1)
         csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}_fine.csv')     
         print('Finished fine search for region: ', region) 
 # %%
