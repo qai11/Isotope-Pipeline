@@ -40,45 +40,45 @@ def call_pymoogi(filename):
     #https://github.com/madamow/pymoogi/blob/master/README.md
     os.system('echo q | pymoogi ' + filename)
 
-def get_region(r):
-    if r == 0:
-        lw = 5134.42
-        uw = 5140.46
-    elif r == 1:
-        lw = 5134.42
-        uw = 5134.85
-    elif r == 2:
-        lw = 5138.55
-        uw = 5138.95
-    elif r == 3:
-        lw = 5140.04
-        uw = 5140.46
-    elif r == 4:
-        lw = 5134.0
-        uw = 5134.4
-    elif r == 5:
-        lw = 5134.9
-        uw = 5135.3
-    elif r == 6:
-        lw = 5135.9
-        uw = 5136.3
-    elif r == 7:
-        lw = 5136.2
-        uw = 5136.6
-    elif r == 8:
-        lw = 5138.2
-        uw = 5138.6
-    elif r == 9:
-        lw = 5141.0
-        uw = 5141.45
-    elif r == 10:
-        lw = 5133.0
-        uw = 5133.4
-    else:
-        print('wavelength region error')
-        lw = 0
-        uw = 1
-    return lw, uw
+# def get_region(r):
+#     if r == 0:
+#         lw = 5134.42
+#         uw = 5140.46
+#     elif r == 1:
+#         lw = 5134.42
+#         uw = 5134.85
+#     elif r == 2:
+#         lw = 5138.55
+#         uw = 5138.95
+#     elif r == 3:
+#         lw = 5140.04
+#         uw = 5140.46
+#     elif r == 4:
+#         lw = 5134.0
+#         uw = 5134.4
+#     elif r == 5:
+#         lw = 5134.9
+#         uw = 5135.3
+#     elif r == 6:
+#         lw = 5135.9
+#         uw = 5136.3
+#     elif r == 7:
+#         lw = 5136.2
+#         uw = 5136.6
+#     elif r == 8:
+#         lw = 5138.2
+#         uw = 5138.6
+#     elif r == 9:
+#         lw = 5141.0
+#         uw = 5141.45
+#     elif r == 10:
+#         lw = 5133.0
+#         uw = 5133.4
+#     else:
+#         print('wavelength region error')
+#         lw = 0
+#         uw = 1
+#     return lw, uw
 
 
 def interp_smooth(obs_flux, smooth):
@@ -196,8 +196,8 @@ def read_smoothed_spectra(filename, rv):
     # different to reading raw spectra because we have to skip some headder rows
     smooth = pd.read_table(filename, sep="\s+", header=None, skiprows = [0,1],
                          names = ['wavelength', 'flux'])
-    # run_interpolation for the values of the raw spectra wavelength
-    smooth.wavelength = velocity_correction(smooth.wavelength, rv)
+    # # run_interpolation for the values of the raw spectra wavelength
+    # smooth.wavelength = velocity_correction(smooth.wavelength, rv)
     return smooth
 
 
@@ -220,72 +220,99 @@ def make_filenames(par, prefix):
     return prefix + '_s'+ str_s +'_mg'+ str_mg + '_i' \
      + str_24 + '_' + str_25  + '_' + str_26 + '_rv' + str_rv
 
-def get_wavelength_region(region):
-    '''Try cutting out the range'''
-    # lower_wavelength = raw_wavelength[0]
-    # upper_wavelength = raw_wavelength[len(raw_wavelength)-1] # -1 isnt working for some reason
-    if region == 1:
-        '''region 1'''
-        lower_wavelength = 5131
-        upper_wavelength = 5138
-    if region == 2:
-        '''region 2'''
-        lower_wavelength =  5135
-        upper_wavelength = 5142
-    if region == 3:
-        '''region 3'''
-        lower_wavelength = 5136
-        upper_wavelength = 5143
-    if region == 4:
-        '''region 1'''
-        lower_wavelength = 5131
-        upper_wavelength = 5138
-    if region == 5:
-        '''region 2'''
-        lower_wavelength =  5131
-        upper_wavelength = 5138
-    if region == 6:
-        '''region 3'''
-        lower_wavelength = 5133
-        upper_wavelength = 5139
-    if region == 7:
-        '''region 1'''
-        lower_wavelength = 5133
-        upper_wavelength = 5139
-    if region == 8:
-        '''region 2'''
-        lower_wavelength =  5135
-        upper_wavelength = 5142
-    if region == 9:
-        '''region 3'''
-        lower_wavelength = 5136
-        upper_wavelength = 5143
-    if region == 10:
-        '''region 3'''
-        lower_wavelength = 5131
-        upper_wavelength = 5138 
+# def get_wavelength_region(region):
+#     '''Try cutting out the range'''
+#     # lower_wavelength = raw_wavelength[0]
+#     # upper_wavelength = raw_wavelength[len(raw_wavelength)-1] # -1 isnt working for some reason
+#     if region == 1:
+#         '''region 1'''
+#         lower_wavelength = 5131
+#         upper_wavelength = 5138
+#     if region == 2:
+#         '''region 2'''
+#         lower_wavelength =  5135
+#         upper_wavelength = 5142
+#     if region == 3:
+#         '''region 3'''
+#         lower_wavelength = 5136
+#         upper_wavelength = 5143
+#     if region == 4:
+#         '''region 1'''
+#         lower_wavelength = 5131
+#         upper_wavelength = 5138
+#     if region == 5:
+#         '''region 2'''
+#         lower_wavelength =  5131
+#         upper_wavelength = 5138
+#     if region == 6:
+#         '''region 3'''
+#         lower_wavelength = 5133
+#         upper_wavelength = 5139
+#     if region == 7:
+#         '''region 1'''
+#         lower_wavelength = 5133
+#         upper_wavelength = 5139
+#     if region == 8:
+#         '''region 2'''
+#         lower_wavelength =  5135
+#         upper_wavelength = 5142
+#     if region == 9:
+#         '''region 3'''
+#         lower_wavelength = 5136
+#         upper_wavelength = 5143
+#     if region == 10:
+#         '''region 3'''
+#         lower_wavelength = 5131
+#         upper_wavelength = 5138 
     
-    # print(str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) )
-    return str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) 
+#     # print(str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) )
+#     return str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) 
+
+def get_region(r, as_string=False):
+    """Compress get_wavelength_region and get_region into one"""
+    regions = {
+        0: (5134.42, 5140.46),
+        1: (5134.42, 5134.85),
+        2: (5138.55, 5138.95),
+        3: (5140.04, 5140.46),
+        4: (5134.0,  5134.4),
+        5: (5134.9,  5135.3),
+        6: (5135.9,  5136.3),
+        7: (5136.2,  5136.6),
+        8: (5138.2,  5138.6),
+        9: (5141.0,  5141.45),
+        10: (5133.0, 5133.4),
+    }
+
+    if r not in regions:
+        print('wavelength region error')
+        lw, uw = 0.0, 1.0
+    else:
+        lw, uw = regions[r]
+
+    if as_string:
+        return f"{lw:.2f} {uw:.2f}"
+    else:
+        return lw, uw
 
 
 def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess, star_name, linelist, vsini, Fe, CN, CC):
-
     # Initial guess: s, i_24, i_25, i_26
     x0 = [guess['s'], guess['i_24'], guess['i_25'], guess['i_26']]
-    print(x0)
+    # print(x0)
 
     # Optional: set bounds if needed
-    bounds = ([4, 0.1, 1, 1], [9, 8, 8, 8])  # bounds
+    bounds = ([4, 0.1, 1, 1], [9, 30, 30, 30])  # bounds
 
     result = least_squares(
-        residuals_to_minimize,
+        residuals_to_minimize(x0, raw_spec_filename, raw_spectra, region, wavelength_region, guess, star_name, linelist, vsini, Fe, CN, CC),
         x0=x0,
         bounds=bounds,
-        args=(raw_spec_filename, raw_spectra, region, wavelength_region, guess, star_name, linelist, vsini, Fe, CN, CC),
+        args=(raw_spec_filename, raw_spectra, region, wavelength_region, x0, star_name, linelist, vsini, Fe, CN, CC),
         loss='soft_l1'  # Robust to outliers; or 'linear' if clean
     )
-
+    # result = scipy.optimize.minimize(least_squares(residuals_to_minimize))
+    
     # Use final parameters to recompute everything
     guess['s'], guess['i_24'], guess['i_25'], guess['i_26'] = result.x
     in_filename  = make_filenames(guess, 'in')
@@ -311,7 +338,9 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
 
 def residuals_to_minimize(x, raw_spec_filename, raw_spectra, region, wavelength_region, guess, star_name, linelist, vsini, Fe, CN, CC):
     # Update guess dictionary with current parameters
+    # print(guess)
     guess = guess.copy()
+    # print(guess)
     guess['s']     = x[0]
     guess['i_24']  = x[1]
     guess['i_25']  = x[2]
@@ -328,28 +357,44 @@ def residuals_to_minimize(x, raw_spec_filename, raw_spectra, region, wavelength_
     # Get the smoothed spectrum and residuals
     residuals = get_residuals(raw_spectra, out_filename, region)  # <-- You will need to write or already have this
     return residuals
+    # Get the smoothed spectrum and residuals
+    # ls_residuals = least_squares(get_residuals(raw_spectra, out_filename, region))  # <-- You will need to write or already have this
+    # return ls_residuals
 
+    
 def get_residuals(obs_flux, syn_filename, region):
     # Load model spectrum
-    model_flux = read_spectrum(syn_filename)  # or however you access it
+    model_flux = pd.read_table(syn_filename, sep="\s+", header=None, skiprows = [0,1],
+                         names = ['wavelength', 'flux'])
     # Mask/select the region
-    observed = obs_flux[region[0]:region[1]]
-    model = model_flux[region[0]:region[1]]
-    return observed - model
+    #call the regions definitions using the current region.
+    lw, uw = get_region(region,False)
+    #apply the wavelength mask to the observed and model flux
+    obs_mask = (obs_flux['wavelength'] >= lw) & (obs_flux['wavelength'] <= uw)
+    model_mask = (model_flux['wavelength'] >= lw) & (model_flux['wavelength'] <= uw)
+    # Select the flux values within the wavelength range
+    observed = obs_flux.loc[obs_mask, 'flux'].values
+    model = model_flux.loc[model_mask, 'flux'].values
+    # Ensure equal length
+    min_len = min(len(observed), len(model))
+    residuals = observed[:min_len] - model[:min_len]
+    
+    return residuals
+
 
 def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC):
-    data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/'
+    data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper_V2/'
     'change wavelength range'
     region = region
     os.chdir(data_path)
-    os.system('mkdir plots')
+    # os.system('mkdir plots')
     # initial guesses as a dictionary
     guess = initial_guess(MgH)
     #Open the raw spectra file
     raw_spec_filename = data_path + f'{star_name}_5100-5200.txt'
     raw_spectra       = read_raw_spectra(raw_spec_filename)
     #Open the wavelength region based on what region is selected
-    wavelength_region = get_wavelength_region(region)
+    wavelength_region = get_region(region,True)
 
     # add the first chi_squyared value to the dataframe
     chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, 
@@ -358,33 +403,33 @@ def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC):
 
 
     #THE STUFF BELOW MIGHT NEEED TO BE REMOVED
-    best_guess_chi = chi_df.chi_squared.iloc[0] # should only be 1 thing in the df atm
+    # best_guess_chi = chi_df.chi_squared.iloc[0] # should only be 1 thing in the df atm
 
-    # currently this is the best guess we have
-    best_guess = guess
-    while len(chi_df) < 300:
-        # add the neighbours to the dataframe
-        chi_df = find_minimum_neighbour(raw_spec_filename, raw_spectra, 
-                        wavelength_region, region, best_guess, chi_df,star_name,linelist,vsini,Fe,CN,CC)
+    # # currently this is the best guess we have
+    # best_guess = guess
+    # while len(chi_df) < 300:
+    #     # add the neighbours to the dataframe
+    #     chi_df = find_minimum_neighbour(raw_spec_filename, raw_spectra, 
+    #                     wavelength_region, region, best_guess, chi_df,star_name,linelist,vsini,Fe,CN,CC)
         
-        # get the best chi-squared fit
-        chi_df = chi_df.sort_values(by = ['chi_squared'])
-        minimum_model = chi_df.iloc[0]
-        print(chi_df)
-        print('minimum model identified: ', minimum_model)
+    #     # get the best chi-squared fit
+    #     chi_df = chi_df.sort_values(by = ['chi_squared'])
+    #     minimum_model = chi_df.iloc[0]
+    #     print(chi_df)
+    #     print('minimum model identified: ', minimum_model)
 
-        new_best_guess_chi = minimum_model.chi_squared
-        new_best_guess = reconstruct_min_chi(minimum_model)
-        print('current best guess: ', best_guess_chi)
-        print('new best guess: ', new_best_guess_chi)
+    #     new_best_guess_chi = minimum_model.chi_squared
+    #     new_best_guess = reconstruct_min_chi(minimum_model)
+    #     print('current best guess: ', best_guess_chi)
+    #     print('new best guess: ', new_best_guess_chi)
         
-        if best_guess_chi > new_best_guess_chi:
-            best_guess = new_best_guess
-            best_guess_chi = new_best_guess_chi
-            print('now using ', best_guess)
-        elif best_guess_chi == new_best_guess_chi:
-            print('could not find a better option - exiting')
-            break
+    #     if best_guess_chi > new_best_guess_chi:
+    #         best_guess = new_best_guess
+    #         best_guess_chi = new_best_guess_chi
+    #         print('now using ', best_guess)
+    #     elif best_guess_chi == new_best_guess_chi:
+    #         print('could not find a better option - exiting')
+    #         break
 
     return chi_df
         
@@ -450,13 +495,15 @@ def initial_guess(MgH):
 #     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
 #     'hd_102870','hd_45588','hd_156098']
 # star_list = ['moon','hd_18907']
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407']
-vpass = 5
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407']
+# vpass = 5
+vpass = 21
+star_list = ['hd_10700']
 linelist = 'quinlinelist.in'
 for star_name in star_list:
     #open masters stars csv
-    star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+    star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #get the star regions
     regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
     #extract the vsini
@@ -477,7 +524,7 @@ for star_name in star_list:
     MgH = MgH['[X/H]'].values[0]
     for region in regions:
         csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC)
-        csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}.csv')
+        # csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}.csv')
 
 
 # %%

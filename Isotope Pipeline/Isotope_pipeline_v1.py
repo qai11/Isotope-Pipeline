@@ -684,14 +684,14 @@ def initial_guess(MgH,Mg24_step):
 # star_list = ['moon','hd_18907']
 
 '''all stars below 5300K'''
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407'] 
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407'] 
 '''giants which play up'''
-# star_list = ['hd_18884','hd_157244','hd_23249','hd_128621'] 
+star_list = ['hd_18884','hd_157244','hd_23249'] 
 '''Test star'''
 # star_list = ['hd_10700']
 #Pass for testing purposes
-vpass = 19
+vpass = 20
 #name of the linelist it should look for
 linelist = 'quinlinelist.in'
 for star_name in star_list:

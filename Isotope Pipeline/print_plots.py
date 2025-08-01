@@ -408,11 +408,11 @@ def initial_guess():
     # i_26 = 16.5
     # rv = 0
     #Current star
-    s = 6.5
-    mg = -0.09
-    i_24 = 0.6
-    i_25 = 4.4
-    i_26 = 3.8
+    s = 9
+    mg = -0.271
+    i_24 = 2
+    i_25 = 15
+    i_26 = 18
     rv = 0
 
     # s = 0.0 #has to be here for some reason or it breaks, seems to break move below 1.4
@@ -510,13 +510,13 @@ def model_finder(star_name,linelist,region,stronglines,vsini):
     
     # make_model_plots(raw, smooth, out_filename, region, guess['rv'])
 
-star_name = 'hd_10700'
+star_name = 'hd_18884'
 linelist = 'quinlinelist.in'
 # stronglines = 'quinstronglines.in'
 # stronglines = 'quinbarklem.in'
 stronglines= None
-region = 1
-vsini = 0.4
+region = 3
+vsini = 1.4
 # linelist = 'quinlist.MgH'
 model_finder(star_name,linelist,region, stronglines,vsini)
 # %%
@@ -564,7 +564,7 @@ plt.ylabel('Norm. Flux',fontsize=14)
 
 save = True
 # save = False
-region = 1
+region = 3
 '''Region 1,9,10'''
 if region == 1:     
     plt.plot(smoothed[0], smoothed[1])
