@@ -81,18 +81,35 @@ def call_pymoogi(filename):
 #     return lw, uw
 
 
-def interp_smooth(obs_flux, smooth):
-    # perform a cubic spline on the data to make the wavelengths line up with eachother
-    tck = interpolate.splrep(smooth.wavelength, smooth.flux, s=0)
+# def interp_smooth(obs, model):
+#     # perform a cubic spline on the data to make the wavelengths line up with eachother
+#     tck = interpolate.splrep(model.wavelength, model.flux, s=0)
 
-    # evaluate the value of the spline at the wavelength points of the original spectra
-    new_flux = interpolate.splev(raw.wavelength, tck, der=0)
+#     # evaluate the value of the spline at the wavelength points of the original spectra
+#     new_flux = interpolate.splev(obs.wavelength, tck, der=0)
     
-    # add the model flux to the dataframe
-    raw['model_flux'] = pd.Series(new_flux, index=raw.index)
+#     # add the model flux to the dataframe
+#     obs['model_flux'] = pd.Series(new_flux, index=obs.index)
     
-    # return the dataframe with the new interpolated column in it 
-    return obs_flux
+#     # return the dataframe with the new interpolated column in it 
+#     return obs
+
+def interp_smooth(obs, model):
+    """Interpolate observed spectrum to match model's wavelength grid. Reordering things for testing."""
+    # Fit a spline to the observed data
+    tck = interpolate.splrep(obs.wavelength, obs.flux, s=0)
+    
+    # Evaluate spline at model wavelengths
+    new_flux = interpolate.splev(model.wavelength, tck, der=0)
+    
+    # Create new DataFrame aligned with model
+    obs_interp = pd.DataFrame({
+        'wavelength': model.wavelength,
+        'flux': new_flux
+    })
+    
+    return obs_interp
+
 
 
 def make_temp_file(filename):
@@ -192,7 +209,7 @@ def read_raw_spectra(filename):
     return pd.read_table(filename, sep="\s+", usecols=[0,1], 
                          header=0, names = ['wavelength', 'flux'])
 
-def read_smoothed_spectra(filename, rv):
+def read_smoothed_spectra(filename):
     # different to reading raw spectra because we have to skip some headder rows
     smooth = pd.read_table(filename, sep="\s+", header=None, skiprows = [0,1],
                          names = ['wavelength', 'flux'])
@@ -201,13 +218,37 @@ def read_smoothed_spectra(filename, rv):
     return smooth
 
 
-def get_chi_squared(obs_flux, out_filename, region, guess, vsini, make_plot=False):
-    
-    # read in the smoothed data
-    model_flux = read_smoothed_spectra(out_filename, guess['rv'])
-    obs_flux = interp_smooth(obs_flux, smooth)
-    residual = obs_flux[region[0]:region[1]] - model_flux[region[0]:region[1]]
+# def get_chi_squared(obs, out_filename, region, guess, vsini, make_plot=False):
+#     """Calculate the chi-squared value for the model fit."""
+#     # read in the smoothed data
+#     model = pd.read_table(out_filename, sep="\s+", header=None, skiprows = [0,1],
+#                          names = ['wavelength', 'flux'])
+#     obs = interp_smooth(obs, model)
+#     residual = obs[region[0]:region[1]] - model[region[0]:region[1]]
+#     return np.sum(residual**2)
+
+def get_chi_squared(obs, out_filename, region, guess, vsini, make_plot=False):
+    """Calculate the chi-squared value for the model fit."""
+    # read in the smoothed model output
+    model = pd.read_table(out_filename, sep=r"\s+", header=None, skiprows=[0, 1],
+                          names=['wavelength', 'flux'])
+
+    # interpolate the observed spectrum onto the model wavelength grid
+    obs_interp = interp_smooth(obs, model)  # returns DataFrame with same wavelengths as model
+
+    # mask for region for checking that this works correctly
+    lw, uw = get_region(region,False)  # region should be (lower_wavelength, upper_wavelength)
+    mask = (model['wavelength'] >= lw) & (model['wavelength'] <= uw)
+    # Ensure the mask is applied to both model and obs_interp
+    # Extract fluxes where the mask is True
+    model_flux = model.loc[mask, 'flux'].to_numpy()
+    obs_flux = obs_interp.loc[mask, 'flux'].to_numpy()
+    assert np.allclose(obs_interp['wavelength'], model['wavelength']), "Wavelength grids do not match!"
+
+    # Calculate residuals
+    residual = obs_flux - model_flux
     return np.sum(residual**2)
+
 
 def make_filenames(par, prefix):
     str_s = str(round(par['s'],   2)).replace('.', '')
@@ -268,8 +309,12 @@ def make_filenames(par, prefix):
 #     # print(str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) )
 #     return str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) 
 
-def get_region(r, as_string=False):
-    """Compress get_wavelength_region and get_region into one"""
+def get_region(r, as_string=False, synth_width=8.0):
+    """
+    Returns a tuple of (synth_lower, synth_upper), or string if as_string=True.
+    Synth range is widened around the central region to ensure MOOG can synthesize properly.
+    """
+    # Original analysis regions (used for residuals)
     regions = {
         0: (5134.42, 5140.46),
         1: (5134.42, 5134.85),
@@ -290,10 +335,19 @@ def get_region(r, as_string=False):
     else:
         lw, uw = regions[r]
 
+    # Calculate center of original region
+    center = (lw + uw) / 2.0
+    half_synth = synth_width / 2.0
+
+    # Define synthesis region
+    synth_lw = center - half_synth
+    synth_uw = center + half_synth
+
     if as_string:
-        return f"{lw:.2f} {uw:.2f}"
+        return f"{synth_lw:.2f} {synth_uw:.2f}"
     else:
-        return lw, uw
+        return synth_lw, synth_uw
+
 
 
 def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess, star_name, linelist, vsini, Fe, CN, CC):
@@ -305,21 +359,30 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
     bounds = ([4, 0.1, 1, 1], [9, 30, 30, 30])  # bounds
 
     result = least_squares(
-        residuals_to_minimize(x0, raw_spec_filename, raw_spectra, region, wavelength_region, guess, star_name, linelist, vsini, Fe, CN, CC),
+        residuals_to_minimize,
         x0=x0,
         bounds=bounds,
-        args=(raw_spec_filename, raw_spectra, region, wavelength_region, x0, star_name, linelist, vsini, Fe, CN, CC),
+        args=(raw_spec_filename, raw_spectra, region, wavelength_region, guess, star_name, linelist, vsini, Fe, CN, CC),
         loss='soft_l1'  # Robust to outliers; or 'linear' if clean
     )
     # result = scipy.optimize.minimize(least_squares(residuals_to_minimize))
     
-    # Use final parameters to recompute everything
+    # Use final parameters to recompute everything for saving the file
     guess['s'], guess['i_24'], guess['i_25'], guess['i_26'] = result.x
     in_filename  = make_filenames(guess, 'in')
     out_filename = make_filenames(guess, 'out')
     generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess, star_name, linelist, vsini, Fe, CN, CC)
     #Call pymoogi with the generated input file
     call_pymoogi(in_filename)
+    
+    print("Result attributes:")
+    print("x (solution):", result.x)
+    print("Cost (0.5 * sum of squares):", result.cost)
+    print("Residuals:", result.fun)
+    print("Jacobian (first 2 rows):\n", result.jac[:2])
+    print("Number of function evaluations:", result.nfev)
+    print("Success:", result.success)
+    print("Message:", result.message)
 
     # Get final chi-squared
     cs = get_chi_squared(raw_spectra, out_filename, region, guess, vsini, make_plot=False)
@@ -338,8 +401,11 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
 
 def residuals_to_minimize(x, raw_spec_filename, raw_spectra, region, wavelength_region, guess, star_name, linelist, vsini, Fe, CN, CC):
     # Update guess dictionary with current parameters
+    # # Ensure we don't modify the original guess
     # print(guess)
     guess = guess.copy()
+    # print("Type of guess:", type(guess))
+    # print("Guess contents:", guess)
     # print(guess)
     guess['s']     = x[0]
     guess['i_24']  = x[1]
@@ -356,16 +422,21 @@ def residuals_to_minimize(x, raw_spec_filename, raw_spectra, region, wavelength_
 
     # Get the smoothed spectrum and residuals
     residuals = get_residuals(raw_spectra, out_filename, region)  # <-- You will need to write or already have this
+    # print("Residuals type:", type(residuals))
+    # print("Residuals dtype:", getattr(residuals, 'dtype', 'no dtype'))
+    # print("Residuals:", residuals[:5])
+    
     return residuals
-    # Get the smoothed spectrum and residuals
-    # ls_residuals = least_squares(get_residuals(raw_spectra, out_filename, region))  # <-- You will need to write or already have this
-    # return ls_residuals
-
     
 def get_residuals(obs_flux, syn_filename, region):
+    # smooth = pd.read_table(filename, sep="\s+", header=None, skiprows = [0,1],
+    #                      names = ['wavelength', 'flux'])
+    # print('Synthesis filename:', syn_filename)
     # Load model spectrum
     model_flux = pd.read_table(syn_filename, sep="\s+", header=None, skiprows = [0,1],
                          names = ['wavelength', 'flux'])
+    # print("Model flux shape:", model_flux.shape)
+    # print('model flux df',model_flux)
     # Mask/select the region
     #call the regions definitions using the current region.
     lw, uw = get_region(region,False)
@@ -375,10 +446,13 @@ def get_residuals(obs_flux, syn_filename, region):
     # Select the flux values within the wavelength range
     observed = obs_flux.loc[obs_mask, 'flux'].values
     model = model_flux.loc[model_mask, 'flux'].values
+    # print(model)
     # Ensure equal length
     min_len = min(len(observed), len(model))
     residuals = observed[:min_len] - model[:min_len]
-    
+    # print("Model range:", model_flux['wavelength'].min(), "-", model_flux['wavelength'].max())
+    # print("Observed range:", obs_flux['wavelength'].min(), "-", obs_flux['wavelength'].max())
+    # print("Region:", lw, "-", uw)
     return residuals
 
 
@@ -399,7 +473,6 @@ def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC):
     # add the first chi_squyared value to the dataframe
     chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, 
                                 region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC)
-
 
 
     #THE STUFF BELOW MIGHT NEEED TO BE REMOVED
@@ -461,19 +534,19 @@ def calc_moog_string(r_24, r_25, r_26):
 
 def initial_guess(MgH):
     # initial guess for the parameters
-    # s = 7.5
-    # mg = MgH
-    # i_24 = 2
-    # i_25 = 15
-    # i_26 = 13
-    # rv = 0
-    # New guess after first pass.
-    s = 8.9
+    s = 7.5
     mg = MgH
-    i_24 = 0.8
+    i_24 = 2
     i_25 = 15
-    i_26 = 3.6
+    i_26 = 13
     rv = 0
+    # New guess after first pass.
+    # s = 8.9
+    # mg = MgH
+    # i_24 = 0.8
+    # i_25 = 15.0
+    # i_26 = 3.6
+    # rv = 0
     #region best fit first pass
     # s = 8.9
     # mg = 0.03
@@ -505,7 +578,8 @@ for star_name in star_list:
     #open masters stars csv
     star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #get the star regions
-    regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
+    # regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
+    regions = [1]
     #extract the vsini
     vsini = star_info[star_info['ID2'] == star_name]['VSINI'].values[0]
     Fe = star_info[star_info['ID2'] == star_name]['Fe'].values[0]
@@ -524,7 +598,7 @@ for star_name in star_list:
     MgH = MgH['[X/H]'].values[0]
     for region in regions:
         csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC)
-        # csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}.csv')
+        csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}.csv')
 
 
 # %%

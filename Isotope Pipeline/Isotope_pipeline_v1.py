@@ -326,7 +326,7 @@ def read_raw_spectra(filename):
                          header=0, names = ['wavelength', 'flux'])
 
 def read_smoothed_spectra(filename, rv):
-    # different to reading raw spectra because we have to skip some headder rows
+    # different to reading raw spectra because we have to skip some header rows
     smooth = pd.read_table(filename, sep="\s+", header=None, skiprows = [0,1],
                          names = ['wavelength', 'flux'])
     # run_interpolation for the values of the raw spectra wavelength
