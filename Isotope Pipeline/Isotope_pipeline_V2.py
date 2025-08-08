@@ -40,45 +40,45 @@ def call_pymoogi(filename):
     #https://github.com/madamow/pymoogi/blob/master/README.md
     os.system('echo q | pymoogi ' + filename)
 
-# def get_region(r):
-#     if r == 0:
-#         lw = 5134.42
-#         uw = 5140.46
-#     elif r == 1:
-#         lw = 5134.42
-#         uw = 5134.85
-#     elif r == 2:
-#         lw = 5138.55
-#         uw = 5138.95
-#     elif r == 3:
-#         lw = 5140.04
-#         uw = 5140.46
-#     elif r == 4:
-#         lw = 5134.0
-#         uw = 5134.4
-#     elif r == 5:
-#         lw = 5134.9
-#         uw = 5135.3
-#     elif r == 6:
-#         lw = 5135.9
-#         uw = 5136.3
-#     elif r == 7:
-#         lw = 5136.2
-#         uw = 5136.6
-#     elif r == 8:
-#         lw = 5138.2
-#         uw = 5138.6
-#     elif r == 9:
-#         lw = 5141.0
-#         uw = 5141.45
-#     elif r == 10:
-#         lw = 5133.0
-#         uw = 5133.4
-#     else:
-#         print('wavelength region error')
-#         lw = 0
-#         uw = 1
-#     return lw, uw
+def get_region_chi(r):
+    if r == 0:
+        lw = 5134.42
+        uw = 5140.46
+    elif r == 1:
+        lw = 5134.42
+        uw = 5134.85
+    elif r == 2:
+        lw = 5138.55
+        uw = 5138.95
+    elif r == 3:
+        lw = 5140.04
+        uw = 5140.46
+    elif r == 4:
+        lw = 5134.0
+        uw = 5134.4
+    elif r == 5:
+        lw = 5134.9
+        uw = 5135.3
+    elif r == 6:
+        lw = 5135.9
+        uw = 5136.3
+    elif r == 7:
+        lw = 5136.2
+        uw = 5136.6
+    elif r == 8:
+        lw = 5138.2
+        uw = 5138.6
+    elif r == 9:
+        lw = 5141.0
+        uw = 5141.45
+    elif r == 10:
+        lw = 5133.0
+        uw = 5133.4
+    else:
+        print('wavelength region error')
+        lw = 0
+        uw = 1
+    return lw, uw
 
 
 # def interp_smooth(obs, model):
@@ -237,7 +237,7 @@ def get_chi_squared(obs, out_filename, region, guess, vsini, make_plot=False):
     obs_interp = interp_smooth(obs, model)  # returns DataFrame with same wavelengths as model
 
     # mask for region for checking that this works correctly
-    lw, uw = get_region(region,False)  # region should be (lower_wavelength, upper_wavelength)
+    lw, uw = get_region_chi(region)  # region should be (lower_wavelength, upper_wavelength)
     mask = (model['wavelength'] >= lw) & (model['wavelength'] <= uw)
     # Ensure the mask is applied to both model and obs_interp
     # Extract fluxes where the mask is True
@@ -356,24 +356,37 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
     # print(x0)
 
     # Optional: set bounds if needed
-    bounds = ([4, 0.1, 1, 1], [9, 30, 30, 30])  # bounds
+    bounds = ([4, 0.1, 1, 1], [9, 8, 15, 15])  # bounds
 
     result = least_squares(
         residuals_to_minimize,
         x0=x0,
         bounds=bounds,
         args=(raw_spec_filename, raw_spectra, region, wavelength_region, guess, star_name, linelist, vsini, Fe, CN, CC),
-        loss='soft_l1'  # Robust to outliers; or 'linear' if clean
+        # loss='linear',  # Robust to outliers; or 'linear' if clean
+        # method='lm',
+        loss='soft_l1', # Soft L1 loss function
+        method='dogbox',  # Trust Region Reflective algorithm
+        diff_step=0.001  # Step size for finite difference approximation
     )
-    # result = scipy.optimize.minimize(least_squares(residuals_to_minimize))
     
+    print("Best-fit parameters:", result.x)
+
+    final_x = result.x
+    final_guess = guess.copy()
+    final_guess['s']     = final_x[0]
+    final_guess['i_24']  = final_x[1]
+    final_guess['i_25']  = final_x[2]
+    final_guess['i_26']  = final_x[3]
+    print("Final guess parameters:", final_guess)
+
     # Use final parameters to recompute everything for saving the file
-    guess['s'], guess['i_24'], guess['i_25'], guess['i_26'] = result.x
-    in_filename  = make_filenames(guess, 'in')
-    out_filename = make_filenames(guess, 'out')
-    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess, star_name, linelist, vsini, Fe, CN, CC)
-    #Call pymoogi with the generated input file
-    call_pymoogi(in_filename)
+    # guess['s'], guess['i_24'], guess['i_25'], guess['i_26'] = result.x
+    # in_filename  = make_filenames(guess, 'in')
+    out_filename = make_filenames(final_guess, 'out')
+    # generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess, star_name, linelist, vsini, Fe, CN, CC)
+    # #Call pymoogi with the generated input file
+    # call_pymoogi(in_filename)
     
     print("Result attributes:")
     print("x (solution):", result.x)
@@ -385,21 +398,23 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
     print("Message:", result.message)
 
     # Get final chi-squared
-    cs = get_chi_squared(raw_spectra, out_filename, region, guess, vsini, make_plot=False)
+    cs = get_chi_squared(raw_spectra, out_filename, region, final_guess, vsini, make_plot=False)
 
     return pd.DataFrame({
         'filename'   : out_filename, 
         'chi_squared': cs, 
-        's'          : guess['s'],
-        'mg'         : guess['mg'],
-        'i_24'       : guess['i_24'],
-        'i_25'       : guess['i_25'],
-        'i_26'       : guess['i_26'],
+        's'          : final_guess['s'].round(2),
+        'mg'         : guess['mg'].round(2),
+        'i_24'       : final_guess['i_24'].round(3),
+        'i_25'       : final_guess['i_25'].round(2),
+        'i_26'       : final_guess['i_26'].round(2),
         'rv'         : guess['rv'],
-        'ratio'      : calc_ratio(guess['i_24'], guess['i_25'], guess['i_26'])
+        'ratio'      : calc_ratio(final_guess['i_24'], final_guess['i_25'], final_guess['i_26'])
     }, index=[1])
 
 def residuals_to_minimize(x, raw_spec_filename, raw_spectra, region, wavelength_region, guess, star_name, linelist, vsini, Fe, CN, CC):
+    # print("Trying parameters:", guess)
+    # print("Current x passed by optimizer:", x)
     # Update guess dictionary with current parameters
     # # Ensure we don't modify the original guess
     # print(guess)
@@ -411,20 +426,24 @@ def residuals_to_minimize(x, raw_spec_filename, raw_spectra, region, wavelength_
     guess['i_24']  = x[1]
     guess['i_25']  = x[2]
     guess['i_26']  = x[3]
-
+    # print("updated guess:", guess)
+    # print("Updated x:", x)
     # Generate filenames
     in_filename  = make_filenames(guess, 'in')
     out_filename = make_filenames(guess, 'out')
-
+    # print("Input filename:", in_filename)
+    # print("Output filename:", out_filename)
     # Generate MOOG input + run pymoogi
     generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess, star_name, linelist, vsini, Fe, CN, CC)
     call_pymoogi(in_filename)
-
+    
     # Get the smoothed spectrum and residuals
     residuals = get_residuals(raw_spectra, out_filename, region)  # <-- You will need to write or already have this
     # print("Residuals type:", type(residuals))
     # print("Residuals dtype:", getattr(residuals, 'dtype', 'no dtype'))
     # print("Residuals:", residuals[:5])
+    # print(f"Residuals calculated, first few: {residuals[:5]}")
+    print(f"Try: x={x}, RSS={np.sum(residuals**2):.5f}")
     
     return residuals
     
@@ -439,20 +458,34 @@ def get_residuals(obs_flux, syn_filename, region):
     # print('model flux df',model_flux)
     # Mask/select the region
     #call the regions definitions using the current region.
-    lw, uw = get_region(region,False)
+    lw, uw = get_region_chi(region)
     #apply the wavelength mask to the observed and model flux
     obs_mask = (obs_flux['wavelength'] >= lw) & (obs_flux['wavelength'] <= uw)
     model_mask = (model_flux['wavelength'] >= lw) & (model_flux['wavelength'] <= uw)
     # Select the flux values within the wavelength range
     observed = obs_flux.loc[obs_mask, 'flux'].values
     model = model_flux.loc[model_mask, 'flux'].values
+    observed_wavelength = obs_flux.loc[obs_mask, 'wavelength'].values
+    model_wavelength = model_flux.loc[model_mask, 'wavelength'].values
     # print(model)
+    # print(obs_mask)
     # Ensure equal length
     min_len = min(len(observed), len(model))
-    residuals = observed[:min_len] - model[:min_len]
+    residuals = model[:min_len] - observed[:min_len]
     # print("Model range:", model_flux['wavelength'].min(), "-", model_flux['wavelength'].max())
     # print("Observed range:", obs_flux['wavelength'].min(), "-", obs_flux['wavelength'].max())
     # print("Region:", lw, "-", uw)
+    # print("Model flux (sample):", model_flux[:100])
+    # print("Observed flux (sample):", observed[:100])
+    
+    #plot the residual as well
+    plt.figure()
+    plt.plot(model_wavelength, model, label='Model Flux')
+    plt.plot(observed_wavelength, observed, label='Observed Flux')
+    plt.plot(model_wavelength, residuals + 1, label='Residuals', color='red')
+    plt.xlim(lw - 0.4, uw + 0.5)
+    plt.xlabel('Wavelength (Angstroms)')
+    plt.ylabel('Flux')
     return residuals
 
 
@@ -571,7 +604,7 @@ def initial_guess(MgH):
 # star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
 #     'hd_10700','hd_100407']
 # vpass = 5
-vpass = 21
+vpass = 23
 star_list = ['hd_10700']
 linelist = 'quinlinelist.in'
 for star_name in star_list:

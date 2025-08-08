@@ -272,7 +272,7 @@ def change_24(d, Mg24_step, increase=True):
 def change_25(d, increase=True):
     change_by = 0.2
     ll = 1 # lower limit 
-    ul = 8 # upper limit
+    ul = 15 # upper limit
 
     # if changing the values is within the limits for that parameter
     if increase and d['i_25'] + change_by <= ul:
@@ -289,7 +289,7 @@ def change_25(d, increase=True):
 def change_26(d, increase=True):
     change_by = 0.4
     ll = 1 # lower limit 
-    ul = 8 # upper limit
+    ul = 15 # upper limit
 
     # if changing the values is within the limits for that parameter
     if increase and d['i_26'] + change_by <= ul:
