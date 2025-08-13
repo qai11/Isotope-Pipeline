@@ -598,7 +598,7 @@ def initial_guess(MgH,Mg24_step):
     i_26 = 0
     rv = 0
     
-    if Mg24_step == 0.5:
+    if Mg24_step != 0.1:
         # initial guess for the parameters
         s = 7.5
         mg = MgH
@@ -684,14 +684,15 @@ def initial_guess(MgH,Mg24_step):
 # star_list = ['moon','hd_18907']
 
 '''all stars below 5300K'''
-# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-#     'hd_10700','hd_100407'] 
+star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407'] 
 '''giants which play up'''
-star_list = ['hd_18884','hd_157244','hd_23249'] 
+# star_list = ['hd_18884','hd_157244','hd_23249'] 
 '''Test star'''
 # star_list = ['hd_10700']
 #Pass for testing purposes
-vpass = 20
+vpass = 23
+#23 is all regions for testing again
 #name of the linelist it should look for
 linelist = 'quinlinelist.in'
 for star_name in star_list:
@@ -709,7 +710,8 @@ for star_name in star_list:
     summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
     #Extract the Mg [X/H] and error
     MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
-    MgH = MgH['[X/H]'].values[0]
+    #The solar stuff: https://www.aanda.org/articles/aa/pdf/2021/09/aa40445-21.pdf#page=21.70
+    MgH = MgH['[X/H]'].values[0] 
     # for region in regions:
     #     csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC)
     #     csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}.csv')
@@ -719,7 +721,7 @@ for star_name in star_list:
         """Add a coarse search to find the best fit for the region. Then run the fine search after wards using the best fit coarse fit.
         This will allow for a more accurate fit to the data but will require a new variable for stepsize for Mg24."""
         # coarse search
-        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step=0.5)
+        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step=0.7)
         csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}_coarse.csv')
         print('Finished coarse search for region: ', region)
     for region in regions:

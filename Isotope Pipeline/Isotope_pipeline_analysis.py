@@ -637,6 +637,7 @@ import scipy as sp
 import sys
 import matplotlib
 import matplotlib.ticker as mticker
+import ast
 #--- iSpec directory -------------------------------------------------------------
 if os.path.exists('/home/users/qai11/iSpec_v20201001'):
     "Location of the files on Uni computer"
@@ -687,12 +688,15 @@ def isotope_regions(star_name,regions):
         
         #Create a dataframe with the name of the best fit file
         best_fit = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['filename']
-        print(f'Best fit for region {region} is {best_fit}')
+        # print(f'Best fit for region {region} is {best_fit}')
         #Open the best fit file
         model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{best_fit}', sep="     ", header=None, skiprows = [0,1])
         # Plot each region in subsequent subplots
         #Call region_plots
         region_plots(region, raw, ax[i])
+        #paste the best fit values for the isotopes onto the plot in the bottom left corner
+        ratio = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['ratio']
+        ax[i].text(0.05, 0.95, f'Best Fit {ratio}', transform=ax[i].transAxes, fontsize=12, verticalalignment='top')
         
         # plot the synthetic spectrum
         ax[i].plot(model_spectra[0], model_spectra[1], label='Synthetic Spectrum')
@@ -731,10 +735,12 @@ def isotope_regions(star_name,regions):
 # star_list = ['moon']
 # star_list = ['hd_10700']
 
-# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-#     'hd_10700','hd_100407'] 
+#stars less than 5300K
+star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407']
+vpass = 19 
 
-star_list = ['hd_18884'] #there is a problem here
+# star_list = ['hd_18884'] #there is a problem here
 for star in star_list:
     #open masters stars csv
     star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')

@@ -129,89 +129,6 @@ def interp_smooth(raw, smooth):
     # return the dataframe with the new interpolated column in it 
     return raw
     
-def make_model_plots(raw, smooth, output_filename, region, rv):
-
-    # fig = plt.figure(constrained_layout=True, figsize = (8, 3))
-    # gs = fig.add_gridspec(2, 1, height_ratios = [1, 0.3])
-    # ax1 = fig.add_subplot(gs[0])
-    # ax2 = fig.add_subplot(gs[1], sharex=ax1)
-
-    # shift things backwards so it looks correct whe you plot things
-    wavelength_shifted = velocity_correction(raw.wavelength, -rv)
-
-    # Getting the plot bounds
-    lw, uw = get_region(region)
-    cropped_flux = raw[(raw.wavelength > lw) & (raw.wavelength < uw)].flux
-    min_flux = cropped_flux.min()
-    max_flux = cropped_flux.max()
-
-    #getting the positions to plot the lines
-    wl, iso = get_lines(region)
-    text_24 = False
-    text_25 = False
-    text_26 = False
-
-    # square surrounding the fitting region
-    # ax1.fill_between([lw, uw], min_flux - 0.01, 1, facecolor = '#CCDBFD', alpha = 0.3)
-
-    col24 = '#73454E'
-    col25 = '#995C68'
-    col26 = '#BA8C95'
-    
-    plt.figure(figsize=(10, 5))
-    
-    # for plotting the vertical lines of the isotopes
-    for i in range(len(wl)):
-        # if iso[i] == 24:
-        #     ax1.plot([wl[i], wl[i]], [min_flux - 0.06, max_flux + 0.05], color = col24, linestyle = '--', dashes=(5, 1))
-        #     if not text_24:
-        #         ax1.text(wl[i] - 0.0, min_flux - 0.09, r'$^{24}\rm{MgH}$', color = col24, fontsize=10)
-        #         text_24 = True
-        # if iso[i] == 25:
-        #     ax1.plot([wl[i], wl[i]], [min_flux - 0.04, max_flux + 0.05], color = col25,linestyle = '--', dashes=(3, 1))
-        #     if not text_25:
-        #         ax1.text(wl[i] - 0.0, min_flux - 0.07, r'$^{25}\rm{MgH}$', color = col25, fontsize=10)
-        #         text_25 = True
-        if iso[i] == 26:
-            plt.plot([wl[i], wl[i]], [min_flux - 0.02, max_flux + 0.05], color = col26,linestyle = '--', dashes=(1, 1))
-            if not text_26:
-                plt.text(wl[i] - 0.0, min_flux - 0.05, r'$^{26}\rm{MgH}$', color = col26, fontsize=10)
-                text_26 = True
-
-    plt.plot(wavelength_shifted, raw.model_flux, color ='#E1A4A7', label = 'model')
-    # plt.plot(smooth.wavelength, smooth.flux, color ='#eca1a6', label = 'model')
-    plt.plot(wavelength_shifted, raw.flux, '.', color ='#2a9d8f', label = 'spectra')
-    #ax1.plot(smooth.wavelength, smooth.flux, '.', color ='#d6cbd3', label = 'model')
-
-    # ax2.plot(wavelength_shifted, raw.flux - raw.model_flux, color ='#ada397')
-
-    plt.legend(frameon=False)
-    plt.set_xlim(lw - 0.2, uw + 0.2)
-    plt.set_xlabel(r'Wavelength ($\AA$)')
-
-    plt.set_ylim(min_flux - 0.1, max_flux + 0.03)
-    plt.set_ylabel('Norm. flux')
-
-    # Limits for the residual plot
-    # ax2.set_ylim(-0.024,0.024)
-    
-
-    # ax1.ticklabel_format(useOffset=False)
-    # plt.setp(ax1.get_xticklabels(), visible=False)
-    # ax2.ticklabel_format(useOffset=False)
-
-    # ax1.tick_params(direction='in', axis='both', which='both', bottom=True,top=True, left=True, right=True)
-    # ax1.xaxis.set_minor_locator(AutoMinorLocator())
-    # ax1.yaxis.set_minor_locator(AutoMinorLocator())
-    # ax2.tick_params(direction='in', axis='both', which='both', bottom=True,top=True, left=True, right=True)
-    # ax2.xaxis.set_minor_locator(AutoMinorLocator())
-    # ax2.yaxis.set_minor_locator(AutoMinorLocator())
-    # gs.update(wspace=0, hspace=0, left=0, right=1, bottom=0, top=1)
-    
-
-    # plt.savefig('./plots/'+ output_filename, facecolor='white', bbox_inches='tight', dpi = 300)
-    # plt.close()
-    
 def make_temp_file(filename):
     # will need these files in your directory - wont make them apparently...
     f = open(filename, "a+") 
@@ -228,13 +145,6 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     make_temp_file(summary_out)
     make_temp_file(out_filename)
     #par inputs the percentage ratios of the isotopes
-    # print(str(par['i_24']))
-    # print(str(par['i_25']))
-    # print(str(par['i_26']))
-    # print(str(par['mg']))
-    # print(str(par['rv']))
-    # print(wavelength_region)
-    #t4070g040m18.newmod
     if stronglines != None:
         print(stronglines)
         par_string = "synth\n" +\
@@ -400,13 +310,6 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
                          }, index=[1])
     
 def initial_guess():
-    #SUN
-    # s = 8.9 #has to be here for some reason or it breaks, seems to break move below 1.4
-    # mg = 0.5
-    # i_24 = 3.1
-    # i_25 = 15
-    # i_26 = 16.5
-    # rv = 0
     #Current star
     s = 9
     mg = -0.09
@@ -414,14 +317,6 @@ def initial_guess():
     i_25 = 14.99
     i_26 = 12.96
     rv = 0
-
-    # s = 0.0 #has to be here for some reason or it breaks, seems to break move below 1.4
-    # mg = 0.0
-    # i_24 = 3.1
-    # i_25 = 15
-    # i_26 = 18.5
-    # rv = 0
-
     # return the guess as a dictionary
     return {'s'    : s,
             'mg'   : mg, 
@@ -429,6 +324,7 @@ def initial_guess():
             'i_25' : i_25, 
             'i_26' : i_26, 
             'rv'   : rv}
+    
 #0.9 for plots
 mg = initial_guess()
 
