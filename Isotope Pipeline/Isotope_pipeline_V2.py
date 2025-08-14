@@ -205,19 +205,6 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     return in_filename, out_filename
 
 
-def read_raw_spectra(filename):
-    return pd.read_table(filename, sep="\s+", usecols=[0,1], 
-                         header=0, names = ['wavelength', 'flux'])
-
-def read_smoothed_spectra(filename):
-    # different to reading raw spectra because we have to skip some headder rows
-    smooth = pd.read_table(filename, sep="\s+", header=None, skiprows = [0,1],
-                         names = ['wavelength', 'flux'])
-    # # run_interpolation for the values of the raw spectra wavelength
-    # smooth.wavelength = velocity_correction(smooth.wavelength, rv)
-    return smooth
-
-
 # def get_chi_squared(obs, out_filename, region, guess, vsini, make_plot=False):
 #     """Calculate the chi-squared value for the model fit."""
 #     # read in the smoothed data
@@ -237,7 +224,7 @@ def get_chi_squared(obs, out_filename, region, guess, vsini, make_plot=False):
     obs_interp = interp_smooth(obs, model)  # returns DataFrame with same wavelengths as model
 
     # mask for region for checking that this works correctly
-    lw, uw = get_region_chi(region)  # region should be (lower_wavelength, upper_wavelength)
+    lw, uw = get_region(region, as_string=False)  # region should be (lower_wavelength, upper_wavelength)
     mask = (model['wavelength'] >= lw) & (model['wavelength'] <= uw)
     # Ensure the mask is applied to both model and obs_interp
     # Extract fluxes where the mask is True
@@ -316,7 +303,7 @@ def get_region(r, as_string=False, synth_width=8.0):
     """
     # Original analysis regions (used for residuals)
     regions = {
-        0: (5134.42, 5140.46),
+        0: (5133.0, 5141.45),
         1: (5134.42, 5134.85),
         2: (5138.55, 5138.95),
         3: (5140.04, 5140.46),
@@ -458,7 +445,7 @@ def get_residuals(obs_flux, syn_filename, region):
     # print('model flux df',model_flux)
     # Mask/select the region
     #call the regions definitions using the current region.
-    lw, uw = get_region_chi(region)
+    lw, uw = get_region(region, as_string=False)
     #apply the wavelength mask to the observed and model flux
     obs_mask = (obs_flux['wavelength'] >= lw) & (obs_flux['wavelength'] <= uw)
     model_mask = (model_flux['wavelength'] >= lw) & (model_flux['wavelength'] <= uw)
@@ -499,7 +486,8 @@ def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC):
     guess = initial_guess(MgH)
     #Open the raw spectra file
     raw_spec_filename = data_path + f'{star_name}_5100-5200.txt'
-    raw_spectra       = read_raw_spectra(raw_spec_filename)
+    raw_spectra       = pd.read_table(raw_spec_filename, sep="\s+", usecols=[0,1], 
+                         header=0, names = ['wavelength', 'flux'])
     #Open the wavelength region based on what region is selected
     wavelength_region = get_region(region,True)
 

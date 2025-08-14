@@ -63,57 +63,46 @@ def call_pymoogi(filename):
     #https://github.com/madamow/pymoogi/blob/master/README.md
     os.system('echo q | pymoogi ' + filename)
 
-def get_region(r):
-    if r == 0:
-        lw = 5134.42
-        uw = 5140.46
-    elif r == 1:
-        lw = 5134.42
-        uw = 5134.85
-    elif r == 2:
-        lw = 5138.55
-        uw = 5138.95
-    elif r == 3:
-        lw = 5140.04
-        uw = 5140.46
-    elif r == 4:
-        lw = 5134.0
-        uw = 5134.4
-    elif r == 5:
-        lw = 5134.9
-        uw = 5135.3
-    elif r == 6:
-        lw = 5135.9
-        uw = 5136.3
-    elif r == 7:
-        lw = 5136.2
-        uw = 5136.6
-    elif r == 8:
-        lw = 5138.2
-        uw = 5138.6
-    elif r == 9:
-        lw = 5141.0
-        uw = 5141.45
-    elif r == 10:
-        lw = 5133.0
-        uw = 5133.4
-    else:
-        print('wavelength region error')
-        lw = 0
-        uw = 1
-    return lw, uw
+# def get_region(r):
+#     if r == 0:
+#         lw = 5134.42
+#         uw = 5140.46
+#     elif r == 1:
+#         lw = 5134.42
+#         uw = 5134.85
+#     elif r == 2:
+#         lw = 5138.55
+#         uw = 5138.95
+#     elif r == 3:
+#         lw = 5140.04
+#         uw = 5140.46
+#     elif r == 4:
+#         lw = 5134.0
+#         uw = 5134.4
+#     elif r == 5:
+#         lw = 5134.9
+#         uw = 5135.3
+#     elif r == 6:
+#         lw = 5135.9
+#         uw = 5136.3
+#     elif r == 7:
+#         lw = 5136.2
+#         uw = 5136.6
+#     elif r == 8:
+#         lw = 5138.2
+#         uw = 5138.6
+#     elif r == 9:
+#         lw = 5141.0
+#         uw = 5141.45
+#     elif r == 10:
+#         lw = 5133.0
+#         uw = 5133.4
+#     else:
+#         print('wavelength region error')
+#         lw = 0
+#         uw = 1
+#     return lw, uw
 
-def calc_chi(raw, r):
-    """Calculate the chi squared value for the raw spectrum against the model flux."""
-    # hard coded wavelength bounds
-    lw, uw = get_region(r)
-    # get the wavelength bounds for the region
-    raw_flux = raw[(raw.wavelength > lw) & (raw.wavelength < uw)]
-    # Calculate the chi squared value manually, could be used to compare to the scipy version
-    # In my use case this is the only thing that worked.
-    chisquare = np.sum(((raw_flux.flux - raw_flux.model_flux)**2)/ raw_flux.model_flux)
-    
-    return chisquare 
 
 def interp_smooth(raw, smooth):
     """Perform an interpolation to align the smoothed model flux with the raw spectrum."""
@@ -321,10 +310,6 @@ def change_26(d, increase=True):
 #     else:
 #         return None
 
-def read_raw_spectra(filename):
-    return pd.read_table(filename, sep="\s+", usecols=[0,1], 
-                         header=0, names = ['wavelength', 'flux'])
-
 def read_smoothed_spectra(filename, rv):
     # different to reading raw spectra because we have to skip some header rows
     smooth = pd.read_table(filename, sep="\s+", header=None, skiprows = [0,1],
@@ -336,16 +321,21 @@ def read_smoothed_spectra(filename, rv):
 def get_chi_squared(raw, out_filename, region, guess,vsini, make_plot = True):
     """Grab the Chi squared to compare to previous models."""
     # read in the smoothed data
-    smooth = read_smoothed_spectra(out_filename, guess['rv'])
+    smooth = pd.read_table(out_filename, sep="\s+", header=None, skiprows = [0,1],
+                         names = ['wavelength', 'flux'])
+    # run_interpolation for the values of the raw spectra wavelength
+    obs_intep = interp_smooth(raw, smooth)
     
-    raw = interp_smooth(raw, smooth)
+    """Calculate the chi squared value for the raw spectrum against the model flux."""
+    # hard coded wavelength bounds
+    lw, uw = get_wavelength_region(region,asstring=False)
+    # get the wavelength bounds for the region
+    obs_cut = raw[(obs_intep.wavelength > lw) & (obs_intep.wavelength < uw)]
+    # Calculate the chi squared value manually, could be used to compare to the scipy version
+    # In my use case this is the only thing that worked.
+    chisquare = np.sum(((obs_cut.flux - obs_cut.model_flux)**2)/ obs_cut.model_flux)
     
-    # # make a plot of the model
-    # if make_plot:
-    #     make_model_plots(raw, smooth, out_filename, region, guess['rv'])
-
-    # return the chi quared value over the line
-    return calc_chi(raw, region)
+    return chisquare
 
 def make_filenames(par, prefix):
     """Creation of the filenames based on the parameters. From MM"""
@@ -359,51 +349,46 @@ def make_filenames(par, prefix):
     return prefix + '_s'+ str_s +'_mg'+ str_mg + '_i' \
      + str_24 + '_' + str_25  + '_' + str_26 + '_rv' + str_rv
 
-def get_wavelength_region(raw_wavelength,region):
-    '''Try cutting out the range'''
-    # lower_wavelength = raw_wavelength[0]
-    if region == 1:
-        '''region 1'''
-        lower_wavelength = 5131
-        upper_wavelength = 5138
-    if region == 2:
-        '''region 2'''
-        lower_wavelength =  5135
-        upper_wavelength = 5142
-    if region == 3:
-        '''region 3'''
-        lower_wavelength = 5136
-        upper_wavelength = 5143
-    if region == 4:
-        '''region 1'''
-        lower_wavelength = 5131
-        upper_wavelength = 5138
-    if region == 5:
-        '''region 2'''
-        lower_wavelength =  5131
-        upper_wavelength = 5138
-    if region == 6:
-        '''region 3'''
-        lower_wavelength = 5133
-        upper_wavelength = 5139
-    if region == 7:
-        '''region 1'''
-        lower_wavelength = 5133
-        upper_wavelength = 5139
-    if region == 8:
-        '''region 2'''
-        lower_wavelength =  5135
-        upper_wavelength = 5142
-    if region == 9:
-        '''region 3'''
-        lower_wavelength = 5136
-        upper_wavelength = 5143
-    if region == 10:
-        '''region 3'''
-        lower_wavelength = 5131
-        upper_wavelength = 5138 
-    return str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) 
+def get_wavelength_region(r, as_string=False, synth_width=8.0):
+    """
+    Returns a tuple of (synth_lower, synth_upper), or string if as_string=True.
+    Synth range is widened around the central region to ensure MOOG can synthesize properly.
+    """
+    # Original analysis regions (used for residuals)
+    regions = {
+        0: (5133.0 5141.45),
+        1: (5134.42, 5134.85),
+        2: (5138.55, 5138.95),
+        3: (5140.04, 5140.46),
+        4: (5134.0,  5134.4),
+        5: (5134.9,  5135.3),
+        6: (5135.9,  5136.3),
+        7: (5136.2,  5136.6),
+        8: (5138.2,  5138.6),
+        9: (5141.0,  5141.45),
+        10: (5133.0, 5133.4),
+    }
 
+    if r not in regions:
+        print('wavelength region error')
+        lw, uw = 0.0, 1.0
+    else:
+        lw, uw = regions[r]
+
+    # Calculate center of original region
+    center = (lw + uw) / 2.0
+    half_synth = synth_width / 2.0
+
+    # Define synthesis region
+    synth_lw = center - half_synth
+    synth_uw = center + half_synth
+
+    if as_string:
+        return f"{synth_lw:.2f} {synth_uw:.2f}"
+    else:
+        return synth_lw, synth_uw
+    
+    
 def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC):
     """Code that collates and runs everything then outputs the dataframe with the fit"""
     # creating the in and out filenames based on the guess parameters
@@ -527,8 +512,9 @@ def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step):
     
     # read in the raw spectra
     raw_spec_filename = data_path + f'{star_name}_5100-5200.txt'
-    raw_spectra       = read_raw_spectra(raw_spec_filename)
-    wavelength_region = get_wavelength_region(raw_spectra.wavelength,region)
+    raw_spectra       = pd.read_table(raw_spec_filename, sep="\s+", usecols=[0,1], 
+                         header=0, names = ['wavelength', 'flux'])
+    wavelength_region = get_wavelength_region(region,True)
 
     # add the first chi_squyared value to the dataframe
     chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, 
@@ -691,7 +677,7 @@ star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249',
 '''Test star'''
 # star_list = ['hd_10700']
 #Pass for testing purposes
-vpass = 23
+vpass = 24
 #23 is all regions for testing again
 #name of the linelist it should look for
 linelist = 'quinlinelist.in'
@@ -700,6 +686,7 @@ for star_name in star_list:
     star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #get the star regions
     regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
+    # print(regions)
     #extract the vsini
     vsini = star_info[star_info['ID2'] == star_name]['VSINI'].values[0]
     Fe = star_info[star_info['ID2'] == star_name]['Fe'].values[0]
@@ -715,13 +702,13 @@ for star_name in star_list:
     # for region in regions:
     #     csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC)
     #     csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}.csv')
-    #Run a coarse and then fine search for the best fit
+    # Run a coarse and then fine search for the best fit
     # regions = [1]
     for region in regions:
         """Add a coarse search to find the best fit for the region. Then run the fine search after wards using the best fit coarse fit.
         This will allow for a more accurate fit to the data but will require a new variable for stepsize for Mg24."""
         # coarse search
-        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step=0.7)
+        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step=0.5)
         csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}_coarse.csv')
         print('Finished coarse search for region: ', region)
     for region in regions:

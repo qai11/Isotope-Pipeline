@@ -8,7 +8,7 @@ Description: Run after Isotope_pipeline_uncertainties to calculate the final abu
 # %% """Make a table for the isotopic ratios"""
 # """Makes the All_isotope_ratios_pre_avg file"""
 
-vpass = '19'
+vpass = 23
 
 import pandas as pd
 import numpy as np
@@ -676,8 +676,17 @@ def isotope_regions(star_name,regions):
         fig, ax = plt.subplots(x_sub, 2, figsize=(12, 15))
         ax=ax.flatten()
     #Set the iteration to 0
-
+    #Open the best fit files for each region
+    w_avg_file = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/w_avg_models_vpass_{vpass}.csv', sep=',')
+    #open the file with the model in it
+    w_avg_star_name = w_avg_file[w_avg_file['star_name'] == star_name]['filename'].values[0]
+    w_avg_model = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{w_avg_star_name}', sep="     ", header=None, skiprows = [0,1])
+    print(f'Weighted average model for {star_name} is {w_avg_star_name}')
+    print('w_avg_model shape:', w_avg_model.shape)
     iteration = 0
+    #open the file with the weighted average information
+    weighted_avg_file = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', sep=',')
+    #scrape the ratios out of it
     for region in regions:
         i = iteration
         #Load the best fit values for the region
@@ -696,12 +705,15 @@ def isotope_regions(star_name,regions):
         region_plots(region, raw, ax[i])
         #paste the best fit values for the isotopes onto the plot in the bottom left corner
         ratio = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['ratio']
-        ax[i].text(0.05, 0.95, f'Best Fit {ratio}', transform=ax[i].transAxes, fontsize=12, verticalalignment='top')
-        
+        ax[i].text(0.05, 0.95, f'Best Fit {ratio}', transform=ax[i].transAxes, fontsize=12, verticalalignment='bottom')
+        #paste the weighted average values for the isotopes onto the plot in the bottom left corner
+        ax[i].text(0.05, 0.90, f"Weighted Avg {weighted_avg_file['R_24'].values[0]:.2f}_{weighted_avg_file['R_25'].values[0]:.2f}_{weighted_avg_file['R_26'].values[0]:.2f}", transform=ax[i].transAxes, fontsize=12, verticalalignment='bottom')
         # plot the synthetic spectrum
-        ax[i].plot(model_spectra[0], model_spectra[1], label='Synthetic Spectrum')
+        ax[i].plot(model_spectra[0], model_spectra[1], label='Synth Spectrum')
         # plot the observed spectrum
-        ax[i].plot(raw['waveobs'], raw['flux'] , label='Observed Spectrum', c=star_colour)
+        ax[i].plot(raw['waveobs'], raw['flux'] , label='Obs Spectrum', c=star_colour)
+        #plot the weighted average specturm overtop
+        ax[i].plot(w_avg_model[0], w_avg_model[1], label='W_Avg Spectrum', c='black', linestyle='--')
         ax[i].set_xlabel('Wavelength ($\AA$)',fontsize=12)
         ax[i].set_ylabel('Flux',fontsize=12)
         ax[i].legend(loc='upper right')
@@ -745,7 +757,9 @@ for star in star_list:
     #open masters stars csv
     star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #get the star regions
-    regions = star_info[star_info['ID2'] == star]['regions'].apply(ast.literal_eval).values[0]
+    # regions = star_info[star_info['ID2'] == star]['regions'].apply(ast.literal_eval).values[0]
+    #test regions aug 14th 2025
+    regions = star_info[star_info['ID2'] == star]['old regions'].apply(ast.literal_eval).values[0]
     # regions = [1]
     # print(regions)
     isotope_regions(star,regions)
