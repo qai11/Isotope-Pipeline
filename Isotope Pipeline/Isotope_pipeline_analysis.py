@@ -8,7 +8,7 @@ Description: Run after Isotope_pipeline_uncertainties to calculate the final abu
 # %% """Make a table for the isotopic ratios"""
 # """Makes the All_isotope_ratios_pre_avg file"""
 
-vpass = 23
+vpass = 24
 
 import pandas as pd
 import numpy as np
@@ -705,9 +705,9 @@ def isotope_regions(star_name,regions):
         region_plots(region, raw, ax[i])
         #paste the best fit values for the isotopes onto the plot in the bottom left corner
         ratio = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['ratio']
-        ax[i].text(0.05, 0.95, f'Best Fit {ratio}', transform=ax[i].transAxes, fontsize=12, verticalalignment='bottom')
+        ax[i].text(0.05, 0.90, f'Best Fit {ratio}', transform=ax[i].transAxes, fontsize=12, verticalalignment='bottom')
         #paste the weighted average values for the isotopes onto the plot in the bottom left corner
-        ax[i].text(0.05, 0.90, f"Weighted Avg {weighted_avg_file['R_24'].values[0]:.2f}_{weighted_avg_file['R_25'].values[0]:.2f}_{weighted_avg_file['R_26'].values[0]:.2f}", transform=ax[i].transAxes, fontsize=12, verticalalignment='bottom')
+        ax[i].text(0.05, 0.80, f"Weighted Avg {weighted_avg_file['R_24'].values[0]:.2f}_{weighted_avg_file['R_25'].values[0]:.2f}_{weighted_avg_file['R_26'].values[0]:.2f}", transform=ax[i].transAxes, fontsize=12, verticalalignment='bottom')
         # plot the synthetic spectrum
         ax[i].plot(model_spectra[0], model_spectra[1], label='Synth Spectrum')
         # plot the observed spectrum
@@ -750,16 +750,17 @@ def isotope_regions(star_name,regions):
 #stars less than 5300K
 star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
     'hd_10700','hd_100407']
-vpass = 19 
+vpass = 24
+
 
 # star_list = ['hd_18884'] #there is a problem here
 for star in star_list:
     #open masters stars csv
     star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #get the star regions
-    # regions = star_info[star_info['ID2'] == star]['regions'].apply(ast.literal_eval).values[0]
+    regions = star_info[star_info['ID2'] == star]['regions'].apply(ast.literal_eval).values[0]
     #test regions aug 14th 2025
-    regions = star_info[star_info['ID2'] == star]['old regions'].apply(ast.literal_eval).values[0]
+    # regions = star_info[star_info['ID2'] == star]['old regions'].apply(ast.literal_eval).values[0]
     # regions = [1]
     # print(regions)
     isotope_regions(star,regions)

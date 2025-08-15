@@ -65,7 +65,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     make_temp_file(out_filename)
     #par inputs the percentage ratios of the isotopes
     if stronglines != None:
-        print(stronglines)
+        # print(stronglines)
         par_string = "synth\n" +\
         "standard_out   '" + standard_out +"'\n"                    + \
         "summary_out    '" + summary_out +"'\n"                     + \
@@ -84,13 +84,14 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
         str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
         "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
         "abundances   4    1\n"                                     + \
-        "6            0.200000\n"                                  + \
+        "6            0.100000\n"                                  + \
         "12           " + str(par['mg']) + "\n"                     + \
         "22           0.20000\n"                                    + \
         "24           0.10000\n"                                    + \
+        "26           " + str(Fe) + "\n"                            + \
         "isotopes      5    1\n"                                    + \
-        "607.01214     0.2\n"                                       + \
-        "606.01212     2.0\n"                                       + \
+        "607.01214     " + str(CN) + "\n"                            + \
+        "606.01212     " + str(CC) + "\n"                            + \
         "112.00124     "+ str(par['i_24']) +"\n"                    + \
         "112.00125     "+ str(par['i_25']) +"\n"                    + \
         "112.00126     "+ str(par['i_26']) +"\n"                    + \
@@ -103,7 +104,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
         #  smooth-type  FWHM-Gauss  vsini     LimbDarkeningCoeff    FWHM-Macro     FWHM-Loren
         
     elif stronglines == None:
-        print(stronglines)
+        # print(stronglines)
         # par_string = "synth\n" +\
         # "standard_out   '" + standard_out +"'\n"                    + \
         # "summary_out    '" + summary_out +"'\n"                     + \
@@ -155,9 +156,10 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
         "12           " + str(par['mg']) + "\n"                     + \
         "22           0.20000\n"                                    + \
         "24           0.10000\n"                                    + \
-        "26           0.18000\n"                                    + \
+        "26           " + str(Fe) + "\n"                            + \
         "isotopes      4    1\n"                                    + \
-        "606.01212     5.0\n"                                       + \
+        "607.01214     " + str(CN) + "\n"                            + \
+        "606.01212     " + str(CC) + "\n"                            + \
         "112.00124     "+ str(par['i_24']) +"\n"                    + \
         "112.00125     "+ str(par['i_25']) +"\n"                    + \
         "112.00126     "+ str(par['i_26']) +"\n"                    + \
@@ -253,7 +255,7 @@ def get_wavelength_region(r, as_string=False, synth_width=8.0):
     """
     # Original analysis regions (used for residuals)
     regions = {
-        0: (5133.0, 5141.45),
+        0: (5128.0, 5146.45),
         1: (5134.42, 5134.85),
         2: (5138.55, 5138.95),
         3: (5140.04, 5140.46),
@@ -331,7 +333,7 @@ stronglines= None
 star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
     'hd_10700','hd_100407'] 
 # star_list = ['hd_10700']
-vpass = 19
+vpass = 24
 linelist = 'quinlinelist.in'
 #define the weighted average df for plotting
 w_avg_files = pd.DataFrame(columns=['star_name','filename'])
@@ -341,7 +343,7 @@ for star_name in star_list:
     star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #get the star regions 
     # regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
-    regions = [0]
+    region = 0
     #extract the vsini
     vsini = star_info[star_info['ID2'] == star_name]['VSINI'].values[0]
     Fe = star_info[star_info['ID2'] == star_name]['Fe'].values[0]
