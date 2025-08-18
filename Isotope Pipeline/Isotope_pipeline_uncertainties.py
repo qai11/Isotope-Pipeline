@@ -532,10 +532,10 @@ step_sizes = [0.0001, 0.05, 0.1, 0.1]  # step sizes for each parameter (mg, i24,
 #     'hd_10700','hd_100407']
 # star_list = ['hd_10700']
 
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407'] 
-vpass = 24
-
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407'] 
+vpass = 25
+star_list = ['hd_18884','hd_157244']
 
 linelist = 'quinlinelist.in'
 for star_name in star_list:

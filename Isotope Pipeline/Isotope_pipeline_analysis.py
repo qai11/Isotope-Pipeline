@@ -8,7 +8,7 @@ Description: Run after Isotope_pipeline_uncertainties to calculate the final abu
 # %% """Make a table for the isotopic ratios"""
 # """Makes the All_isotope_ratios_pre_avg file"""
 
-vpass = 24
+vpass = 25
 
 import pandas as pd
 import numpy as np
@@ -20,9 +20,10 @@ import numpy as np
 #     'hd_10700','hd_100407']
 # star_list = ['hd_10700']
 
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407'] 
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407'] 
 
+star_list = ['hd_18884','hd_157244']
 #Make an empty df to hold the isotope information
 isotope_df = pd.DataFrame(columns=['star_name','s','mg','d_mg', 'i_24', 'i_25', 'i_26','R_24','R_25',
                                    'R_26','d_i_24', 'd_i_25', 'd_i_26','d_R_24','d_R_25','d_R_26',
@@ -84,10 +85,11 @@ import ast
 abundance_dict = {}
 # star_list = ['hd_10700']
 
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407'] 
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407'] 
 # vpass = '6'
 
+star_list = ['hd_18884','hd_157244']
 def calc_ratio(i_24, i_25, i_26):
     i24_percentage=1/(0.01*i_24)
     i25_percentage=1/(0.01*i_25)
@@ -748,9 +750,10 @@ def isotope_regions(star_name,regions):
 # star_list = ['hd_10700']
 
 #stars less than 5300K
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407']
-vpass = 24
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407']
+vpass = 25
+star_list = ['hd_18884','hd_157244']
 
 
 # star_list = ['hd_18884'] #there is a problem here

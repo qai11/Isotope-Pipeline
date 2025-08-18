@@ -227,7 +227,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
         "molecules     2\n"                                         + \
         "lines         2\n"                                         + \
         "flux/int      0\n"                                         + \
-        "plotpars      1\n"                                         + \
+        "plotpars      0\n"                                         + \
         wavelength_region + " 0.15 1.05\n"                          + \
         str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
         "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
@@ -312,10 +312,10 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
 def initial_guess():
     #Current star
     s = 9
-    mg = -0.09
-    i_24 = 1.16
-    i_25 = 14.99
-    i_26 = 12.96
+    mg = -0.27
+    i_24 = 4.55
+    i_25 = 13
+    i_26 = 20
     rv = 0
     # return the guess as a dictionary
     return {'s'    : s,
@@ -406,13 +406,13 @@ def model_finder(star_name,linelist,region,stronglines,vsini):
     
     # make_model_plots(raw, smooth, out_filename, region, guess['rv'])
 
-star_name = 'hd_10700'
+star_name = 'hd_18884'
 linelist = 'quinlinelist.in'
 # stronglines = 'quinstronglines.in'
 # stronglines = 'quinbarklem.in'
 stronglines= None
-region = 1
-vsini = 0.4
+region = 3
+vsini = 3
 # linelist = 'quinlist.MgH'
 model_finder(star_name,linelist,region, stronglines,vsini)
 # %%
@@ -460,7 +460,7 @@ plt.ylabel('Norm. Flux',fontsize=14)
 
 save = True
 # save = False
-region = 1
+region = 3
 '''Region 1,9,10'''
 if region == 1:     
     plt.plot(smoothed[0], smoothed[1])

@@ -274,16 +274,21 @@ def get_wavelength_region(r, as_string=False, synth_width=8.0):
     else:
         lw, uw = regions[r]
 
-    # Calculate center of original region
-    center = (lw + uw) / 2.0
-    half_synth = synth_width / 2.0
+    if r == 0:
+    # Use the full region for region 0
+        synth_lw, synth_uw = lw, uw
+    else:
+        # For other regions, expand around the center
+        center = (lw + uw) / 2.0
+        half_synth = synth_width / 2.0
+        # Define synthesis region
+        synth_lw = center - half_synth
+        synth_uw = center + half_synth
 
-    # Define synthesis region
-    synth_lw = center - half_synth
-    synth_uw = center + half_synth
 
     if as_string:
         return f"{synth_lw:.2f} {synth_uw:.2f}"
+        print(f"Region {r} synth range: {synth_lw:.2f} to {synth_uw:.2f}")
     else:
         return synth_lw, synth_uw
 
@@ -312,6 +317,7 @@ def model_finder(star_name,linelist,region, stronglines,vsini, MgH,Fe,CN,CC,vpas
     raw_spectra       = pd.read_table(raw_spec_filename, sep="\s+", usecols=[0,1], 
                          header=0, names = ['wavelength', 'flux'])
     wavelength_region = get_wavelength_region(region, as_string=True)
+    print(f"Region {region} wavelength region: {wavelength_region}")
     
 
     # add the first chi_squyared value to the dataframe
@@ -330,10 +336,11 @@ def model_finder(star_name,linelist,region, stronglines,vsini, MgH,Fe,CN,CC,vpas
 import ast
 stronglines= None
 '''all stars below 5300K'''
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407'] 
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407'] 
 # star_list = ['hd_10700']
-vpass = 24
+star_list = ['hd_18884','hd_157244']
+vpass = 25
 linelist = 'quinlinelist.in'
 #define the weighted average df for plotting
 w_avg_files = pd.DataFrame(columns=['star_name','filename'])

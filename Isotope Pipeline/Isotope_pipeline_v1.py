@@ -182,7 +182,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     "molecules     2\n"                                         + \
     "lines         2\n"                                         + \
     "flux/int      0\n"                                         + \
-    "plotpars      1\n"                                         + \
+    "plotpars      0\n"                                         + \
     wavelength_region + " 0.15 1.05\n"                          + \
     str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
     "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
@@ -328,7 +328,7 @@ def get_chi_squared(raw, out_filename, region, guess,vsini, make_plot = True):
     
     """Calculate the chi squared value for the raw spectrum against the model flux."""
     # hard coded wavelength bounds
-    lw, uw = get_wavelength_region(region,asstring=False)
+    lw, uw = get_wavelength_region(region,as_string=False)
     # get the wavelength bounds for the region
     obs_cut = raw[(obs_intep.wavelength > lw) & (obs_intep.wavelength < uw)]
     # Calculate the chi squared value manually, could be used to compare to the scipy version
@@ -356,7 +356,7 @@ def get_wavelength_region(r, as_string=False, synth_width=8.0):
     """
     # Original analysis regions (used for residuals)
     regions = {
-        0: (5133.0 5141.45),
+        0: (5133.0, 5141.45),
         1: (5134.42, 5134.85),
         2: (5138.55, 5138.95),
         3: (5140.04, 5140.46),
@@ -514,7 +514,7 @@ def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step):
     raw_spec_filename = data_path + f'{star_name}_5100-5200.txt'
     raw_spectra       = pd.read_table(raw_spec_filename, sep="\s+", usecols=[0,1], 
                          header=0, names = ['wavelength', 'flux'])
-    wavelength_region = get_wavelength_region(region,True)
+    wavelength_region = get_wavelength_region(region,as_string=True)
 
     # add the first chi_squyared value to the dataframe
     chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, 
@@ -670,14 +670,14 @@ def initial_guess(MgH,Mg24_step):
 # star_list = ['moon','hd_18907']
 
 '''all stars below 5300K'''
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407'] 
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407'] 
 '''giants which play up'''
-# star_list = ['hd_18884','hd_157244','hd_23249'] 
+star_list = ['hd_18884','hd_157244'] 
 '''Test star'''
 # star_list = ['hd_10700']
 #Pass for testing purposes
-vpass = 24
+vpass = 25
 #23 is all regions for testing again
 #name of the linelist it should look for
 linelist = 'quinlinelist.in'
@@ -708,7 +708,7 @@ for star_name in star_list:
         """Add a coarse search to find the best fit for the region. Then run the fine search after wards using the best fit coarse fit.
         This will allow for a more accurate fit to the data but will require a new variable for stepsize for Mg24."""
         # coarse search
-        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step=0.5)
+        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step=0.7)
         csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}_coarse.csv')
         print('Finished coarse search for region: ', region)
     for region in regions:
