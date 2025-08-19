@@ -54,7 +54,7 @@ def make_temp_file(filename):
     f.write('')
     f.close() 
 
-def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist,vsini,Fe,CN,CC,stronglines):
+def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist,vsini,Fe,CN,CC,C,stronglines):
     # I doubt I'll ever want to change these so initialise them here
     standard_out = 'out1'
     summary_out  = 'out2'
@@ -152,7 +152,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
         str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
         "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
         "abundances   5    1\n"                                     + \
-        "6            0.100000\n"                                  + \
+        "6            " + str(C) + "\n"                             + \
         "12           " + str(par['mg']) + "\n"                     + \
         "22           0.20000\n"                                    + \
         "24           0.10000\n"                                    + \
@@ -188,7 +188,7 @@ def make_filenames(par, prefix):
     return prefix + '_s'+ str_s +'_mg'+ str_mg + '_i' \
      + str_24 + '_' + str_25  + '_' + str_26 + '_rv' + str_rv
      
-def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,stronglines):
+def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,C,stronglines):
 
     # creating the in and out filenames based on the guess parameters
     in_filename  = make_filenames(guess, 'in')
@@ -196,7 +196,7 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
     
     # creates a parameter string in the directory that moog can read
     # generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist,stronglines,vsini)
-    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,stronglines)
+    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,C,stronglines)
     # create the smoothed spectra by calling pymoogi
     smoothed_spectrum = call_pymoogi(in_filename)
     print(smoothed_spectrum)
@@ -292,7 +292,7 @@ def get_wavelength_region(r, as_string=False, synth_width=8.0):
     else:
         return synth_lw, synth_uw
 
-def model_finder(star_name,linelist,region, stronglines,vsini, MgH,Fe,CN,CC,vpass):
+def model_finder(star_name,linelist,region, stronglines,vsini, MgH,Fe,CN,CC,C,vpass):
     try:
         #Uni computer
         # data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/'
@@ -321,7 +321,7 @@ def model_finder(star_name,linelist,region, stronglines,vsini, MgH,Fe,CN,CC,vpas
     
 
     # add the first chi_squyared value to the dataframe
-    chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,stronglines)
+    chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,C,stronglines)
     
     return chi_df['filename'].values[0]
     # make_model_plots(raw, smooth, out_filename, region, guess['rv'])
@@ -336,11 +336,12 @@ def model_finder(star_name,linelist,region, stronglines,vsini, MgH,Fe,CN,CC,vpas
 import ast
 stronglines= None
 '''all stars below 5300K'''
-# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-#     'hd_10700','hd_100407'] 
+star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407'] 
 # star_list = ['hd_10700']
-star_list = ['hd_18884','hd_157244']
-vpass = 25
+# star_list = ['hd_18884','hd_157244']
+# star_list = ['hd_18884']
+vpass = 24
 linelist = 'quinlinelist.in'
 #define the weighted average df for plotting
 w_avg_files = pd.DataFrame(columns=['star_name','filename'])
@@ -356,18 +357,21 @@ for star_name in star_list:
     Fe = star_info[star_info['ID2'] == star_name]['Fe'].values[0]
     CN = star_info[star_info['ID2'] == star_name]['CN'].values[0]
     CC = star_info[star_info['ID2'] == star_name]['CC'].values[0]
+    C = star_info[star_info['ID2'] == star_name]['C'].values[0]
 
     #Open summary abundances file for Mg abundance(This is a line by line magnesium abundance)
     summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
     #Extract the Mg [X/H] and error
-    MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
     #The solar stuff: https://www.aanda.org/articles/aa/pdf/2021/09/aa40445-21.pdf#page=21.70
+    MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
     MgH = MgH['[X/H]'].values[0] 
+    # MgH = -0.271
+    
 
     #open the 
     
     """"region is a list of regions to run the model finder on"""
-    file_out = model_finder(star_name,linelist,region, stronglines,vsini, MgH,Fe,CN,CC,vpass)
+    file_out = model_finder(star_name,linelist,region, stronglines,vsini, MgH,Fe,CN,CC,C,vpass)
     
     #appen each loop to the w_avg_files dataframe
     w_avg_files = w_avg_files.append({'star_name':star_name,

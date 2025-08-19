@@ -232,13 +232,14 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
         str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
         "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
         "abundances   5    1\n"                                     + \
-        "6            0.100000\n"                                  + \
+        "6            0.200000\n"                                  + \
         "12           " + str(par['mg']) + "\n"                     + \
         "22           0.20000\n"                                    + \
         "24           0.10000\n"                                    + \
         "26           0.18000\n"                                    + \
-        "isotopes      4    1\n"                                    + \
-        "606.01212     5.0\n"                                       + \
+        "isotopes      5    1\n"                                    + \
+        "607.01214     0.2\n"                                       + \
+        "606.01212     1.0\n"                                       + \
         "112.00124     "+ str(par['i_24']) +"\n"                    + \
         "112.00125     "+ str(par['i_25']) +"\n"                    + \
         "112.00126     "+ str(par['i_26']) +"\n"                    + \
@@ -310,12 +311,28 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
                          }, index=[1])
     
 def initial_guess():
+    #sun
+    # s = 7.5
+    # mg = -0.27
+    # i_24 = 2
+    # i_25 = 15
+    # i_26 = 13
+    # rv = 0
+    
+    
     #Current star
-    s = 9
+    # s = 7.5
+    # mg = -0.27
+    # i_24 = 8
+    # i_25 = 12
+    # i_26 = 13
+    # rv = 0
+    #just testing
+    s = 7.5
     mg = -0.27
-    i_24 = 4.55
-    i_25 = 13
-    i_26 = 20
+    i_24 = 8
+    i_25 = 12
+    i_26 = 13
     rv = 0
     # return the guess as a dictionary
     return {'s'    : s,
@@ -411,7 +428,7 @@ linelist = 'quinlinelist.in'
 # stronglines = 'quinstronglines.in'
 # stronglines = 'quinbarklem.in'
 stronglines= None
-region = 3
+region = 1
 vsini = 3
 # linelist = 'quinlist.MgH'
 model_finder(star_name,linelist,region, stronglines,vsini)
@@ -460,7 +477,7 @@ plt.ylabel('Norm. Flux',fontsize=14)
 
 save = True
 # save = False
-region = 3
+region = 1
 '''Region 1,9,10'''
 if region == 1:     
     plt.plot(smoothed[0], smoothed[1])

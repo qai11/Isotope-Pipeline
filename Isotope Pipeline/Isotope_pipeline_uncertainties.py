@@ -139,7 +139,7 @@ def make_temp_file(filename):
     f.write('')
     f.close() 
 
-def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist,vsini,Fe,CN,CC):
+def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist,vsini,Fe,CN,CC,C):
     # I doubt I'll ever want to change these so initialise them here
     standard_out = 'out1'
     summary_out  = 'out2'
@@ -164,7 +164,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
     "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
     "abundances   5    1\n"                                     + \
-    "6            0.200000\n"                                  + \
+    "6            " + str(C) + "\n"                                   + \
     "12           " + str(par['mg']) + "\n"                     + \
     "22           0.20000\n"                                    + \
     "24           0.10000\n"                                    + \
@@ -232,7 +232,7 @@ def make_filenames(par, prefix):
     return prefix + '_s'+ str_s +'_mg'+ str_mg + '_i' \
      + str_24 + '_' + str_25  + '_' + str_26 + '_rv' + str_rv
      
-def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC):
+def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,C):
 
     # creating the in and out filenames based on the guess parameters
     in_filename  = make_filenames(guess, 'in')
@@ -240,7 +240,7 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
 
 
     # creates a parameter string in the directory that moog can read
-    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC)
+    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,C)
 
     # create the smoothed spectra by calling pymoogi
     smoothed_spectrum = call_pymoogi(in_filename)
@@ -331,7 +331,7 @@ def get_wavelength_region(raw_wavelength,region):
     # print(str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) )
     return str(np.round(lower_wavelength, 2)) + ' ' + str(np.round(upper_wavelength, 2)) 
 
-def model_finder(star_name,linelist,region,vsini,guess_params,Fe,CN,CC,MgH):
+def model_finder(star_name,linelist,region,vsini,guess_params,Fe,CN,CC,C,MgH):
     try:
         #Uni computer
         # data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/'
@@ -358,7 +358,7 @@ def model_finder(star_name,linelist,region,vsini,guess_params,Fe,CN,CC,MgH):
 
     # add the first chi_squyared value to the dataframe
     chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, 
-                                region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC)
+                                region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,C)
     
     # make_model_plots(raw, smooth, out_filename, region, guess['rv'])
     best_guess_chi = chi_df.chi_squared.iloc[0] # should only be 1 thing in the df atm
@@ -377,7 +377,7 @@ def model_finder(star_name,linelist,region,vsini,guess_params,Fe,CN,CC,MgH):
 # vsini = 9.2
 # linelist = 'quinlist.MgH'
 
-def compute_hessian_from_saved(params, saved_models, step_sizes, chi_sq,Fe,CN,CC,MgH, max_step_size=0.01):
+def compute_hessian_from_saved(params, saved_models, step_sizes, chi_sq,Fe,CN,CC,C,MgH, max_step_size=0.01):
     """
     Compute the Hessian matrix using pre-saved chi-square values for different parameter sets.
     
@@ -416,7 +416,7 @@ def compute_hessian_from_saved(params, saved_models, step_sizes, chi_sq,Fe,CN,CC
             params_up[i] += step_i
             params_up[j] += step_j
             #generate the model for the chi squrared value
-            model_up = model_finder(star_name,linelist,region,vsini, params_up,Fe,CN,CC,MgH)
+            model_up = model_finder(star_name,linelist,region,vsini, params_up,Fe,CN,CC,C,MgH)
             #Add the chi squared value to the model
             chi2_up = model_up['chi_squared'].iloc[0]
 
@@ -425,7 +425,7 @@ def compute_hessian_from_saved(params, saved_models, step_sizes, chi_sq,Fe,CN,CC
             params_down[i] -= step_i
             params_down[j] -= step_j
             #generate the model for the chi squrared value
-            model_down = model_finder(star_name,linelist,region,vsini, params_down,Fe,CN,CC,MgH)
+            model_down = model_finder(star_name,linelist,region,vsini, params_down,Fe,CN,CC,C,MgH)
             #Add the chi squared value to the model
             chi2_down = model_down['chi_squared'].iloc[0]
             # chi2_down = saved_models.get(tuple(params_down), None)
@@ -434,7 +434,7 @@ def compute_hessian_from_saved(params, saved_models, step_sizes, chi_sq,Fe,CN,CC
             params_i_up = params.copy()
             params_i_up[i] += step_i
             #generate the model for the chi squrared value
-            model_i_up = model_finder(star_name,linelist,region,vsini, params_i_up,Fe,CN,CC,MgH)
+            model_i_up = model_finder(star_name,linelist,region,vsini, params_i_up,Fe,CN,CC,C,MgH)
             #Add the chi squared value to the model
             chi2_i_up = model_i_up['chi_squared'].iloc[0]
             # chi2_i_up = saved_models.get(tuple(params_i_up), None)
@@ -445,7 +445,7 @@ def compute_hessian_from_saved(params, saved_models, step_sizes, chi_sq,Fe,CN,CC
             params_j_up[j] += step_j
             chi2_j_up = saved_models.get(tuple(params_j_up), None)
             #Generate the model for the chi squrared value
-            model_j_up = model_finder(star_name,linelist,region,vsini, params_j_up,Fe,CN,CC,MgH)
+            model_j_up = model_finder(star_name,linelist,region,vsini, params_j_up,Fe,CN,CC,C,MgH)
             #Add the chi squared value to the model
             chi2_j_up = model_j_up['chi_squared'].iloc[0]
 
@@ -534,27 +534,30 @@ step_sizes = [0.0001, 0.05, 0.1, 0.1]  # step sizes for each parameter (mg, i24,
 
 # star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
 #     'hd_10700','hd_100407'] 
-vpass = 25
-star_list = ['hd_18884','hd_157244']
+vpass = 28
+# star_list = ['hd_18884','hd_157244']
+star_list = ['hd_18884']
 
 linelist = 'quinlinelist.in'
 for star_name in star_list:
     #open masters stars csv
     star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #get the star regions
-    regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
+    # regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
+    regions = [1,4,5]
     #extract the vsini
     vsini = star_info[star_info['ID2'] == star_name]['VSINI'].values[0]
     Fe = star_info[star_info['ID2'] == star_name]['Fe'].values[0]
     CN = star_info[star_info['ID2'] == star_name]['CN'].values[0]
     CC = star_info[star_info['ID2'] == star_name]['CC'].values[0]
-    
+    C = star_info[star_info['ID2'] == star_name]['C'].values[0]
     #Open summary abundances file for Mg abundance
     summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
     #Extract the Mg [X/H] and error
-    MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
-    MgH = MgH['[X/H]'].values[0]
+    # MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
+    # MgH = MgH['[X/H]'].values[0]
         
+    MgH = -0.271
         
 # for star in star_name:
 #Setup df to save the best fit uncertainties
@@ -576,7 +579,7 @@ for star_name in star_list:
         
         #Compute the Hessian matrix
 
-        hessian = compute_hessian_from_saved(best_params, saved_models, step_sizes, fit_pass['chi_squared'].min(),Fe,CN,CC,MgH)
+        hessian = compute_hessian_from_saved(best_params, saved_models, step_sizes, fit_pass['chi_squared'].min(),Fe,CN,CC,C,MgH)
 
         par_unc = compute_covariance_matrix(hessian)
         

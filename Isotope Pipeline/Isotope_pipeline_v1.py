@@ -124,7 +124,7 @@ def make_temp_file(filename):
     f.write('')
     f.close() 
 
-def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist,vsini,Fe,CN,CC):
+def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist,vsini,Fe,CN,CC,C):
     # I doubt I'll ever want to change these so initialise them here
     standard_out = 'out1'
     summary_out  = 'out2'
@@ -187,7 +187,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
     "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
     "abundances   5    1\n"                                     + \
-    "6            0.100000\n"                                  + \
+    "6            " + str(C) + "\n"                                  + \
     "12           " + str(par['mg']) + "\n"                     + \
     "22           0.20000\n"                                    + \
     "24           0.10000\n"                                    + \
@@ -389,14 +389,14 @@ def get_wavelength_region(r, as_string=False, synth_width=8.0):
         return synth_lw, synth_uw
     
     
-def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC):
+def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,C):
     """Code that collates and runs everything then outputs the dataframe with the fit"""
     # creating the in and out filenames based on the guess parameters
     in_filename  = make_filenames(guess, 'in')
     out_filename = make_filenames(guess, 'out')
 
     # creates a parameter string in the directory that moog can read
-    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC)
+    generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,C)
 
     # create the smoothed spectra by calling pymoogi
     call_pymoogi(in_filename)
@@ -478,7 +478,7 @@ def reconstruct_min_chi(min):
                  'i_26' : min.i_26, 
                  'rv'   : min.rv}
 
-def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, region, guess, chi_df,star_name,linelist,vsini,Fe,CN,CC,Mg24_step):
+def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, region, guess, chi_df,star_name,linelist,vsini,Fe,CN,CC,C,Mg24_step):
     """Runs the neightbours of the guess parameters to find the minimum chi squared value. 
     Using the generate neighbours function and the filter function for checking."""
     # generate neighbours close to the guess (that havent already been run)
@@ -494,13 +494,13 @@ def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, re
     # run optimise_model_fit on the neighbours
     for par in guess_arr:
         # add the new chi squared values to the df
-        chi_of_model = optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, par,star_name,linelist,vsini,Fe,CN,CC)
+        chi_of_model = optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, par,star_name,linelist,vsini,Fe,CN,CC,C)
         chi_df = pd.concat([chi_df,chi_of_model])
     
     # return chi_df with the results of the new models
     return chi_df
 
-def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step):
+def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,C,Mg24_step):
     """Find the model that best fits the data for a given star and region."""
     data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/'
     # change wavelength range
@@ -518,7 +518,7 @@ def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step):
 
     # add the first chi_squyared value to the dataframe
     chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, 
-                                region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC)
+                                region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,C)
 
     best_guess_chi = chi_df.chi_squared.iloc[0] # should only be 1 thing in the df atm
 
@@ -527,7 +527,7 @@ def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step):
     while len(chi_df) < 300:
         # add the neighbours to the dataframe
         chi_df = find_minimum_neighbour(raw_spec_filename, raw_spectra, 
-                        wavelength_region, region, best_guess, chi_df,star_name,linelist,vsini,Fe,CN,CC,Mg24_step)
+                        wavelength_region, region, best_guess, chi_df,star_name,linelist,vsini,Fe,CN,CC,C,Mg24_step)
         
         # get the best chi-squared fit
         chi_df = chi_df.sort_values(by = ['chi_squared'])
@@ -673,11 +673,12 @@ def initial_guess(MgH,Mg24_step):
 # star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
 #     'hd_10700','hd_100407'] 
 '''giants which play up'''
-star_list = ['hd_18884','hd_157244'] 
+# star_list = ['hd_18884','hd_157244'] 
+star_list = ['hd_18884']
 '''Test star'''
 # star_list = ['hd_10700']
 #Pass for testing purposes
-vpass = 25
+vpass = 32
 #23 is all regions for testing again
 #name of the linelist it should look for
 linelist = 'quinlinelist.in'
@@ -685,35 +686,38 @@ for star_name in star_list:
     #open masters stars csv which is a list of stars with regions, abudnaces and vsini
     star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #get the star regions
-    regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
+    # regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
     # print(regions)
     #extract the vsini
     vsini = star_info[star_info['ID2'] == star_name]['VSINI'].values[0]
     Fe = star_info[star_info['ID2'] == star_name]['Fe'].values[0]
     CN = star_info[star_info['ID2'] == star_name]['CN'].values[0]
     CC = star_info[star_info['ID2'] == star_name]['CC'].values[0]
+    C = star_info[star_info['ID2'] == star_name]['C'].values[0]
      
     #Open summary abundances file for Mg abundance(This is a line by line magnesium abundance)
     summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
     #Extract the Mg [X/H] and error
-    MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
+    # MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
     #The solar stuff: https://www.aanda.org/articles/aa/pdf/2021/09/aa40445-21.pdf#page=21.70
-    MgH = MgH['[X/H]'].values[0] 
+    # MgH = MgH['[X/H]'].values[0] 
+    MgH = 0.51
     # for region in regions:
     #     csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC)
     #     csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}.csv')
     # Run a coarse and then fine search for the best fit
     # regions = [1]
+    regions = [1]
     for region in regions:
         """Add a coarse search to find the best fit for the region. Then run the fine search after wards using the best fit coarse fit.
         This will allow for a more accurate fit to the data but will require a new variable for stepsize for Mg24."""
         # coarse search
-        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step=0.7)
+        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,C,Mg24_step=1.5)
         csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}_coarse.csv')
         print('Finished coarse search for region: ', region)
     for region in regions:
         # fine search
-        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,Mg24_step=0.1)
+        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,C,Mg24_step=0.1)
         csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}_fine.csv')     
         print('Finished fine search for region: ', region) 
 # %%
