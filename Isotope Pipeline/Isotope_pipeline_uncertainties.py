@@ -534,17 +534,18 @@ step_sizes = [0.0001, 0.05, 0.1, 0.1]  # step sizes for each parameter (mg, i24,
 
 # star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
 #     'hd_10700','hd_100407'] 
-vpass = 28
-# star_list = ['hd_18884','hd_157244']
-star_list = ['hd_18884']
+vpass = 37
+star_list = ['hd_18884','hd_157244']
+# star_list = ['hd_18884']
+# star_list = ['hd_157244']
 
 linelist = 'quinlinelist.in'
 for star_name in star_list:
     #open masters stars csv
     star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #get the star regions
-    # regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
-    regions = [1,4,5]
+    regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
+    # regions = [1,4,5]
     #extract the vsini
     vsini = star_info[star_info['ID2'] == star_name]['VSINI'].values[0]
     Fe = star_info[star_info['ID2'] == star_name]['Fe'].values[0]
@@ -554,10 +555,10 @@ for star_name in star_list:
     #Open summary abundances file for Mg abundance
     summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
     #Extract the Mg [X/H] and error
-    # MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
-    # MgH = MgH['[X/H]'].values[0]
+    MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
+    MgH = MgH['[X/H]'].values[0]
         
-    MgH = -0.271
+    # MgH = -0.271
         
 # for star in star_name:
 #Setup df to save the best fit uncertainties
@@ -565,8 +566,8 @@ for star_name in star_list:
     for region in regions:
         #Load saved chi-square values
         #Load the best fit values for the region
-        fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}_fine.csv', sep=',')
-        # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}.csv', sep=',')
+        # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}_fine.csv', sep=',')
+        fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}.csv', sep=',')
         #Create a dictionary mapping parameter tuples to chi-square values
         saved_models = dict(zip(fit_pass[['s', 'i_24', 'i_25', 'i_26']].itertuples(index=False), fit_pass['chi_squared']))
         #Create a dataframe with the best fit values in it

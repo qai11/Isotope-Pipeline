@@ -8,7 +8,7 @@ Description: Run after Isotope_pipeline_uncertainties to calculate the final abu
 # %% """Make a table for the isotopic ratios"""
 # """Makes the All_isotope_ratios_pre_avg file"""
 
-vpass = 28
+vpass = 37
 
 import pandas as pd
 import numpy as np
@@ -23,8 +23,8 @@ import numpy as np
 # star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
 #     'hd_10700','hd_100407'] 
 
-# star_list = ['hd_18884','hd_157244']
-star_list = ['hd_18884']
+star_list = ['hd_18884','hd_157244']
+# star_list = ['hd_18884']
 #Make an empty df to hold the isotope information
 isotope_df = pd.DataFrame(columns=['star_name','s','mg','d_mg', 'i_24', 'i_25', 'i_26','R_24','R_25',
                                    'R_26','d_i_24', 'd_i_25', 'd_i_26','d_R_24','d_R_25','d_R_26',
@@ -90,8 +90,8 @@ abundance_dict = {}
 #     'hd_10700','hd_100407'] 
 # vpass = '6'
 
-# star_list = ['hd_18884','hd_157244']
-star_list = ['hd_18884']
+star_list = ['hd_18884','hd_157244']
+# star_list = ['hd_18884']
 def calc_ratio(i_24, i_25, i_26):
     i24_percentage=1/(0.01*i_24)
     i25_percentage=1/(0.01*i_25)
@@ -666,7 +666,10 @@ def isotope_regions(star_name,regions):
     x_sub = int(np.ceil(len(regions) / y_sub))  # Ensure we have enough rows
     #Read in raw spectrum
     # Spectrum from uni computer
-    raw = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/{star_name}_5100-5200.txt')
+    """Spectrum for non giants"""
+    # raw = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{star_name}_5100-5200.txt')
+    """Spectrum for giants hd18884 and hd157244"""
+    raw = ispec.read_spectrum(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{star_name}_5100-5200.txt')
     if len(regions) == 4:
         fig, ax = plt.subplots(x_sub, 2, figsize=(12, 10))
         ax=ax.flatten()  
@@ -695,15 +698,18 @@ def isotope_regions(star_name,regions):
         i = iteration
         #Load the best fit values for the region
         try:
-            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}_fine.csv', sep=',')
+            # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}_fine.csv', sep=',')
+            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}.csv', sep=',')
         except:
-            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_fine.csv', sep=',')
-        
+            # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_fine.csv', sep=',')
+            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}csv', sep=',')
         #Create a dataframe with the name of the best fit file
         best_fit = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['filename']
         # print(f'Best fit for region {region} is {best_fit}')
-        #Open the best fit file
-        model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{best_fit}', sep="     ", header=None, skiprows = [0,1])
+        """#Open the best fit file for all but giants"""
+        # model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{best_fit}', sep="     ", header=None, skiprows = [0,1])
+        """Open for giants"""
+        model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{best_fit}', sep="     ", header=None, skiprows = [0,1])
         # Plot each region in subsequent subplots
         #Call region_plots
         region_plots(region, raw, ax[i])
@@ -752,10 +758,10 @@ def isotope_regions(star_name,regions):
 # star_list = ['hd_10700']
 
 #stars less than 5300K
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407']
-vpass = 24
-# star_list = ['hd_18884','hd_157244']
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+    # 'hd_10700','hd_100407']
+vpass = 37
+star_list = ['hd_18884','hd_157244']
 # star_list = ['hd_18884']
 
 

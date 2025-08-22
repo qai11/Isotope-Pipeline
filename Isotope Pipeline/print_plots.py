@@ -238,8 +238,8 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
         "24           0.10000\n"                                    + \
         "26           0.18000\n"                                    + \
         "isotopes      5    1\n"                                    + \
-        "607.01214     0.2\n"                                       + \
-        "606.01212     1.0\n"                                       + \
+        "607.01214     0.35\n"                                       + \
+        "606.01212     5.0\n"                                       + \
         "112.00124     "+ str(par['i_24']) +"\n"                    + \
         "112.00125     "+ str(par['i_25']) +"\n"                    + \
         "112.00126     "+ str(par['i_26']) +"\n"                    + \
@@ -278,7 +278,81 @@ def make_filenames(par, prefix):
 
     return prefix + '_s'+ str_s +'_mg'+ str_mg + '_i' \
      + str_24 + '_' + str_25  + '_' + str_26 + '_rv' + str_rv
-     
+
+def interp_smooth(raw, smooth):
+    """Perform an interpolation to align the smoothed model flux with the raw spectrum."""
+    # perform a cubic spline on the data to make the wavelengths line up with eachother
+    tck = interpolate.splrep(smooth.wavelength, smooth.flux, s=0)
+
+    # evaluate the value of the spline at the wavelength points of the original spectra
+    new_flux = interpolate.splev(raw.wavelength, tck, der=0)
+
+    # add the model flux to the dataframe
+    raw['model_flux'] = pd.Series(new_flux, index=raw.index)
+    
+    # return the dataframe with the new interpolated column in it 
+    return raw
+
+def get_wavelength_region2(r, as_string=False, synth_width=8.0):
+    """
+    Returns a tuple of (synth_lower, synth_upper), or string if as_string=True.
+    Synth range is widened around the central region to ensure MOOG can synthesize properly.
+    """
+    # Original analysis regions (used for residuals)
+    regions = {
+        0: (5133.0, 5141.45),
+        1: (5134.42, 5134.85),
+        2: (5138.55, 5138.95),
+        3: (5140.04, 5140.46),
+        4: (5134.0,  5134.4),
+        5: (5134.9,  5135.3),
+        6: (5135.9,  5136.3),
+        7: (5136.2,  5136.6),
+        8: (5138.2,  5138.6),
+        9: (5141.0,  5141.45),
+        10: (5133.0, 5133.4),
+    }
+
+    if r not in regions:
+        print('wavelength region error')
+        lw, uw = 0.0, 1.0
+    else:
+        lw, uw = regions[r]
+
+    # Calculate center of original region
+    center = (lw + uw) / 2.0
+    half_synth = synth_width / 2.0
+
+    # Define synthesis region
+    synth_lw = center - half_synth
+    synth_uw = center + half_synth
+
+    if as_string:
+        return f"{synth_lw:.2f} {synth_uw:.2f}"
+    else:
+        lw, uw = regions[r]
+        return lw, uw
+    
+def get_chi_squared(raw, out_filename, region, guess,vsini):
+    """Grab the Chi squared to compare to previous models."""
+    # read in the smoothed data
+    smooth = pd.read_table(out_filename, sep="\s+", header=None, skiprows = [0,1],
+                         names = ['wavelength', 'flux'])
+    # run_interpolation for the values of the raw spectra wavelength
+    obs_intep = interp_smooth(raw, smooth)
+    
+    """Calculate the chi squared value for the raw spectrum against the model flux."""
+    # hard coded wavelength bounds
+    lw, uw = get_wavelength_region2(region,as_string=False)
+    # lw,uw= get_wavelength_region(raw.wavelength,region)
+    # get the wavelength bounds for the region
+    obs_cut = raw[(obs_intep.wavelength > lw) & (obs_intep.wavelength < uw)]
+    # Calculate the chi squared value manually, could be used to compare to the scipy version
+    # In my use case this is the only thing that worked.
+    chisquare = np.sum(((obs_cut.flux - obs_cut.model_flux)**2)/ obs_cut.model_flux)
+    
+    return chisquare
+
 def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,stronglines,vsini):
 
     # creating the in and out filenames based on the guess parameters
@@ -295,8 +369,8 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
     call_pymoogi(in_filename)
 
     # read in the smoothed model spectra and calculate the chi squared value
-    # cs = get_chi_squared(raw_spectra, out_filename, region, guess, make_plot = True)
-    cs = None
+    cs = get_chi_squared(raw_spectra, out_filename, region, guess,vsini)
+    # cs = None
     
     # return a dataframe with a single row (to be added to a larger df later)
     return pd.DataFrame({'filename'   : out_filename, 
@@ -328,11 +402,11 @@ def initial_guess():
     # i_26 = 13
     # rv = 0
     #just testing
-    s = 7.5
-    mg = -0.27
-    i_24 = 8
-    i_25 = 12
-    i_26 = 13
+    s = 8.9
+    mg = 0.16
+    i_24 = 8.5
+    i_25 = 35
+    i_26 = 9.5
     rv = 0
     # return the guess as a dictionary
     return {'s'    : s,
@@ -421,15 +495,16 @@ def model_finder(star_name,linelist,region,stronglines,vsini):
     chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, 
                                 region, wavelength_region, guess,star_name,linelist,stronglines,vsini)
     
+    print(chi_df['chi_squared'])
     # make_model_plots(raw, smooth, out_filename, region, guess['rv'])
 
-star_name = 'hd_18884'
+star_name = 'hd_157244'
 linelist = 'quinlinelist.in'
 # stronglines = 'quinstronglines.in'
 # stronglines = 'quinbarklem.in'
 stronglines= None
-region = 1
-vsini = 3
+region = 3
+vsini = 5.4
 # linelist = 'quinlist.MgH'
 model_finder(star_name,linelist,region, stronglines,vsini)
 # %%
@@ -456,7 +531,7 @@ except:
     smoothed = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
     raw = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/{star_name}_5100-5200.txt', sep="	", header=None)
 
-# print(f'out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0')
+print(f'out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0')
 
 # outfile = 'out_s41_mg-009_i02_1_84_rv0'
 # raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{star_name}_5100-5200.txt', sep="	", header=None)
@@ -477,7 +552,7 @@ plt.ylabel('Norm. Flux',fontsize=14)
 
 save = True
 # save = False
-region = 1
+region = 3
 '''Region 1,9,10'''
 if region == 1:     
     plt.plot(smoothed[0], smoothed[1])
@@ -494,6 +569,7 @@ if region == 1:
     max_flux = cropped_flux.max()
     plt.ylim(min_flux-0.05,1.01)
     plt.xlim(lw - 0.4, uw + 0.5)
+    # plt.xlim(lw - 1.5, uw + 1.5)
     #Plot the box where the fitting region is
     plt.fill_between([lw, uw], min_flux - 0.01, 1, facecolor = '#CCDBFD', alpha = 0.3)
     #plot mg24 lines
@@ -779,22 +855,22 @@ if save == True:
     mg_ratio = calc_ratio(mg['i_24'], mg['i_25'], mg['i_26'])
     print(mg_ratio)
 
-    try:
-        os.mkdir(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Dwarfs/{star_name}')
-    except:
-        None
-    try:
-        #UNIPC save
-        # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Giants/{star_name}/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
-        # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Giants/{star_name}/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}_fudged.png', dpi=300, bbox_inches='tight')
-        print("Figure saved")
-        plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Dwarfs/{star_name}/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
-        # print("Figure saved")
-    except:
-        # # #MAC save all
-        # plt.savefig(f'/Users/quin/quin-masters-code/Masters_Figures/Results/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
-        plt.savefig(f'/Users/quin/quin-masters-code/Masters_Figures/Results/Giants/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
-    # plt.show()
+    # try:
+    #     os.mkdir(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Dwarfs/{star_name}')
+    # except:
+    #     None
+    # try:
+    #     #UNIPC save
+    #     # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Giants/{star_name}/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
+    #     # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Giants/{star_name}/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}_fudged.png', dpi=300, bbox_inches='tight')
+    #     # print("Figure saved")
+    #     # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Dwarfs/{star_name}/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
+    #     # print("Figure saved")
+    # except:
+    #     # # #MAC save all
+    #     # plt.savefig(f'/Users/quin/quin-masters-code/Masters_Figures/Results/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
+    #     plt.savefig(f'/Users/quin/quin-masters-code/Masters_Figures/Results/Giants/Model_Mg24_Mg25_Mg26_{star_name}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_{mg_ratio}_region_{region}.png', dpi=300, bbox_inches='tight')
+    # # plt.show()
    
 #%%
 # plt.xlim(5134, 5135.3) #Region 1
@@ -2401,14 +2477,14 @@ def isotope_regions(star_name,regions):
         i = iteration
         #Load the best fit values for the region
         try:
-            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{v_pass}.csv', sep=',')
+            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/all_fits_region_{region}_pass_{v_pass}.csv', sep=',')
         except:
-            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}.csv', sep=',')
+            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/all_fits_region_{region}.csv', sep=',')
         
         #Create a dataframe with the name of the best fit file
         best_fit = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['filename']
         #Open the best fit file
-        model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{best_fit}', sep="     ", header=None, skiprows = [0,1])
+        model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{best_fit}', sep="     ", header=None, skiprows = [0,1])
         # Plot each region in subsequent subplots
         #Call region_plots
         region_plots(region, raw, ax[i])

@@ -171,6 +171,7 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     # wavelength_region + " 0.01 5.0\n"                           + \
     # "plot 2\n"                                                  + \
     # "damping 2\n"
+    #  smooth-type  FWHM-Gauss  vsini     LimbDarkeningCoeff    FWHM-Macro     FWHM-Loren
     par_string = "synth\n" +\
     "standard_out   '" + standard_out +"'\n"                    + \
     "summary_out    '" + summary_out +"'\n"                     + \
@@ -243,10 +244,10 @@ def change_s(d, increase=True):
 #     else:
 #         return None
 
-def change_24(d, Mg24_step, increase=True):
+def change_24(d,mg24_ub,Mg24_step, increase=True):
     change_by = Mg24_step
     ll = 0.1 # lower limit 
-    ul = 8 # upper limit
+    ul = mg24_ub # upper limit
 
     # if changing the values is within the limits for that parameter
     if increase and d['i_24'] + change_by <= ul:
@@ -258,10 +259,10 @@ def change_24(d, Mg24_step, increase=True):
     else:
         return None
 
-def change_25(d, increase=True):
-    change_by = 0.2
+def change_25(d,mg25_ub,Mg25_step, increase=True):
+    change_by = Mg25_step
     ll = 1 # lower limit 
-    ul = 15 # upper limit
+    ul = mg25_ub # upper limit
 
     # if changing the values is within the limits for that parameter
     if increase and d['i_25'] + change_by <= ul:
@@ -275,10 +276,10 @@ def change_25(d, increase=True):
     else:
         return None
 
-def change_26(d, increase=True):
-    change_by = 0.4
+def change_26(d,mg26_ub,Mg26_step, increase=True):
+    change_by = Mg26_step
     ll = 1 # lower limit 
-    ul = 15 # upper limit
+    ul = mg26_ub # upper limit
 
     # if changing the values is within the limits for that parameter
     if increase and d['i_26'] + change_by <= ul:
@@ -309,16 +310,8 @@ def change_26(d, increase=True):
 #         return d
 #     else:
 #         return None
-
-def read_smoothed_spectra(filename, rv):
-    # different to reading raw spectra because we have to skip some header rows
-    smooth = pd.read_table(filename, sep="\s+", header=None, skiprows = [0,1],
-                         names = ['wavelength', 'flux'])
-    # run_interpolation for the values of the raw spectra wavelength
-    smooth.wavelength = velocity_correction(smooth.wavelength, rv)
-    return smooth
     
-def get_chi_squared(raw, out_filename, region, guess,vsini, make_plot = True):
+def get_chi_squared(raw, out_filename, region, guess,vsini):
     """Grab the Chi squared to compare to previous models."""
     # read in the smoothed data
     smooth = pd.read_table(out_filename, sep="\s+", header=None, skiprows = [0,1],
@@ -331,6 +324,7 @@ def get_chi_squared(raw, out_filename, region, guess,vsini, make_plot = True):
     lw, uw = get_wavelength_region(region,as_string=False)
     # get the wavelength bounds for the region
     obs_cut = raw[(obs_intep.wavelength > lw) & (obs_intep.wavelength < uw)]
+    print(f'obs_cut={obs_cut} and lw={lw} and uw={uw}')
     # Calculate the chi squared value manually, could be used to compare to the scipy version
     # In my use case this is the only thing that worked.
     chisquare = np.sum(((obs_cut.flux - obs_cut.model_flux)**2)/ obs_cut.model_flux)
@@ -386,10 +380,11 @@ def get_wavelength_region(r, as_string=False, synth_width=8.0):
     if as_string:
         return f"{synth_lw:.2f} {synth_uw:.2f}"
     else:
-        return synth_lw, synth_uw
+        lw, uw = regions[r]
+        return lw, uw
     
     
-def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,C):
+def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,C,mg24_ub,mg25_ub,mg26_ub,Mg24_step,Mg25_step,Mg26_step):
     """Code that collates and runs everything then outputs the dataframe with the fit"""
     # creating the in and out filenames based on the guess parameters
     in_filename  = make_filenames(guess, 'in')
@@ -402,7 +397,7 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
     call_pymoogi(in_filename)
 
     # read in the smoothed model spectra and calculate the chi squared value
-    cs = get_chi_squared(raw_spectra, out_filename, region, guess,vsini, make_plot = False)
+    cs = get_chi_squared(raw_spectra, out_filename, region, guess,vsini)
     
     # return a dataframe with a single row (to be added to a larger df later)
     return pd.DataFrame({'filename'   : out_filename, 
@@ -416,7 +411,7 @@ def optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region
                          'ratio'      : calc_ratio(guess['i_24'], guess['i_25'], guess['i_26'])
                          }, index=[1])
 
-def generate_neighbours(guess, region,Mg24_step):
+def generate_neighbours(guess, region,mg24_ub,mg25_ub,mg26_ub,Mg24_step,Mg25_step,Mg26_step):
     """Generates the neighbours of the guess parameters either side of the given parameters."""
 
     # a list of dictionaries
@@ -431,14 +426,14 @@ def generate_neighbours(guess, region,Mg24_step):
 
     # only optimise for these for the individual regions, not the whole thing
     if not region == -1:
-        new_guesses.append(change_24(guess.copy(), Mg24_step, True))  # increase 
-        new_guesses.append(change_24(guess.copy(), Mg24_step, False)) # decrease 
+        new_guesses.append(change_24(guess.copy(),mg24_ub,Mg24_step, True))  # increase 
+        new_guesses.append(change_24(guess.copy(),mg24_ub,Mg24_step, False)) # decrease 
 
-        new_guesses.append(change_25(guess.copy(), True))  # increase 
-        new_guesses.append(change_25(guess.copy(), False)) # decrease 
+        new_guesses.append(change_25(guess.copy(),mg25_ub,Mg25_step, True))  # increase 
+        new_guesses.append(change_25(guess.copy(),mg25_ub,Mg25_step, False)) # decrease 
 
-        new_guesses.append(change_26(guess.copy(), True))  # increase 
-        new_guesses.append(change_26(guess.copy(), False)) # decrease 
+        new_guesses.append(change_26(guess.copy(),mg26_ub,Mg26_step, True))  # increase 
+        new_guesses.append(change_26(guess.copy(),mg26_ub,Mg26_step, False)) # decrease 
 
     #new_guesses.append(change_rv(guess.copy(), True))  # increase 
     #new_guesses.append(change_rv(guess.copy(), False)) # decrease 
@@ -478,11 +473,11 @@ def reconstruct_min_chi(min):
                  'i_26' : min.i_26, 
                  'rv'   : min.rv}
 
-def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, region, guess, chi_df,star_name,linelist,vsini,Fe,CN,CC,C,Mg24_step):
+def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, region, guess, chi_df,star_name,linelist,vsini,Fe,CN,CC,C,mg24_ub,mg25_ub,mg26_ub,Mg24_step,Mg25_step,Mg26_step):
     """Runs the neightbours of the guess parameters to find the minimum chi squared value. 
     Using the generate neighbours function and the filter function for checking."""
     # generate neighbours close to the guess (that havent already been run)
-    guess_arr = generate_neighbours(guess, region,Mg24_step)
+    guess_arr = generate_neighbours(guess, region,mg24_ub,mg25_ub,mg26_ub,Mg24_step,Mg25_step,Mg26_step)
     print('The length of the guess array before filtering is: ', len(guess_arr))
     guess_arr = filter_guesses(guess_arr, chi_df)
     print('The length of the guess array after filtering is: ', len(guess_arr))
@@ -494,13 +489,13 @@ def find_minimum_neighbour(raw_spec_filename, raw_spectra, wavelength_region, re
     # run optimise_model_fit on the neighbours
     for par in guess_arr:
         # add the new chi squared values to the df
-        chi_of_model = optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, par,star_name,linelist,vsini,Fe,CN,CC,C)
+        chi_of_model = optimise_model_fit(raw_spec_filename, raw_spectra, region, wavelength_region, par,star_name,linelist,vsini,Fe,CN,CC,C,mg24_ub,mg25_ub,mg26_ub,Mg24_step,Mg25_step,Mg26_step)
         chi_df = pd.concat([chi_df,chi_of_model])
     
     # return chi_df with the results of the new models
     return chi_df
 
-def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,C,Mg24_step):
+def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,C,mg24_ub,mg25_ub,mg26_ub,Mg24_step,Mg25_step,Mg26_step):
     """Find the model that best fits the data for a given star and region."""
     data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/'
     # change wavelength range
@@ -515,10 +510,13 @@ def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,C,Mg24_step):
     raw_spectra       = pd.read_table(raw_spec_filename, sep="\s+", usecols=[0,1], 
                          header=0, names = ['wavelength', 'flux'])
     wavelength_region = get_wavelength_region(region,as_string=True)
-
+    plt.figure()
+    plt.plot(raw_spectra.wavelength, raw_spectra.flux, label='Raw Spectrum')
+    plt.xlim(5138.04, 5142.46)
+    plt.show()
     # add the first chi_squyared value to the dataframe
     chi_df = optimise_model_fit(raw_spec_filename, raw_spectra, 
-                                region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,C)
+                                region, wavelength_region, guess,star_name,linelist,vsini,Fe,CN,CC,C,mg24_ub,mg25_ub,mg26_ub,Mg24_step,Mg25_step,Mg26_step)
 
     best_guess_chi = chi_df.chi_squared.iloc[0] # should only be 1 thing in the df atm
 
@@ -527,7 +525,7 @@ def model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,C,Mg24_step):
     while len(chi_df) < 300:
         # add the neighbours to the dataframe
         chi_df = find_minimum_neighbour(raw_spec_filename, raw_spectra, 
-                        wavelength_region, region, best_guess, chi_df,star_name,linelist,vsini,Fe,CN,CC,C,Mg24_step)
+                        wavelength_region, region, best_guess, chi_df,star_name,linelist,vsini,Fe,CN,CC,C,mg24_ub,mg25_ub,mg26_ub,Mg24_step,Mg25_step,Mg26_step)
         
         # get the best chi-squared fit
         chi_df = chi_df.sort_values(by = ['chi_squared'])
@@ -564,17 +562,17 @@ def calc_ratio(i_24, i_25, i_26):
     return str(round(i24_ratio,2)) + '_' + str(round(i25_ratio,2)) + '_' + str(round(i26_ratio,2))
 
 
-def calc_moog(r_24, r_25, r_26):
-    i24=1/(0.01*r_24)
-    i25=1/(0.01*r_24)
-    i26=1/(0.01*r_24)
-    return [i24, i25, i26]
+# def calc_moog(r_24, r_25, r_26):
+#     i24=1/(0.01*r_24)
+#     i25=1/(0.01*r_25)
+#     i26=1/(0.01*r_26)
+#     return [i24, i25, i26]
 
-def calc_moog_string(r_24, r_25, r_26):
-    i24=1/(0.01*r_24)
-    i25=1/(0.01*r_24)
-    i26=1/(0.01*r_24)
-    return str(round(i24,2)) + '_' + str(round(i25,2)) + '_' + str(round(i26,2))
+# def calc_moog_string(r_24, r_25, r_26):
+#     i24=1/(0.01*r_24)
+#     i25=1/(0.01*r_25)
+#     i26=1/(0.01*r_26)
+#     return str(round(i24,2)) + '_' + str(round(i25,2)) + '_' + str(round(i26,2))
 
 def initial_guess(MgH,Mg24_step):
     s = 0
@@ -600,30 +598,30 @@ def initial_guess(MgH,Mg24_step):
         #     fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}.csv', sep=',')
         
         #Create a dataframe with the name of the best fit file
-        best_fit = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['filename']
+        best_fit = fit_pass.loc[fit_pass['chi_squared'].idxmin()]
         
-        # Extract The macroturbulence value from the filename
-        s_block = best_fit.split('_')[1]  # 's41'
-        s_value = float(s_block.lstrip('s')[:-1] + '.' + s_block[-1])
+        # # Extract The macroturbulence value from the filename
+        # s_block = best_fit.split('_')[1]  # 's41'
+        # s_value = float(s_block.lstrip('s')[:-1] + '.' + s_block[-1])
         
-        #Extract the mg isotope values from the filename
-        i_block = best_fit.split('_')[3:6]  # ['i20', '64', '130']
+        # #Extract the mg isotope values from the filename
+        # i_block = best_fit.split('_')[3:6]  # ['i20', '64', '130']
 
-        # Remove 'i' from the first element and apply decimal for input back into the IS
-        # All numbers get a decimal 1 digit from the right
-        def convert(s):
-            s = s.lstrip('i')  # remove 'i' if present
-            return float(s[:-1] + '.' + s[-1])  # insert decimal one digit from end
+        # # Remove 'i' from the first element and apply decimal for input back into the IS
+        # # All numbers get a decimal 1 digit from the right
+        # def convert(s):
+        #     s = s.lstrip('i')  # remove 'i' if present
+        #     return float(s[:-1] + '.' + s[-1])  # insert decimal one digit from end
 
-        # Apply to all three parts
-        converted = [convert(val) for val in i_block]
+        # # Apply to all three parts
+        # converted = [convert(val) for val in i_block]
         
         # initial guess for the parameters
-        s = s_value
+        s = best_fit['s']
         mg = MgH
-        i_24 = converted[0]
-        i_25 = converted[1]
-        i_26 = converted[2]
+        i_24 = best_fit['i_24']
+        i_25 = best_fit['i_25']
+        i_26 = best_fit['i_26']
         rv = 0
         print('Using the first pass best fit as the initial guess for fine: ', 
               f's = {s}, mg = {mg}, i_24 = {i_24}, i_25 = {i_25}, i_26 = {i_26}, rv = {rv}')
@@ -674,11 +672,11 @@ def initial_guess(MgH,Mg24_step):
 #     'hd_10700','hd_100407'] 
 '''giants which play up'''
 # star_list = ['hd_18884','hd_157244'] 
-star_list = ['hd_18884']
+star_list = ['hd_157244']
 '''Test star'''
 # star_list = ['hd_10700']
 #Pass for testing purposes
-vpass = 32
+vpass = 37
 #23 is all regions for testing again
 #name of the linelist it should look for
 linelist = 'quinlinelist.in'
@@ -698,28 +696,51 @@ for star_name in star_list:
     #Open summary abundances file for Mg abundance(This is a line by line magnesium abundance)
     summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
     #Extract the Mg [X/H] and error
-    # MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
+    MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
     #The solar stuff: https://www.aanda.org/articles/aa/pdf/2021/09/aa40445-21.pdf#page=21.70
-    # MgH = MgH['[X/H]'].values[0] 
-    MgH = 0.51
+    MgH = MgH['[X/H]'].values[0] 
+    # MgH = 0.51
     # for region in regions:
     #     csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC)
     #     csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}.csv')
     # Run a coarse and then fine search for the best fit
     # regions = [1]
-    regions = [1]
-    for region in regions:
-        """Add a coarse search to find the best fit for the region. Then run the fine search after wards using the best fit coarse fit.
-        This will allow for a more accurate fit to the data but will require a new variable for stepsize for Mg24."""
-        # coarse search
-        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,C,Mg24_step=1.5)
-        csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}_coarse.csv')
-        print('Finished coarse search for region: ', region)
-    for region in regions:
-        # fine search
-        csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,C,Mg24_step=0.1)
-        csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}_fine.csv')     
-        print('Finished fine search for region: ', region) 
+    # regions = [1]
+    # regions = [3,4]
+    regions = [5,8,10]
+    if star_name == 'hd_157244' or 'hd_18884':
+        print('Running a coarse and fine search for the giants')
+        """Run a larger bound and stepsize for the giants"""
+        for region in regions:
+            """Add a coarse search to find the best fit for the region. Then run the fine search after wards using the best fit coarse fit.
+            This will allow for a more accurate fit to the data but will require a new variable for stepsize for Mg24."""
+            # coarse search
+            csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,C,
+                                   mg24_ub=30,mg25_ub=50,mg26_ub=60,Mg24_step=5,Mg25_step=5,Mg26_step=5)
+            csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}_coarse.csv')
+            print('Finished coarse search for region: ', region)
+        for region in regions:
+            # fine search
+            csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,C,
+                                   mg24_ub=30,mg25_ub=50,mg26_ub=60,Mg24_step=0.1,Mg25_step=0.2,Mg26_step=0.4)
+            csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}_fine.csv')     
+            print('Finished fine search for region: ', region) 
+            
+    else: 
+        for region in regions:
+            """Add a coarse search to find the best fit for the region. Then run the fine search after wards using the best fit coarse fit.
+            This will allow for a more accurate fit to the data but will require a new variable for stepsize for Mg24."""
+            # coarse search
+            csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,C,
+                                   mg24_ub=8,mg25_ub=15,mg26_ub=15,Mg24_step=0.7,Mg25_step=0.2,Mg26_step=0.4)
+            csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}_coarse.csv')
+            print('Finished coarse search for region: ', region)
+        for region in regions:
+            # fine search
+            csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC,C,
+                                   mg24_ub=8,mg25_ub=15,mg26_ub=15,Mg24_step=0.1,Mg25_step=0.2,Mg26_step=0.4)
+            csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}_fine.csv')     
+            print('Finished fine search for region: ', region) 
 # %%
 #%% --------------------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------------------
