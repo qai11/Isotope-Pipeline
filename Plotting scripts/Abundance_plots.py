@@ -7,12 +7,15 @@ import matplotlib.pyplot as plt
 import astropy.io.fits as fits
 import numpy as np
 
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-    'hd_102870','hd_45588','hd_156098']
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
 # star_list = ['hd_11695']
+star_list = ['hd_11695','hd_18884','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407'] 
 element = ["Eu", "Ba", "Mg"]
-
+vpass = 24
+#%%
 def element_plots_XFe(star_name):
     """Create a plot for Eu, Ba, Mg vs Mg"""
     # Initialize empty DataFrames with star_name as the first column
@@ -21,7 +24,7 @@ def element_plots_XFe(star_name):
     Mg_values = pd.DataFrame(columns=['star_name', '[Mg/Fe]', 'e[Mg/Fe]'])
     
     #Open masters stars csv
-    star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+    star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     
     for star_name in star_list:
         #Extract the FEH value from the masters stars csv
@@ -55,7 +58,7 @@ def element_plots_XFe(star_name):
         Mg_values = pd.concat([Mg_values, mg_row], ignore_index=True)
         
     #Open the isotope mg abundance file
-    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund.csv', delimiter=',')
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
     #Extract the 'mg_fe', 'd_mg_fe', 'mg24_fe', 'd_mg24_fe', 'mg25_fe', 'd_mg25_fe', 'mg26_fe', 'd_mg26_fe columns
     iso_mg = isotope[['mg_fe', 'd_mg_fe', 'mg_fe24', 'd_mg_fe24', 'mg_fe25', 'd_mg_fe25', 'mg_fe26', 'd_mg_fe26']]
     # print(iso_mg['mg_fe']-isotope['mg'])
@@ -148,7 +151,7 @@ def element_plots_XFe(star_name):
     ax[0,2].set_ylabel('[Mg/Fe] - IS[Mg/Fe]',fontsize=12)
     
     #Save the plot
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Element_fits_X_Fe.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_Fe.png', dpi=300, bbox_inches='tight')
 
 element_plots_XFe(star_list)
 
@@ -157,12 +160,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import astropy.io.fits as fits
 import numpy as np
+import scipy
 
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-    'hd_102870','hd_45588','hd_156098']
-# star_list = ['hd_11695']
-element = ["Eu", "Ba", "Mg"]
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
+# # star_list = ['hd_11695']
+# element = ["Eu", "Ba", "Mg"]
 
 def element_plots_XH(star_name):
     """Create a plot for Eu, Ba, Mg vs Mg"""
@@ -197,7 +201,7 @@ def element_plots_XH(star_name):
         Mg_values = pd.concat([Mg_values, mg_row], ignore_index=True)
 
     #Open the isotope mg abundance file
-    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund.csv', delimiter=',')
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
     #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
     iso_mg = isotope[['mg', 'd_mg', 'mg24', 'd_mg24', 'mg25', 'd_mg25', 'mg26', 'd_mg26']]
     
@@ -289,7 +293,7 @@ def element_plots_XH(star_name):
     ax[0,2].set_xlabel('IS[Mg/H]',fontsize=12)
     ax[0,2].set_ylabel('[Mg/H] - IS[Mg/H]',fontsize=12)
     #Save the plot
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Element_fits_X_H.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_H.png', dpi=300, bbox_inches='tight')
 
 
 
@@ -302,11 +306,11 @@ import astropy.io.fits as fits
 import numpy as np
 import scipy
 
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-    'hd_102870','hd_45588','hd_156098']
-# star_list = ['hd_11695']
-element = ["Eu", "Ba", "Mg"]
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
+# # star_list = ['hd_11695']
+# element = ["Eu", "Ba", "Mg"]
 
 def single_el_vs_params(star_name):
     """Create a plot for Eu, Ba, Mg vs Mg"""
@@ -320,7 +324,7 @@ def single_el_vs_params(star_name):
     
     
     #Open masters stars csv
-    star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+    star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #remove the 10th row
     star_info = star_info.drop(10)
     #reset index
@@ -372,7 +376,7 @@ def single_el_vs_params(star_name):
         Mg_values_H = pd.concat([Mg_values_H, mg_row_H], ignore_index=True)
     
     #Open the isotope mg abundance file
-    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund.csv', delimiter=',')
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
     #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
     iso_mg = isotope[['Unnamed: 0','mg_fe', 'd_mg_fe','mg','d_mg']]
     
@@ -462,7 +466,7 @@ def single_el_vs_params(star_name):
     ax[2,2].set_xlabel('$\log g (cm/s^{2}$)',fontsize=12)
     ax[2,2].set_ylabel('[Mg/Fe]',fontsize=12)
     #Save the plot
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Element_fits_vFe_params.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_vFe_params.png', dpi=300, bbox_inches='tight')
 
 
 
@@ -473,11 +477,11 @@ import matplotlib.pyplot as plt
 import astropy.io.fits as fits
 import numpy as np
 
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-    'hd_102870','hd_45588','hd_156098']
-# star_list = ['hd_11695']
-element = ["Eu", "Ba", "Mg"]
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
+# # star_list = ['hd_11695']
+# element = ["Eu", "Ba", "Mg"]
 
 def element_plots_XFe_LMG(star_name):
     """Create a plot for Eu, Ba, Mg vs Mg"""
@@ -512,7 +516,7 @@ def element_plots_XFe_LMG(star_name):
         Mg_values = pd.concat([Mg_values, mg_row], ignore_index=True)
 
     #Open the isotope mg abundance file
-    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund.csv', delimiter=',')
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
     #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
     iso_mg = isotope[['mg', 'd_mg', 'mg24', 'd_mg24', 'mg25', 'd_mg25', 'mg26', 'd_mg26','MgH','MgH24','MgH25','MgH26',
                       'd_MgH','d_MgH24','d_MgH25','d_MgH26']]
@@ -605,7 +609,7 @@ def element_plots_XFe_LMG(star_name):
     ax[0,2].set_xlabel('[Mg/H]',fontsize=12)
     ax[0,2].set_ylabel('[Mg/H] - [Mg/H]',fontsize=12)
     #Save the plot
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Element_fits_X_H_LblMg.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_H_LblMg.png', dpi=300, bbox_inches='tight')
 
 element_plots_XFe_LMG(star_list)
 
@@ -615,11 +619,11 @@ import matplotlib.pyplot as plt
 import astropy.io.fits as fits
 import numpy as np
 
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-    'hd_102870','hd_45588','hd_156098']
-# star_list = ['hd_11695']
-element = ["Eu", "Ba", "Mg"]
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
+# # star_list = ['hd_11695']
+# element = ["Eu", "Ba", "Mg"]
 
 def element_plots_XFe_LMg(star_name):
     """Create a plot for Eu, Ba, Mg vs Mg"""
@@ -629,7 +633,7 @@ def element_plots_XFe_LMg(star_name):
     Mg_values = pd.DataFrame(columns=['star_name', '[Mg/Fe]', 'e[Mg/Fe]'])
 
     #Open masters stars csv
-    star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+    star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     
     for star_name in star_list:
         #Extract the FEH value from the masters stars csv
@@ -664,7 +668,7 @@ def element_plots_XFe_LMg(star_name):
         Mg_values = pd.concat([Mg_values, mg_row], ignore_index=True)
     # print(Mg_values)
     #Open the isotope mg abundance file
-    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund.csv', delimiter=',')
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
     #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
     iso_mg = isotope[['mg', 'd_mg', 'mg24', 'd_mg24', 'mg25', 'd_mg25', 'mg26', 'd_mg26','MgH','MgH24','MgH25','MgH26',
                       'd_MgH','d_MgH24','d_MgH25','d_MgH26','MgFe','MgFe24','MgFe25','MgFe26',
@@ -770,7 +774,7 @@ def element_plots_XFe_LMg(star_name):
     ax[0,2].set_xlabel('[Mg/Fe]',fontsize=12)
     ax[0,2].set_ylabel('[Mg/Fe] - [Mg/Fe]',fontsize=12)
     #Save the plot
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Element_fits_X_Fe_LblMg.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_Fe_LblMg.png', dpi=300, bbox_inches='tight')
 
 
 element_plots_XFe_LMg(star_list)
@@ -857,9 +861,9 @@ def get_region(r):
     return lw, uw
 
 
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-    'hd_102870','hd_45588','hd_156098']
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
 
 # star_list = ['hd_11695']
 #Make an empty df to hold the isotope information
@@ -868,7 +872,7 @@ isotope_df = pd.DataFrame(columns=['star_name','s','mg','d_mg', 'i_24', 'i_25', 
                                    'pass','region','ratio'])
 
 #Open the Masters_stars csv
-star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
 
 Mg24_df = pd.DataFrame(columns=['star_name','R_24', 'd_R_24','region','wavelength'])
 Mg25_df = pd.DataFrame(columns=['star_name','R_25', 'd_R_25','region','wavelength'])
@@ -878,12 +882,11 @@ for star_name in star_list:
     # Read all the isotope abundance files
     # isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/par_unc_{star_name}.csv', delimiter=',', index_col=0)
     #Open the isotope mg abundance file
-    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/All_isotope_ratios_pre_avg.csv', delimiter=',')
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/All_isotope_ratios_pre_avg_paper_vpass_{vpass}.csv', delimiter=',')
     # /home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/par_unc_{star_name}.csv'
     #Get the star regions
     regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0] 
     # wavelength = np.array([5134.570, 5138.710, 5140.229, 5134.208, 5135.111, 5135.999, 5136.439, 5138.486, 5141.234, 5133.174]) 
-    
     for region in regions:
         #Create a new df to add in the isotope and wavelength information for mg 24
         Mg24 = isotope[(isotope['star_name'] == star_name) & (isotope['region'] == region)][['star_name','R_24', 'd_R_24','region']]
@@ -909,7 +912,7 @@ for star_name in star_list:
     Mg25_std = Mg25_df.groupby('wavelength').std().reset_index()
     Mg26_std = Mg26_df.groupby('wavelength').std().reset_index()
 
-
+vpass = 24
         
 wavelength = np.array([5134.570, 5138.710, 5140.229, 5134.208, 5135.111, 5135.999, 5136.439, 5138.486, 5141.234, 5133.174]) 
 #Plot wavelength from 5134.570 to 5133.174 and each isotope datapoint with error bars in the region it was found
@@ -937,8 +940,8 @@ for region in range(1,11):
     plt.text((lw+uw)/2, -8, f'R{region}', fontsize=12, ha='center')
 
 #Save the plot
-# plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Isotope_Percentage_vs_wavelength.png', dpi=300, bbox_inches='tight')
-plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Paper_Figures/Results/Isotope_Percentage_vs_wavelength.png', dpi=300, bbox_inches='tight')
+# plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Isotope_Percentage_vs_wavelength.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Isotope_Percentage_vs_wavelength.png', dpi=300, bbox_inches='tight')
 
 # %% X/H with shuffling of figures
 import pandas as pd
@@ -946,11 +949,11 @@ import matplotlib.pyplot as plt
 import astropy.io.fits as fits
 import numpy as np
 
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-    'hd_102870','hd_45588','hd_156098']
-# star_list = ['hd_11695']
-element = ["Eu", "Ba", "Mg"]
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
+# # star_list = ['hd_11695']
+# element = ["Eu", "Ba", "Mg"]
 
 def element_plots_XH_new(star_name):
     """Create a plot for Eu, Ba, Mg vs Mg"""
@@ -990,7 +993,7 @@ def element_plots_XH_new(star_name):
             
 
     #Open the isotope mg abundance file
-    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund.csv', delimiter=',')
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
     #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
     iso_mg = isotope[['Unnamed: 0','mg', 'd_mg', 'mg24', 'd_mg24', 'mg25', 'd_mg25', 'mg26', 'd_mg26']]
     
@@ -1112,7 +1115,7 @@ def element_plots_XH_new(star_name):
     ax[0,2].set_xlabel('IS[Mg/H]',fontsize=12)
     ax[0,2].set_ylabel('[Mg/H] - IS[Mg/H]',fontsize=12)
     #Save the plot
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Element_fits_X_H_new.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_H_new.png', dpi=300, bbox_inches='tight')
 
 
 
@@ -1125,11 +1128,11 @@ import astropy.io.fits as fits
 import numpy as np
 import scipy
 
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-    'hd_102870','hd_45588','hd_156098']
-# star_list = ['hd_11695']
-element = ["Eu", "Ba", "Mg"]
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
+# # star_list = ['hd_11695']
+# element = ["Eu", "Ba", "Mg"]
 
 def single_el_vs_params(star_name):
     """Create a plot for Eu, Ba, Mg vs Mg"""
@@ -1143,7 +1146,7 @@ def single_el_vs_params(star_name):
     
     
     #Open masters stars csv
-    star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+    star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #remove the 10th row
     star_info = star_info.drop(10)
     #reset index
@@ -1195,7 +1198,7 @@ def single_el_vs_params(star_name):
         Mg_values_H = pd.concat([Mg_values_H, mg_row_H], ignore_index=True)
     
     #Open the isotope mg abundance file
-    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund.csv', delimiter=',')
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
     #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
     iso_mg = isotope[['Unnamed: 0','mg_fe', 'd_mg_fe','mg','d_mg']]
     
@@ -1297,7 +1300,7 @@ def single_el_vs_params(star_name):
     ax[2,2].set_xlabel('$\log g (cm/s^{2}$)',fontsize=12)
     ax[2,2].set_ylabel('[Mg/H]',fontsize=12)
     #Save the plot
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Element_fits_vH_params.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_vH_params.png', dpi=300, bbox_inches='tight')
 
 
 
@@ -1310,11 +1313,11 @@ import matplotlib.pyplot as plt
 import astropy.io.fits as fits
 import numpy as np
 
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-    'hd_102870','hd_45588','hd_156098']
-# star_list = ['hd_11695']
-element = ["Eu", "Ba", "Mg"]
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
+# # star_list = ['hd_11695']
+# element = ["Eu", "Ba", "Mg"]
 
 def element_plots_XFe_LMG(star_name):
     """Create a plot for Eu, Ba, Mg vs Mg"""
@@ -1349,7 +1352,7 @@ def element_plots_XFe_LMG(star_name):
         Mg_values = pd.concat([Mg_values, mg_row], ignore_index=True)
 
     #Open the isotope mg abundance file
-    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund.csv', delimiter=',')
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
     #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
     iso_mg = isotope[['Unnamed: 0','mg', 'd_mg', 'mg24', 'd_mg24', 'mg25', 'd_mg25', 'mg26', 'd_mg26','MgH','MgH24','MgH25','MgH26',
                       'd_MgH','d_MgH24','d_MgH25','d_MgH26']]
@@ -1474,7 +1477,7 @@ def element_plots_XFe_LMG(star_name):
     ax[0,2].set_xlabel('[Mg/H]',fontsize=12)
     ax[0,2].set_ylabel('[Mg/H] - [Mg/H]',fontsize=12)
     #Save the plot
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Element_fits_X_H_LblMg_new.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_H_LblMg_new.png', dpi=300, bbox_inches='tight')
 
 element_plots_XFe_LMG(star_list)
 
@@ -1484,11 +1487,11 @@ import matplotlib.pyplot as plt
 import astropy.io.fits as fits
 import numpy as np
 
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-    'hd_102870','hd_45588','hd_156098']
-# star_list = ['hd_11695']
-element = ["Eu", "Ba", "Mg"]
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
+# # star_list = ['hd_11695']
+# element = ["Eu", "Ba", "Mg"]
 
 def element_plots_XH_new(star_name):
     """Create a plot for Eu, Ba, Mg vs Mg"""
@@ -1498,7 +1501,7 @@ def element_plots_XH_new(star_name):
     Mg_values = pd.DataFrame(columns=['star_name', '[Mg/H]', 'e[Mg/H]'])
     
     #Open masters stars csv
-    star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+    star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     
     for star_name in star_list:
         #Extract the FEH value from the masters stars csv
@@ -1537,7 +1540,7 @@ def element_plots_XH_new(star_name):
             
 
     #Open the isotope mg abundance file
-    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund.csv', delimiter=',')
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
     #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
     # iso_mg = isotope[['Unnamed: 0','mg', 'd_mg', 'mg24', 'd_mg24', 'mg25', 'd_mg25', 'mg26', 'd_mg26']]
     iso_mg = isotope[['Unnamed: 0','mg_fe', 'd_mg_fe', 'mg_fe24', 'd_mg_fe24', 'mg_fe25', 'd_mg_fe25', 'mg_fe26', 'd_mg_fe26','mg', 'd_mg', 'mg24', 'd_mg24', 'mg25', 'd_mg25', 'mg26', 'd_mg26']]
@@ -1659,7 +1662,7 @@ def element_plots_XH_new(star_name):
     ax[0,2].set_xlabel('IS[Mg/Fe]',fontsize=12)
     ax[0,2].set_ylabel('[Mg/Fe] - IS[Mg/Fe]',fontsize=12)
     #Save the plot
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Element_fits_X_Fe_new.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_Fe_new.png', dpi=300, bbox_inches='tight')
 
 
 
@@ -1671,11 +1674,11 @@ import matplotlib.pyplot as plt
 import astropy.io.fits as fits
 import numpy as np
 
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-    'hd_102870','hd_45588','hd_156098']
-# star_list = ['hd_11695']
-element = ["Eu", "Ba", "Mg"]
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
+# # star_list = ['hd_11695']
+# element = ["Eu", "Ba", "Mg"]
 
 def element_plots_XH_new_small(star_name):
     """Create a plot for Eu, Ba, Mg vs Mg"""
@@ -1685,7 +1688,7 @@ def element_plots_XH_new_small(star_name):
     Mg_values = pd.DataFrame(columns=['star_name', '[Mg/H]', 'e[Mg/H]'])
     
     #Open masters stars csv
-    star_info = pd.read_csv(f'/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv', sep=',')
+    star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #remove the 10th row
     star_info = star_info.drop(10)
     #reset index
@@ -1722,7 +1725,7 @@ def element_plots_XH_new_small(star_name):
             
 
     #Open the isotope mg abundance file
-    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund.csv', delimiter=',')
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
     #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
     iso_mg = isotope[['Unnamed: 0','mg', 'd_mg', 'mg24', 'd_mg24', 'mg25', 'd_mg25', 'mg26', 'd_mg26']]
     
@@ -1822,11 +1825,11 @@ def element_plots_XH_new_small(star_name):
     
 
     # Save the plot
-    # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Element_fits_X_H_small.png', dpi=300, bbox_inches='tight')
+    # plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_H_small.png', dpi=300, bbox_inches='tight')
 
 
 #Save the plot
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Element_fits_X_H_small_rotated.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_H_small_rotated.png', dpi=300, bbox_inches='tight')
 
 element_plots_XH_new_small(star_list)
 
@@ -1837,11 +1840,11 @@ import matplotlib.pyplot as plt
 import astropy.io.fits as fits
 import numpy as np
 
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-    'hd_102870','hd_45588','hd_156098']
-# star_list = ['hd_11695']
-element = ["Eu", "Ba", "Mg"]
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
+# # star_list = ['hd_11695']
+# element = ["Eu", "Ba", "Mg"]
 
 def element_plots_XH_new(star_name):
     """Create a plot for Eu, Ba, Mg vs Mg"""
@@ -1881,7 +1884,7 @@ def element_plots_XH_new(star_name):
             
 
     #Open the isotope mg abundance file
-    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund.csv', delimiter=',')
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
     #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
     iso_mg = isotope[['Unnamed: 0','mg', 'd_mg', 'mg24', 'd_mg24', 'mg25', 'd_mg25', 'mg26', 'd_mg26']]
     
@@ -1946,10 +1949,10 @@ def element_plots_XH_new(star_name):
     ax[2, 1].set_ylabel('IS[$^{26}$Mg/H]', fontsize=12)
 
     # Save the plot
-    plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Element_fits_X_H_new.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_H_new.png', dpi=300, bbox_inches='tight')
     
     #Save the plot
-    # plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Results/Element_fits_X_H_new.png', dpi=300, bbox_inches='tight')
+    # plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_H_new.png', dpi=300, bbox_inches='tight')
 
 
 

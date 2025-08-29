@@ -339,9 +339,10 @@ stronglines= None
 # star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
 #     'hd_10700','hd_100407'] 
 # star_list = ['hd_10700']
-star_list = ['hd_18884','hd_157244']
+# star_list = ['hd_18884','hd_157244']
+star_list = ['hd_157244']
 # star_list = ['hd_18884']
-vpass = 37
+vpass = 38
 linelist = 'quinlinelist.in'
 #define the weighted average df for plotting
 w_avg_files = pd.DataFrame(columns=['star_name','filename'])

@@ -8,7 +8,7 @@ Description: Run after Isotope_pipeline_uncertainties to calculate the final abu
 # %% """Make a table for the isotopic ratios"""
 # """Makes the All_isotope_ratios_pre_avg file"""
 
-vpass = 37
+vpass = 24
 
 import pandas as pd
 import numpy as np
@@ -23,8 +23,12 @@ import numpy as np
 # star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
 #     'hd_10700','hd_100407'] 
 
-star_list = ['hd_18884','hd_157244']
+# star_list = ['hd_18884','hd_157244']
+# star_list = ['hd_157244']
 # star_list = ['hd_18884']
+#all paper stars
+star_list = ['hd_11695','hd_18884','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407'] 
 #Make an empty df to hold the isotope information
 isotope_df = pd.DataFrame(columns=['star_name','s','mg','d_mg', 'i_24', 'i_25', 'i_26','R_24','R_25',
                                    'R_26','d_i_24', 'd_i_25', 'd_i_26','d_R_24','d_R_25','d_R_26',
@@ -68,7 +72,7 @@ isotope_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/All_isotope_rat
 
 # %%"""Caclulate the weighted averages of isotopic abundance ratios for each star"""
 #Makes the weighted_avg_iso file
-
+vpass = 24
 import pandas as pd
 import numpy as np
 import ast
@@ -86,11 +90,12 @@ import ast
 abundance_dict = {}
 # star_list = ['hd_10700']
 
-# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-#     'hd_10700','hd_100407'] 
+star_list = ['hd_11695','hd_18884','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407'] 
 # vpass = '6'
 
-star_list = ['hd_18884','hd_157244']
+# star_list = ['hd_18884','hd_157244']
+# star_list = ['hd_157244']
 # star_list = ['hd_18884']
 def calc_ratio(i_24, i_25, i_26):
     i24_percentage=1/(0.01*i_24)
@@ -254,7 +259,7 @@ for star_name in star_list:
     # Create a new row for the structured DataFrame
     new_row = {
         's': round(abundances[0], 4), 'd_s': round(errors[0], 4),
-        # 'mg': round(abundances[1], 4), 'd_mg': round(errors[1], 4),
+        'mg': round(abundances[1], 4), 'd_mg': round(errors[1], 4),
         # 'mg_fe': round(abundances[1]-feh, 4), 'd_mg_fe': round(errors[1]-feh, 4),
         'mg_fe24': round(mg_24_H_is-feh, 4), 'd_mg_fe24': round( mg_24_H_is_err, 4),
         'mg_fe25': round(mg_25_H_is-feh, 4), 'd_mg_fe25': round( mg_25_H_is_err, 4),
@@ -684,32 +689,32 @@ def isotope_regions(star_name,regions):
         ax=ax.flatten()
     #Set the iteration to 0
     #Open the best fit files for each region
-    w_avg_file = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/w_avg_models_vpass_{vpass}.csv', sep=',')
-    #open the file with the model in it
-    w_avg_star_name = w_avg_file[w_avg_file['star_name'] == star_name]['filename'].values[0]
-    w_avg_model = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{w_avg_star_name}', sep="     ", header=None, skiprows = [0,1])
-    print(f'Weighted average model for {star_name} is {w_avg_star_name}')
-    print('w_avg_model shape:', w_avg_model.shape)
+    # w_avg_file = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/w_avg_models_vpass_{vpass}.csv', sep=',')
+    # #open the file with the model in it
+    # w_avg_star_name = w_avg_file[w_avg_file['star_name'] == star_name]['filename'].values[0]
+    # w_avg_model = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{w_avg_star_name}', sep="     ", header=None, skiprows = [0,1])
+    # print(f'Weighted average model for {star_name} is {w_avg_star_name}')
+    # print('w_avg_model shape:', w_avg_model.shape)
     iteration = 0
     #open the file with the weighted average information
-    weighted_avg_file = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', sep=',')
+    # weighted_avg_file = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', sep=',')
     #scrape the ratios out of it
     for region in regions:
         i = iteration
         #Load the best fit values for the region
         try:
-            # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}_fine.csv', sep=',')
-            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}.csv', sep=',')
+            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}_fine.csv', sep=',')
+            # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}.csv', sep=',')
         except:
-            # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_fine.csv', sep=',')
-            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}csv', sep=',')
+            fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_fine.csv', sep=',')
+            # fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}.csv', sep=',')
         #Create a dataframe with the name of the best fit file
         best_fit = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['filename']
         # print(f'Best fit for region {region} is {best_fit}')
         """#Open the best fit file for all but giants"""
-        # model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{best_fit}', sep="     ", header=None, skiprows = [0,1])
+        model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{best_fit}', sep="     ", header=None, skiprows = [0,1])
         """Open for giants"""
-        model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{best_fit}', sep="     ", header=None, skiprows = [0,1])
+        # model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{best_fit}', sep="     ", header=None, skiprows = [0,1])
         # Plot each region in subsequent subplots
         #Call region_plots
         region_plots(region, raw, ax[i])
@@ -717,13 +722,13 @@ def isotope_regions(star_name,regions):
         ratio = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['ratio']
         ax[i].text(0.05, 0.90, f'Best Fit {ratio}', transform=ax[i].transAxes, fontsize=12, verticalalignment='bottom')
         #paste the weighted average values for the isotopes onto the plot in the bottom left corner
-        ax[i].text(0.05, 0.80, f"Weighted Avg {weighted_avg_file['R_24'].values[0]:.2f}_{weighted_avg_file['R_25'].values[0]:.2f}_{weighted_avg_file['R_26'].values[0]:.2f}", transform=ax[i].transAxes, fontsize=12, verticalalignment='bottom')
+        # ax[i].text(0.05, 0.80, f"Weighted Avg {weighted_avg_file['R_24'].values[0]:.2f}_{weighted_avg_file['R_25'].values[0]:.2f}_{weighted_avg_file['R_26'].values[0]:.2f}", transform=ax[i].transAxes, fontsize=12, verticalalignment='bottom')
         # plot the synthetic spectrum
         ax[i].plot(model_spectra[0], model_spectra[1], label='Synth Spectrum')
         # plot the observed spectrum
         ax[i].plot(raw['waveobs'], raw['flux'] , label='Obs Spectrum', c=star_colour)
         #plot the weighted average specturm overtop
-        ax[i].plot(w_avg_model[0], w_avg_model[1], label='W_Avg Spectrum', c='black', linestyle='--')
+        # ax[i].plot(w_avg_model[0], w_avg_model[1], label='W_Avg Spectrum', c='black', linestyle='--')
         ax[i].set_xlabel('Wavelength ($\AA$)',fontsize=12)
         ax[i].set_ylabel('Flux',fontsize=12)
         ax[i].legend(loc='upper right')
@@ -760,10 +765,11 @@ def isotope_regions(star_name,regions):
 #stars less than 5300K
 # star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
     # 'hd_10700','hd_100407']
-vpass = 37
-star_list = ['hd_18884','hd_157244']
+vpass = 24
+# star_list = ['hd_18884','hd_157244']
+# star_list = ['hd_157244']
 # star_list = ['hd_18884']
-
+star_list = ['hd_18907']
 
 # star_list = ['hd_18884'] #there is a problem here
 for star in star_list:
@@ -1040,3 +1046,404 @@ for region in range(1,11):
 #Save the plot
 # plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_Figures/Results/Isotope_Percentage_vs_wavelength.png', dpi=300, bbox_inches='tight')
 plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Isotope_Percentage_vs_wavelength_{vpass}.png', dpi=300, bbox_inches='tight')
+
+#%% Plot element vs isotopes abundances
+vpass = 24
+import pandas as pd
+import matplotlib.pyplot as plt
+import astropy.io.fits as fits
+import numpy as np
+import scipy
+
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
+star_list = ['hd_11695','hd_18884','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407']
+# # star_list = ['hd_11695']
+element = ["Eu", "Ba", "Mg"]
+
+def element_plots_XH_new(star_name):
+    """Create a plot for Eu, Ba, Mg vs Mg"""
+    # Initialize empty DataFrames with star_name as the first column
+    Eu_values = pd.DataFrame(columns=['star_name', '[Eu/H]', 'e[Eu/H]'])
+    Ba_values = pd.DataFrame(columns=['star_name', '[Ba/H]', 'e[Ba/H]'])
+    Mg_values = pd.DataFrame(columns=['star_name', '[Mg/H]', 'e[Mg/H]'])
+    
+    for star_name in star_list:
+        # Open the lbl abundances
+        file_path = f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt'
+        elements = pd.read_csv(file_path, delimiter=' ')
+
+        # Extract [X/H] and e[X/H] for each element and store them in a DataFrame
+        eu_row = elements[elements['element'] == 'Eu_2'][['[X/H]', 'e[X/H]']].copy()
+        ba_row = elements[elements['element'] == 'Ba'][['[X/H]', 'e[X/H]']].copy()
+        mg_row = elements[elements['element'] == 'Mg'][['[X/H]', 'e[X/H]']].copy()
+
+        # Add the star_name column
+        eu_row.insert(0, 'star_name', star_name)
+        ba_row.insert(0, 'star_name', star_name)
+        mg_row.insert(0, 'star_name', star_name)
+
+        # Rename columns to reflect the element name
+        eu_row.columns = ['star_name', '[Eu/H]', 'e[Eu/H]']
+        ba_row.columns = ['star_name', '[Ba/H]', 'e[Ba/H]']
+        mg_row.columns = ['star_name', '[Mg/H]', 'e[Mg/H]']
+
+        # Append to the main DataFrames
+        Eu_values = pd.concat([Eu_values, eu_row], ignore_index=True)
+        Ba_values = pd.concat([Ba_values, ba_row], ignore_index=True)
+        Mg_values = pd.concat([Mg_values, mg_row], ignore_index=True)
+        
+        # # Find the stars with the Mg/H values less than 0.25 and add then to a seperate variable
+        # if Mg_values['[Mg/H]'] < 0.25:
+        #     Mg_small = Mg_values          
+            
+
+    #Open the isotope mg abundance file
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
+    #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
+    iso_mg = isotope[['Unnamed: 0','mg', 'd_mg', 'mg24', 'd_mg24', 'mg25', 'd_mg25', 'mg26', 'd_mg26']]
+    print(f"star {iso_mg['Unnamed: 0']} with Mg/H {iso_mg['mg']}")
+    print(f"star {Mg_values['star_name']} with Mg/H {Mg_values['[Mg/H]']}")
+    # #Make a variable when the mg values are less than 0.25
+    # small_mg = iso_mg[np.logical_and(-0.25 < iso_mg['mg'], iso_mg['mg'] < 0.25)]
+    # #for the related stars in the small_mg variable, find the Mg values
+    # small_mg_values = Mg_values[Mg_values['star_name'].isin(small_mg['Unnamed: 0'])]
+    # small_eu_values = Eu_values[Eu_values['star_name'].isin(small_mg['Unnamed: 0'])]
+    # small_ba_values = Ba_values[Ba_values['star_name'].isin(small_mg['Unnamed: 0'])]
+    
+    #Make the plot for X/H and mg from IS.
+    #Plot the elements vs each Mg and the isotope mg, mg24, mg25, mg26
+    fig, ax = plt.subplots(4, 2, figsize=(9, 12), constrained_layout=True)
+    # increase the space between the plots
+    # fig.subplots_adjust(hspace=0.35, wspace=0.35)
+
+    #plot Mg vs Eu
+    print(f"mg vs Eu: {scipy.stats.pearsonr(Eu_values['[Eu/H]'], Mg_values['[Mg/H]'])}")
+    ax[0, 0].errorbar(Eu_values['[Eu/H]'], Mg_values['[Mg/H]'], yerr=Mg_values['e[Mg/H]'], xerr=Eu_values['e[Eu/H]'], fmt='o', elinewidth=0.5)
+    # ax[0, 0].errorbar(small_eu_values['[Eu/H]'], small_mg['mg'], yerr=small_mg['d_mg'], xerr=small_eu_values['e[Eu/H]'], fmt='o', elinewidth=0.5, color='orange')
+    ax[0, 0].set_ylabel('[Mg/H]', fontsize=12)
+    ax[0, 0].set_xlabel('[Eu/H]', fontsize=12)
+    ax[0, 0].set_ylim(-0.5, 0.75)
+    ax[0, 0].set_xlim(-0.5, 0.75)
+    #plot Mg vs Ba
+    print(f"mg vs Ba: {scipy.stats.pearsonr(Ba_values['[Ba/H]'], Mg_values['[Mg/H]'])}")
+    ax[0, 1].errorbar(Ba_values['[Ba/H]'], Mg_values['[Mg/H]'], yerr=Mg_values['e[Mg/H]'], xerr=Ba_values['e[Ba/H]'], fmt='o', elinewidth=0.5)
+    # print(Ba_values['[Ba/H]'])
+    # ax[0, 1].errorbar(small_ba_values['[Ba/H]'], small_mg['mg'], yerr=small_mg['d_mg'], xerr=small_ba_values['e[Ba/H]'], fmt='o', elinewidth=0.5, color='orange')
+    ax[0, 1].set_ylabel('[Mg/H]', fontsize=12)
+    ax[0, 1].set_xlabel('[Ba/H]', fontsize=12)
+    ax[0, 1].set_ylim(-0.5, 0.75)
+    
+    
+    # Plot mg24 vs Eu
+    print(f"mg24 vs Eu: {scipy.stats.pearsonr(Eu_values['[Eu/H]'], iso_mg['mg24'])}")
+    ax[1, 0].errorbar(Eu_values['[Eu/H]'], iso_mg['mg24'], yerr=iso_mg['d_mg24'], xerr=Eu_values['e[Eu/H]'], fmt='o', elinewidth=0.5)
+    # ax[0, 0].errorbar(small_eu_values['[Eu/H]'], small_mg['mg24'], yerr=small_mg['d_mg24'], xerr=small_eu_values['e[Eu/H]'], fmt='o', elinewidth=0.5, color='orange')
+    ax[1, 0].set_ylabel('[$^{24}$Mg/H]', fontsize=12)
+    ax[1, 0].set_xlabel('[Eu/H]', fontsize=12)
+    ax[1, 0].set_ylim(-1.2, 0.65)
+    ax[1, 0].set_xlim(-0.5, 0.75)
+
+    # Plot mg25 vs Eu
+    print(f"mg25 vs Eu: {scipy.stats.pearsonr(Eu_values['[Eu/H]'], iso_mg['mg25'])}")
+    ax[2, 0].errorbar(Eu_values['[Eu/H]'], iso_mg['mg25'], yerr=iso_mg['d_mg25'], xerr=Eu_values['e[Eu/H]'], fmt='o', elinewidth=0.5)
+    # ax[1, 0].errorbar(small_eu_values['[Eu/H]'], small_mg['mg25'], yerr=small_mg['d_mg25'], xerr=small_eu_values['e[Eu/H]'], fmt='o', elinewidth=0.5, color='orange')
+    ax[2, 0].set_xlabel('[Eu/H]', fontsize=12)
+    ax[2, 0].set_ylabel('[$^{25}$Mg/H]', fontsize=12)
+    ax[2, 0].set_ylim(-0.3, 0.7)
+    ax[2, 0].set_xlim(-0.5, 0.75)
+
+    # Plot mg26 vs Eu
+    print(f"mg26 vs Eu: {scipy.stats.pearsonr(Eu_values['[Eu/H]'], iso_mg['mg26'])}")
+    ax[3, 0].errorbar(Eu_values['[Eu/H]'], iso_mg['mg26'], yerr=iso_mg['d_mg26'], xerr=Eu_values['e[Eu/H]'], fmt='o', elinewidth=0.5)
+    # ax[2, 0].errorbar(small_eu_values['[Eu/H]'], small_mg['mg26'], yerr=small_mg['d_mg26'], xerr=small_eu_values['e[Eu/H]'], fmt='o', elinewidth=0.5, color='orange')
+    ax[3, 0].set_xlabel('[Eu/H]', fontsize=12)
+    ax[3, 0].set_ylabel('[$^{26}$Mg/H]', fontsize=12)
+    ax[3, 0].set_xlim(-0.5, 0.75)
+    ax[3, 0].set_ylim(-0.25, 1.5)
+
+    # Plot mg24 vs Ba
+    print(f"mg24 vs Ba: {scipy.stats.pearsonr(Ba_values['[Ba/H]'], iso_mg['mg24'])}")
+    ax[1, 1].errorbar(Ba_values['[Ba/H]'], iso_mg['mg24'], yerr=iso_mg['d_mg24'], xerr=Ba_values['e[Ba/H]'], fmt='o', elinewidth=0.5)
+    # ax[0, 1].errorbar(small_ba_values['[Ba/H]'], small_mg['mg24'], yerr=small_mg['d_mg24'], xerr=small_ba_values['e[Ba/H]'], fmt='o', elinewidth=0.5, color='orange')
+    ax[1, 1].set_ylabel('[$^{24}$Mg/H]', fontsize=12)
+    ax[1, 1].set_xlabel('[Ba/H]', fontsize=12)
+    ax[1, 1].set_ylim(-1.2, 0.65)
+
+    # Plot mg25 vs Ba
+    print(f"mg25 vs Ba: {scipy.stats.pearsonr(Ba_values['[Ba/H]'], iso_mg['mg25'])}")
+    ax[2,1].errorbar(Ba_values['[Ba/H]'], iso_mg['mg25'], yerr=iso_mg['d_mg25'], xerr=Ba_values['e[Ba/H]'], fmt='o', elinewidth=0.5)
+    # ax[1,1].errorbar(small_ba_values['[Ba/H]'], small_mg['mg25'], yerr=small_mg['d_mg25'], xerr=small_ba_values['e[Ba/H]'], fmt='o', elinewidth=0.5, color='orange')
+    ax[2,1].set_xlabel('[Ba/H]', fontsize=12)
+    ax[2,1].set_ylabel('[$^{25}$Mg/H]', fontsize=12)
+    ax[2, 1].set_ylim(-0.3, 0.7)
+
+    # Plot mg26 vs Ba
+    print(f"mg26 vs Ba: {scipy.stats.pearsonr(Ba_values['[Ba/H]'], iso_mg['mg26'])}")
+    ax[3, 1].errorbar(Ba_values['[Ba/H]'], iso_mg['mg26'], yerr=iso_mg['d_mg26'], xerr=Ba_values['e[Ba/H]'], fmt='o', elinewidth=0.5)
+    # ax[2, 1].errorbar(small_ba_values['[Ba/H]'], small_mg['mg26'], yerr=small_mg['d_mg26'], xerr=small_ba_values['e[Ba/H]'], fmt='o', elinewidth=0.5, color='orange')
+    ax[3, 1].set_xlabel('[Ba/H]', fontsize=12)
+    ax[3, 1].set_ylabel('[$^{26}$Mg/H]', fontsize=12)
+    ax[3, 1].set_ylim(-0.25, 1.5)
+
+    # Save the plot
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_H_new.png', dpi=300, bbox_inches='tight')
+
+element_plots_XH_new(star_list)
+# %% shuffling parameters teff, logg, feh
+import pandas as pd
+import matplotlib.pyplot as plt
+import astropy.io.fits as fits
+import numpy as np
+import scipy
+
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
+# # star_list = ['hd_11695']
+# element = ["Eu", "Ba", "Mg"]
+
+def single_el_vs_params(star_name):
+    """Create a plot for Eu, Ba, Mg vs Mg"""
+    # Initialize empty DataFrames with star_name as the first column
+    Eu_values = pd.DataFrame(columns=['star_name', '[Eu/H]', 'e[Eu/H]'])
+    Ba_values = pd.DataFrame(columns=['star_name', '[Ba/H]', 'e[Ba/H]'])
+    Mg_values = pd.DataFrame(columns=['star_name', '[Mg/H]', 'e[Mg/H]'])
+    Eu_values_H = pd.DataFrame(columns=['star_name', '[Eu/H]', 'e[Eu/H]'])
+    Ba_values_H = pd.DataFrame(columns=['star_name', '[Ba/H]', 'e[Ba/H]'])
+    Mg_values_H = pd.DataFrame(columns=['star_name', '[Mg/H]', 'e[Mg/H]'])
+    
+    
+    #Open masters stars csv
+    star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
+    #remove the 10th row
+    star_info = star_info.drop(10)
+    #reset index
+    star_info = star_info.reset_index(drop=True)
+    
+    for star_name in star_list:
+        #Extract the FEH value from the masters stars csv
+        feh = star_info[star_info['ID2'] == star_name]['FEH'].values[0]
+        #make a filter to only take the stars in the star_list and override the star_info variable
+        star_info = star_info[star_info['ID2'].isin(star_list)]
+        # Open the lbl abundances
+        file_path = f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt'
+        elements = pd.read_csv(file_path, delimiter=' ')
+
+        # Extract [X/H] and e[X/H] for each element and store them in a DataFrame
+        eu_row = elements[elements['element'] == 'Eu_2'][['[X/H]', 'e[X/H]']].copy()
+        ba_row = elements[elements['element'] == 'Ba'][['[X/H]', 'e[X/H]']].copy()
+        mg_row = elements[elements['element'] == 'Mg'][['[X/H]', 'e[X/H]']].copy()
+        #EUH
+        eu_row_H = elements[elements['element'] == 'Eu_2'][['[X/H]', 'e[X/H]']].copy()
+        ba_row_H = elements[elements['element'] == 'Ba'][['[X/H]', 'e[X/H]']].copy()
+        mg_row_H = elements[elements['element'] == 'Mg'][['[X/H]', 'e[X/H]']].copy()
+        
+        #Take away feh from each X/H value
+        eu_row['[X/H]'] = eu_row['[X/H]'] - feh
+        ba_row['[X/H]'] = ba_row['[X/H]'] - feh
+        mg_row['[X/H]'] = mg_row['[X/H]'] - feh
+        
+        # Add the star_name column
+        eu_row.insert(0, 'star_name', star_name)
+        ba_row.insert(0, 'star_name', star_name)
+        mg_row.insert(0, 'star_name', star_name)
+        eu_row_H.insert(0, 'star_name', star_name)
+        ba_row_H.insert(0, 'star_name', star_name)
+        mg_row_H.insert(0, 'star_name', star_name)
+
+        # Rename columns to reflect the element name
+        eu_row.columns = ['star_name', '[Eu/Fe]', 'e[Eu/Fe]']
+        ba_row.columns = ['star_name', '[Ba/Fe]', 'e[Ba/Fe]']
+        mg_row.columns = ['star_name', '[Mg/Fe]', 'e[Mg/Fe]']
+        eu_row_H.columns = ['star_name', '[Eu/H]', 'e[Eu/H]']
+        ba_row_H.columns = ['star_name', '[Ba/H]', 'e[Ba/H]']
+        mg_row_H.columns = ['star_name', '[Mg/H]', 'e[Mg/H]']
+
+        # Append to the main DataFrames
+        Eu_values = pd.concat([Eu_values, eu_row], ignore_index=True)
+        Ba_values = pd.concat([Ba_values, ba_row], ignore_index=True)
+        Mg_values = pd.concat([Mg_values, mg_row], ignore_index=True)
+        Eu_values_H = pd.concat([Eu_values_H, eu_row_H], ignore_index=True)
+        Ba_values_H = pd.concat([Ba_values_H, ba_row_H], ignore_index=True)
+        Mg_values_H = pd.concat([Mg_values_H, mg_row_H], ignore_index=True)
+    
+    #Open the isotope mg abundance file
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
+    #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
+    iso_mg = isotope[['Unnamed: 0','mg','d_mg']]
+    
+    #Make a variable when the mg values are less than 0.25
+    small_mg = iso_mg[np.logical_and(-0.25 < iso_mg['mg'], iso_mg['mg'] < 0.25)]
+    #for the related stars in the small_mg variable, find the Mg values
+    small_mg_values = Mg_values_H[Mg_values_H['star_name'].isin(small_mg['Unnamed: 0'])]
+    small_eu_values = Eu_values_H[Eu_values_H['star_name'].isin(small_mg['Unnamed: 0'])]
+    small_ba_values = Ba_values_H[Ba_values_H['star_name'].isin(small_mg['Unnamed: 0'])]
+    small_star_teff = star_info[star_info['ID2'].isin(small_mg['Unnamed: 0'])]
+    small_star_logg = star_info[star_info['ID2'].isin(small_mg['Unnamed: 0'])]
+
+
+    #Make the plot for X/H and mg from IS.
+    #Plot the elements vs each Mg and the isotope mg, mg24, mg25, mg26
+    fig, ax = plt.subplots(3, 3, figsize=(16,12),constrained_layout=True)
+
+    #increase the space between the plots
+    fig.subplots_adjust(hspace=0.3, wspace=0.3)
+    
+    #Plot Eu vs Mg
+    # print(scipy.stats.pearsonr(Mg_values['[Mg/Fe]'], Eu_values['[Eu/Fe]']))
+    ax[0,0].errorbar(Mg_values_H['[Mg/H]'], Eu_values_H['[Eu/H]'], yerr=Eu_values_H['e[Eu/H]'], xerr=Mg_values_H['e[Mg/H]'], fmt='o', elinewidth=0.5)
+    # ax[0,0].errorbar(small_mg_values['[Mg/H]'], small_eu_values['[Eu/H]'], yerr=small_eu_values['e[Eu/H]'], xerr=small_mg_values['e[Mg/H]'], fmt='o', elinewidth=0.5,color='orange')
+    ax[0,0].set_xlabel('[Mg/H]',fontsize=12)
+    ax[0,0].set_ylabel('[Eu/H]',fontsize=12)
+    ax[0,0].set_ylim(-0.4,0.9)
+    #Plot Eu vs Ba
+    print(f"Eu vs Ba: {scipy.stats.pearsonr(Ba_values_H['[Ba/H]'], Eu_values_H['[Eu/H]'])}")
+    ax[0,1].errorbar(Ba_values_H['[Ba/H]'], Eu_values_H['[Eu/H]'], yerr=Eu_values_H['e[Eu/H]'], xerr=Ba_values_H['e[Ba/H]'], fmt='o', elinewidth=0.5)
+    # ax[0,1].errorbar(small_ba_values['[Ba/H]'], small_eu_values['[Eu/H]'], yerr=small_eu_values['e[Eu/H]'], xerr=small_ba_values['e[Ba/H]'], fmt='o', elinewidth=0.5,color='orange')
+    ax[0,1].set_xlabel('[Ba/H]',fontsize=12)
+    ax[0,1].set_ylabel('[Eu/H]',fontsize=12)
+    ax[0,1].set_ylim(-0.4,1)    
+    #Plot Ba vs Mg
+    ax[0,2].errorbar(Mg_values_H['[Mg/H]'], Ba_values_H['[Ba/H]'], yerr=Ba_values_H['e[Ba/H]'], xerr=Mg_values_H['e[Mg/H]'], fmt='o', elinewidth=0.5)
+    # ax[0,2].errorbar(small_mg_values['[Mg/H]'], small_ba_values['[Ba/H]'], yerr=small_ba_values['e[Ba/H]'], xerr=small_mg_values['e[Mg/H]'], fmt='o', elinewidth=0.5,color='orange')
+    ax[0,2].set_xlabel('[Mg/H]',fontsize=12)
+    ax[0,2].set_ylabel('[Ba/H]',fontsize=12)
+    #Plot Eu vs Teff
+
+    print(f"Eu vs Teff: {scipy.stats.pearsonr(star_info['TEFF'], Eu_values_H['[Eu/H]'])}")
+    ax[1,0].errorbar(star_info['TEFF'], Eu_values_H['[Eu/H]'], yerr=Eu_values_H['e[Eu/H]'], fmt='o', elinewidth=0.5)
+    # ax[1,0].errorbar(small_star_teff['TEFF'], small_eu_values['[Eu/H]'], yerr=small_eu_values['e[Eu/H]'], fmt='o', elinewidth=0.5,color='orange')
+    ax[1,0].set_xlabel('$T_{eff}$',fontsize=12)
+    ax[1,0].set_ylabel('[Eu/H]',fontsize=12)
+    ax[1,0].set_ylim(-0.4,0.9)
+    #Plot Ba vs Teff
+    print(f"Ba vs Teff: {scipy.stats.pearsonr(star_info['TEFF'], Ba_values_H['[Ba/H]'])}")
+    ax[1,1].errorbar(star_info['TEFF'], Ba_values_H['[Ba/H]'], yerr=Ba_values_H['e[Ba/H]'], fmt='o', elinewidth=0.5)
+    # ax[1,1].errorbar(small_star_teff['TEFF'], small_ba_values['[Ba/H]'], yerr=small_ba_values['e[Ba/H]'], fmt='o', elinewidth=0.5,color='orange')
+    ax[1,1].set_xlabel('$T_{eff}$',fontsize=12)
+    ax[1,1].set_ylabel('[Ba/H]',fontsize=12)
+    
+    
+    #Plot Eu vs logg
+    print(f"Eu vs logg: {scipy.stats.pearsonr(star_info['LOGG'], Eu_values_H['[Eu/H]'])}")
+    ax[2,0].errorbar(star_info['LOGG'], Eu_values_H['[Eu/H]'], yerr=Eu_values_H['e[Eu/H]'], fmt='o', elinewidth=0.5)
+    # ax[2,0].errorbar(small_star_logg['LOGG'], small_eu_values['[Eu/H]'], yerr=small_eu_values['e[Eu/H]'], fmt='o', elinewidth=0.5,color='orange')
+    ax[2,0].set_xlabel('$\log g (cm/s^{2}$)',fontsize=12)
+    ax[2,0].set_ylabel('[Eu/H]',fontsize=12)
+    ax[2,0].set_ylim(-0.4,0.9)
+    #Plot Ba vs logg
+    print(f"Ba vs logg: {scipy.stats.pearsonr(star_info['LOGG'], Ba_values_H['[Ba/H]'])}")
+    ax[2,1].errorbar(star_info['LOGG'], Ba_values_H['[Ba/H]'], yerr=Ba_values_H['e[Ba/H]'], fmt='o', elinewidth=0.5)
+    # ax[2,1].errorbar(small_star_logg['LOGG'], small_ba_values['[Ba/H]'], yerr=small_ba_values['e[Ba/H]'], fmt='o', elinewidth=0.5,color='orange')
+    ax[2,1].set_xlabel('$\log g (cm/s^{2}$)',fontsize=12)
+    ax[2,1].set_ylabel('[Ba/H]',fontsize=12)
+    
+    #Plot Mg vs Teff
+    print(f"Mg vs Teff: {scipy.stats.pearsonr(star_info['TEFF'], Mg_values_H['[Mg/H]'])}")
+    ax[1,2].errorbar(star_info['TEFF'], Mg_values_H['[Mg/H]'], yerr=Mg_values_H['e[Mg/H]'], fmt='o', elinewidth=0.5)
+    # ax[1,2].errorbar(small_star_teff['TEFF'], small_mg_values['[Mg/H]'], yerr=small_mg_values['e[Mg/H]'], fmt='o', elinewidth=0.5,color='orange')
+    ax[1,2].set_xlabel('$T_{eff}$',fontsize=12)
+    ax[1,2].set_ylabel('[Mg/H]',fontsize=12)
+    #Plot Mg vs logg
+    print(f"Mg vs logg: {scipy.stats.pearsonr(star_info['LOGG'], Mg_values_H['[Mg/H]'])}")
+    ax[2,2].errorbar(star_info['LOGG'], Mg_values_H['[Mg/H]'], yerr=Mg_values_H['e[Mg/H]'], fmt='o', elinewidth=0.5)
+    # ax[2,2].errorbar(small_star_logg['LOGG'], small_mg_values['[Mg/H]'], yerr=small_mg_values['e[Mg/H]'], fmt='o', elinewidth=0.5,color='orange')
+    ax[2,2].set_xlabel('$\log g (cm/s^{2}$)',fontsize=12)
+    ax[2,2].set_ylabel('[Mg/H]',fontsize=12)
+    
+    #Save the plot
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_vH_params.png', dpi=300, bbox_inches='tight')
+
+
+
+single_el_vs_params(star_list) 
+
+# %% Three synthetic models
+"""Plot three synthetic spectra ontop of the observed spectrum One with 
+Mg24, one with Mg25 and one with Mg26 and one with all three of a best fit result"""
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+from matplotlib import rc
+star_name = 'hd_18907'
+#open Masters_stars.csv for finding the colour of the star
+stars = pd.read_csv('/home/users/qai11/Documents/quin-masters-code/Masters_stars.csv')
+star_colour = stars[stars['ID2'] == star_name]['colour'].values[0]
+#Open the files for plotting
+smoothed_24 = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/out_s57_mg041_i23_100_100_rv0', sep="     ", header=None, skiprows = [0,1])
+smoothed_25 = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/out_s57_mg041_i100_105_100_rv0', sep="     ", header=None, skiprows = [0,1])
+smoothed_26 = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/out_s57_mg041_i100_100_13_rv0', sep="     ", header=None, skiprows = [0,1])
+smoothed_all = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/out_s57_mg041_i23_105_130_rv0', sep="     ", header=None, skiprows = [0,1])
+raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{star_name}_5100-5200.txt', sep="	", header=None)
+#make a subfigure 
+fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+#Plot the observed spectrum
+lw, uw = get_region(region)
+cropped_flux = raw[(raw[0] > lw) & (raw[0] < uw)][1]
+min_flux = cropped_flux.min()
+
+# # Force plain numbers on the x-axis
+# axs.xaxis.set_major_formatter(mticker.ScalarFormatter(useMathText=False))
+# axs.ticklabel_format(style='plain', axis='x')
+# Plot the 24 isotope
+axs[0, 0].plot(smoothed_24[0], smoothed_24[1])
+axs[0, 0].plot(raw[0], raw[1], c = star_colour)
+axs[0, 0].text(5134.208, 0.72, 'Mg24 \n5134.208', fontsize=12, color='black',horizontalalignment='center')
+axs[0, 0].text(5134.570, 0.72, 'Mg24 \n5134.570', fontsize=12, color='black',horizontalalignment='center')
+axs[0, 0].text(5135.111, 0.72, 'Mg24 \n5135.111', fontsize=12, color='black',horizontalalignment='center')
+axs[0, 0].annotate('', xy=(5134.208, 0.83), xytext=(5134.208, 0.75), arrowprops=dict(arrowstyle='->', color='black'))
+axs[0, 0].annotate('', xy=(5134.570, 0.775), xytext=(5134.570, 0.75), arrowprops=dict(arrowstyle='->', color='black'))
+axs[0, 0].annotate('', xy=(5135.111, 0.915), xytext=(5135.111, 0.75), arrowprops=dict(arrowstyle='->', color='black'))
+axs[0, 0].set_xlim(lw - 0.4, uw + 0.5)
+axs[0, 0].set_ylim(min_flux-0.05,1.01)
+axs[0, 0].set_ylabel('Flux', fontsize=12)
+axs[0, 0].set_xlabel('Wavelength ($\AA$)', fontsize=12)
+axs[0, 0].set_title('Mg24')
+# axs[0, 0].savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Analysis/{star_name}_Model_Mg26.png', dpi=300, bbox_inches='tight')
+# Plot the 25 isotope
+axs[0, 1].plot(smoothed_25[0], smoothed_25[1])
+axs[0, 1].plot(raw[0], raw[1], c = star_colour)
+axs[0, 1].text(5134.295, 0.72, 'Mg25 \n5134.295', fontsize=12, color='black',horizontalalignment='center')
+axs[0, 1].text(5134.656, 0.72, 'Mg25 \n5134.656', fontsize=12, color='black',horizontalalignment='center')
+axs[0, 1].text(5135.160, 0.72, 'Mg25 \n5135.160', fontsize=12, color='black',horizontalalignment='center')
+axs[0, 1].annotate('', xy=(5134.295, 0.95), xytext=(5134.295, 0.75), arrowprops=dict(arrowstyle='->', color='black'))
+axs[0, 1].annotate('', xy=(5134.656, 0.935), xytext=(5134.656, 0.75), arrowprops=dict(arrowstyle='->', color='black'))
+axs[0, 1].annotate('', xy=(5135.160, 0.955), xytext=(5135.160, 0.75), arrowprops=dict(arrowstyle='->', color='black'))
+axs[0, 1].set_xlim(lw - 0.4, uw + 0.5)
+axs[0, 1].set_ylim(min_flux-0.05,1.01)
+axs[0, 1].set_xlabel('Wavelength ($\AA$)', fontsize=12)
+axs[0, 1].set_ylabel('Flux', fontsize=12)
+axs[0, 1].set_title('Mg25')
+# plt.savefig('/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Analysis/{star_name}_Model_Mg25.png', dpi=300, bbox_inches='tight')
+# Plot the 26 isotope
+axs[1, 0].plot(smoothed_26[0], smoothed_26[1])
+axs[1,0].plot(raw[0], raw[1], c = star_colour)
+axs[1, 0].text(5134.376, 0.72, 'Mg26 \n5134.376', fontsize=12, color='black',horizontalalignment='center')
+axs[1, 0].text(5134.734, 0.72, 'Mg26 \n5134.734', fontsize=12, color='black',horizontalalignment='center')
+axs[1, 0].text(5135.24, 0.72, 'Mg26 \n5135.24', fontsize=12, color='black',horizontalalignment='center')
+axs[1, 0].annotate('', xy=(5134.376, 0.96), xytext=(5134.376, 0.75), arrowprops=dict(arrowstyle='->', color='black'))
+axs[1, 0].annotate('', xy=(5134.734, 0.955), xytext=(5134.734, 0.75), arrowprops=dict(arrowstyle='->', color='black'))
+axs[1,0].annotate('', xy=(5135.24, 0.97), xytext=(5135.24, 0.75), arrowprops=dict(arrowstyle='->', color='black'))
+axs[1, 0].set_xlim(lw - 0.4, uw + 0.5)
+axs[1, 0].set_ylim(min_flux-0.05,1.01)
+axs[1, 0].set_ylabel('Flux', fontsize=12)
+axs[1, 0].set_xlabel('Wavelength ($\AA$)', fontsize=12)
+axs[1, 0].set_title('Mg26')
+# axs[1, 0].savefig('/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Analysis/{star_name}_Model_Mg24.png', dpi=300, bbox_inches='tight')
+axs[1, 1].plot(smoothed_all[0], smoothed_all[1])
+axs[1, 1].plot(raw[0], raw[1], c = star_colour)
+axs[1, 1].set_xlim(lw - 0.4, uw + 0.5)
+axs[1, 1].set_ylim(min_flux-0.05,1.01)
+axs[1, 1].set_ylabel('Flux', fontsize=12)
+axs[1, 1].set_xlabel('Wavelength ($\AA$)', fontsize=12)
+axs[1,1].set_title('Mg24, Mg25 and Mg26')
+#Draw a square around the fitting region
+axs[1, 1].fill_between([lw, uw], min_flux - 0.01, 1, facecolor = '#CCDBFD', alpha = 0.5)
+fig.subplots_adjust(hspace=0.3)  # Increase spacing
+#Save figure
+plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Analysis/{star_name}_Model_Mg24_Mg25_Mg26.png', dpi=300, bbox_inches='tight')
+

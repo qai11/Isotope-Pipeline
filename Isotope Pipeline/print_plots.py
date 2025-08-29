@@ -232,13 +232,13 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
         str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
         "d          0.06 "+str(vsini)+" 0.6 "+ str(par['s']) +" 0.0\n"        + \
         "abundances   5    1\n"                                     + \
-        "6            0.200000\n"                                  + \
+        "6            0.100000\n"                                  + \
         "12           " + str(par['mg']) + "\n"                     + \
         "22           0.20000\n"                                    + \
         "24           0.10000\n"                                    + \
         "26           0.18000\n"                                    + \
         "isotopes      5    1\n"                                    + \
-        "607.01214     0.35\n"                                       + \
+        "607.01214     0.2\n"                                       + \
         "606.01212     5.0\n"                                       + \
         "112.00124     "+ str(par['i_24']) +"\n"                    + \
         "112.00125     "+ str(par['i_25']) +"\n"                    + \
@@ -402,11 +402,11 @@ def initial_guess():
     # i_26 = 13
     # rv = 0
     #just testing
-    s = 8.9
-    mg = 0.16
-    i_24 = 8.5
-    i_25 = 35
-    i_26 = 9.5
+    s = 7
+    mg = -0.16
+    i_24 = 0.5
+    i_25 = 10
+    i_26 = 3
     rv = 0
     # return the guess as a dictionary
     return {'s'    : s,
@@ -470,7 +470,7 @@ def model_finder(star_name,linelist,region,stronglines,vsini):
     try:
         #Uni computer
         # data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/'
-        data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/'
+        data_path = f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/'
         os.chdir(data_path)
     except:
         #MAC
@@ -498,13 +498,13 @@ def model_finder(star_name,linelist,region,stronglines,vsini):
     print(chi_df['chi_squared'])
     # make_model_plots(raw, smooth, out_filename, region, guess['rv'])
 
-star_name = 'hd_157244'
+star_name = 'hd_18907'
 linelist = 'quinlinelist.in'
 # stronglines = 'quinstronglines.in'
 # stronglines = 'quinbarklem.in'
 stronglines= None
-region = 3
-vsini = 5.4
+region = 1
+vsini = 4.2
 # linelist = 'quinlist.MgH'
 model_finder(star_name,linelist,region, stronglines,vsini)
 # %%
@@ -524,8 +524,8 @@ print(mg25)
 # HD128620
 try:
     # Uni Computer paths
-    smoothed = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
-    raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{star_name}_5100-5200.txt', sep="	", header=None)
+    smoothed = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
+    raw = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{star_name}_5100-5200.txt', sep="	", header=None)
 except:
     # Mac computer paths
     smoothed = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Fixed_fits_files/{star_name}/moog_tests_paper/out_s{s_all}_mg{mg_all}_i{mg24}_{mg25}_{mg26}_rv0', sep="     ", header=None, skiprows = [0,1])
@@ -552,7 +552,7 @@ plt.ylabel('Norm. Flux',fontsize=14)
 
 save = True
 # save = False
-region = 3
+region = 1
 '''Region 1,9,10'''
 if region == 1:     
     plt.plot(smoothed[0], smoothed[1])
