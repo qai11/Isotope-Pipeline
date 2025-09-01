@@ -1104,8 +1104,8 @@ def element_plots_XH_new(star_name):
     isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
     #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
     iso_mg = isotope[['Unnamed: 0','mg', 'd_mg', 'mg24', 'd_mg24', 'mg25', 'd_mg25', 'mg26', 'd_mg26']]
-    print(f"star {iso_mg['Unnamed: 0']} with Mg/H {iso_mg['mg']}")
-    print(f"star {Mg_values['star_name']} with Mg/H {Mg_values['[Mg/H]']}")
+    # print(f"star {iso_mg['Unnamed: 0']} with Mg/H {iso_mg['mg']}")
+    # print(f"star {Mg_values['star_name']} with Mg/H {Mg_values['[Mg/H]']}")
     # #Make a variable when the mg values are less than 0.25
     # small_mg = iso_mg[np.logical_and(-0.25 < iso_mg['mg'], iso_mg['mg'] < 0.25)]
     # #for the related stars in the small_mg variable, find the Mg values
@@ -1204,6 +1204,12 @@ import scipy
 #     'hd_102870','hd_45588','hd_156098']
 # # star_list = ['hd_11695']
 # element = ["Eu", "Ba", "Mg"]
+vpass = 24
+star_list = ['hd_11695','hd_18884','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407']
+# # star_list = ['hd_11695']
+element = ["Eu", "Ba", "Mg"]
+
 
 def single_el_vs_params(star_name):
     """Create a plot for Eu, Ba, Mg vs Mg"""
@@ -1269,7 +1275,7 @@ def single_el_vs_params(star_name):
         Eu_values_H = pd.concat([Eu_values_H, eu_row_H], ignore_index=True)
         Ba_values_H = pd.concat([Ba_values_H, ba_row_H], ignore_index=True)
         Mg_values_H = pd.concat([Mg_values_H, mg_row_H], ignore_index=True)
-    
+        
     #Open the isotope mg abundance file
     isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
     #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
@@ -1294,19 +1300,23 @@ def single_el_vs_params(star_name):
     
     #Plot Eu vs Mg
     # print(scipy.stats.pearsonr(Mg_values['[Mg/Fe]'], Eu_values['[Eu/Fe]']))
+    print(f"Eu vs Mg: {scipy.stats.pearsonr(Mg_values_H['[Mg/H]'], Eu_values_H['[Eu/H]'])}")
     ax[0,0].errorbar(Mg_values_H['[Mg/H]'], Eu_values_H['[Eu/H]'], yerr=Eu_values_H['e[Eu/H]'], xerr=Mg_values_H['e[Mg/H]'], fmt='o', elinewidth=0.5)
     # ax[0,0].errorbar(small_mg_values['[Mg/H]'], small_eu_values['[Eu/H]'], yerr=small_eu_values['e[Eu/H]'], xerr=small_mg_values['e[Mg/H]'], fmt='o', elinewidth=0.5,color='orange')
     ax[0,0].set_xlabel('[Mg/H]',fontsize=12)
     ax[0,0].set_ylabel('[Eu/H]',fontsize=12)
     ax[0,0].set_ylim(-0.4,0.9)
+    
     #Plot Eu vs Ba
     print(f"Eu vs Ba: {scipy.stats.pearsonr(Ba_values_H['[Ba/H]'], Eu_values_H['[Eu/H]'])}")
     ax[0,1].errorbar(Ba_values_H['[Ba/H]'], Eu_values_H['[Eu/H]'], yerr=Eu_values_H['e[Eu/H]'], xerr=Ba_values_H['e[Ba/H]'], fmt='o', elinewidth=0.5)
     # ax[0,1].errorbar(small_ba_values['[Ba/H]'], small_eu_values['[Eu/H]'], yerr=small_eu_values['e[Eu/H]'], xerr=small_ba_values['e[Ba/H]'], fmt='o', elinewidth=0.5,color='orange')
     ax[0,1].set_xlabel('[Ba/H]',fontsize=12)
     ax[0,1].set_ylabel('[Eu/H]',fontsize=12)
-    ax[0,1].set_ylim(-0.4,1)    
+    ax[0,1].set_ylim(-0.4,1)  
+      
     #Plot Ba vs Mg
+    print(f"Mg vs Ba: {scipy.stats.pearsonr(Mg_values_H['[Mg/H]'], Ba_values_H['[Ba/H]'])}")
     ax[0,2].errorbar(Mg_values_H['[Mg/H]'], Ba_values_H['[Ba/H]'], yerr=Ba_values_H['e[Ba/H]'], xerr=Mg_values_H['e[Mg/H]'], fmt='o', elinewidth=0.5)
     # ax[0,2].errorbar(small_mg_values['[Mg/H]'], small_ba_values['[Ba/H]'], yerr=small_ba_values['e[Ba/H]'], xerr=small_mg_values['e[Mg/H]'], fmt='o', elinewidth=0.5,color='orange')
     ax[0,2].set_xlabel('[Mg/H]',fontsize=12)
@@ -1319,6 +1329,7 @@ def single_el_vs_params(star_name):
     ax[1,0].set_xlabel('$T_{eff}$',fontsize=12)
     ax[1,0].set_ylabel('[Eu/H]',fontsize=12)
     ax[1,0].set_ylim(-0.4,0.9)
+    
     #Plot Ba vs Teff
     print(f"Ba vs Teff: {scipy.stats.pearsonr(star_info['TEFF'], Ba_values_H['[Ba/H]'])}")
     ax[1,1].errorbar(star_info['TEFF'], Ba_values_H['[Ba/H]'], yerr=Ba_values_H['e[Ba/H]'], fmt='o', elinewidth=0.5)
@@ -1334,6 +1345,7 @@ def single_el_vs_params(star_name):
     ax[2,0].set_xlabel('$\log g (cm/s^{2}$)',fontsize=12)
     ax[2,0].set_ylabel('[Eu/H]',fontsize=12)
     ax[2,0].set_ylim(-0.4,0.9)
+    
     #Plot Ba vs logg
     print(f"Ba vs logg: {scipy.stats.pearsonr(star_info['LOGG'], Ba_values_H['[Ba/H]'])}")
     ax[2,1].errorbar(star_info['LOGG'], Ba_values_H['[Ba/H]'], yerr=Ba_values_H['e[Ba/H]'], fmt='o', elinewidth=0.5)
@@ -1347,6 +1359,7 @@ def single_el_vs_params(star_name):
     # ax[1,2].errorbar(small_star_teff['TEFF'], small_mg_values['[Mg/H]'], yerr=small_mg_values['e[Mg/H]'], fmt='o', elinewidth=0.5,color='orange')
     ax[1,2].set_xlabel('$T_{eff}$',fontsize=12)
     ax[1,2].set_ylabel('[Mg/H]',fontsize=12)
+    
     #Plot Mg vs logg
     print(f"Mg vs logg: {scipy.stats.pearsonr(star_info['LOGG'], Mg_values_H['[Mg/H]'])}")
     ax[2,2].errorbar(star_info['LOGG'], Mg_values_H['[Mg/H]'], yerr=Mg_values_H['e[Mg/H]'], fmt='o', elinewidth=0.5)

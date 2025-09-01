@@ -1839,12 +1839,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import astropy.io.fits as fits
 import numpy as np
+import scipy
 
 # star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
 #     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
 #     'hd_102870','hd_45588','hd_156098']
 # # star_list = ['hd_11695']
 # element = ["Eu", "Ba", "Mg"]
+
+star_list = ['hd_11695','hd_18884','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407']
+vpass = 24
 
 def element_plots_XH_new(star_name):
     """Create a plot for Eu, Ba, Mg vs Mg"""
@@ -1949,7 +1954,7 @@ def element_plots_XH_new(star_name):
     ax[2, 1].set_ylabel('IS[$^{26}$Mg/H]', fontsize=12)
 
     # Save the plot
-    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_H_new.png', dpi=300, bbox_inches='tight')
+    # plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_H_new.png', dpi=300, bbox_inches='tight')
     
     #Save the plot
     # plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_H_new.png', dpi=300, bbox_inches='tight')
