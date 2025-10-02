@@ -72,7 +72,7 @@ isotope_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/All_isotope_rat
 
 # %%"""Caclulate the weighted averages of isotopic abundance ratios for each star"""
 #Makes the weighted_avg_iso file
-vpass = 24
+
 import pandas as pd
 import numpy as np
 import ast
@@ -89,11 +89,11 @@ import ast
 # Initialize an empty dictionary to hold abundance data for each star
 abundance_dict = {}
 # star_list = ['hd_10700']
-
-star_list = ['hd_11695','hd_18884','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407'] 
+star_list = ['hd_18884'] #use vpass 37
+# star_list = ['hd_11695','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407'] #use vpass 24
 # vpass = '6'
-
+vpass = 24
 # star_list = ['hd_18884','hd_157244']
 # star_list = ['hd_157244']
 # star_list = ['hd_18884']
@@ -127,8 +127,8 @@ for star_name in star_list:
     # Separate the error and parameter columns
     errors = iso_abund_params.filter(like='d_')
     params = iso_abund_params.drop(columns=errors.columns).drop(columns=['region', 'pass'])
-    print(params)
-    print(errors)
+    # print(params)
+    # print(errors)
     # Calculate the weighted average of isotopic abundance ratios for the entire star
     weighted_avg = np.average(params, axis=0, weights=1/(errors**2))
     
@@ -177,18 +177,18 @@ for star_name in star_list:
     feh = star_info[star_info['ID2'] == star_name]['FEH'].values[0]
     # Extract the abundance and error data for the current star
     abundances = abundance_df.loc[star_name, 'abundance']
-    
+    # print(abundances)
     errors = abundance_df.loc[star_name, 'error']
     #Open summary abundances file
-    summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
-    summary_abundances_Fe = summary_abundances.sort_values(by=['[X/Fe]', 'e[X/Fe]'], ascending=False)
-    summary_abundances_Fe = summary_abundances.drop_duplicates(subset=['element'], keep='first')
-    summary_abundances_H = summary_abundances.sort_values(by=['[X/H]', 'e[X/H]'], ascending=False)
-    summary_abundances_H = summary_abundances.drop_duplicates(subset=['element'], keep='first')
-    #Extract the Mg [X/H] and error
-    MgFe = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/Fe]','e[X/Fe]']]
-    MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
-    print(MgH)
+    # summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
+    # summary_abundances_Fe = summary_abundances.sort_values(by=['[X/Fe]', 'e[X/Fe]'], ascending=False)
+    # summary_abundances_Fe = summary_abundances.drop_duplicates(subset=['element'], keep='first')
+    # summary_abundances_H = summary_abundances.sort_values(by=['[X/H]', 'e[X/H]'], ascending=False)
+    # summary_abundances_H = summary_abundances.drop_duplicates(subset=['element'], keep='first')
+    # #Extract the Mg [X/H] and error
+    # MgFe = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/Fe]','e[X/Fe]']]
+    # MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
+    # print(MgH)
     # MgH['[X/H]'] = MgH['[X/H]'] - feh
     # print(MgH)
     # print(MgH)
@@ -199,61 +199,161 @@ for star_name in star_list:
     
     #Open summary abundances file for Mg abundance
     summary_abundances = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep='\s+', engine='python')
+    summary_abundances = summary_abundances.sort_values(by=['[X/H]', 'e[X/H]'], ascending=False)
     #Extract the Mg [X/H] and error
     Mg_lbl_abundance = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
     Mg_lbl_abundance = Mg_lbl_abundance['[X/H]'].values[0]
+    print(f"Mg_lbl_abundance={Mg_lbl_abundance}")
     
-    #calculate the log abundances
-    log_solar_mg = Mg_lbl_abundance+7.53
-    log_solar_i_24 = log_solar_mg * (mg_24/100)
-    log_solar_i_25 = log_solar_mg * (mg_25/100)
-    log_solar_i_26 = log_solar_mg * (mg_26/100)
-    #convert to Mg/H
-    mg_24_H_is = log_solar_i_24 - (7.53*0.7899)
-    print(mg_24_H_is)
-    mg_25_H_is = log_solar_i_25 - (7.53*0.1000)
-    mg_26_H_is = log_solar_i_26 - (7.53*0.1101) 
+    #New calculation for paper including check
+    import numpy as np
+
+    def calculate_mg_isotope_abundances(mg_h, solar_log_eps_mg, isotope_fractions_star, isotope_fractions_solar,isotope_fraction_errors_star):
+        """
+        Calculate [X/H], relative abundance to solar, and ε for Mg isotopes.
+        Also performs a consistency check that log ε(Mg) equals log10(sum of isotopic ε values).
+
+        Parameters:
+        - mg_h: [Mg/H] value for the star
+        - solar_log_eps_mg: solar log abundance of Mg (e.g., 7.53)
+        - isotope_fractions_star: dict with isotope fractions in the star (keys: '24Mg', '25Mg', '26Mg')
+        - isotope_fractions_solar: dict with isotope fractions in the Sun (keys: '24Mg', '25Mg', '26Mg')
+        - isotope_fraction_errors_star: dict with fractional uncertainties in the star's isotope fraction
+        Returns:
+        - results: dict with isotope data and consistency check
+        """
+        results = {}
+        log_eps_mg_star = mg_h + solar_log_eps_mg
+        total_epsilon_star = 0
+        total_epsilon_error_squared = 0
+        
+        for isotope in ['24Mg', '25Mg', '26Mg']:
+            f_star = isotope_fractions_star[isotope]
+            f_solar = isotope_fractions_solar[isotope]
+            f_star_err_frac = isotope_fraction_errors_star[isotope]
+
+            log_eps_isotope_star = log_eps_mg_star + np.log10(f_star)
+            log_eps_isotope_solar = solar_log_eps_mg + np.log10(f_solar)
+
+            isotope_xh = log_eps_isotope_star - log_eps_isotope_solar
+            relative_abundance = 10 ** isotope_xh
+            epsilon_isotope = 10 ** log_eps_isotope_star
+            
+            # Error propagation
+            d_log_eps_isotope_star = f_star_err_frac / (f_star * np.log(10))
+            d_epsilon_isotope = epsilon_isotope * f_star_err_frac
+            total_epsilon_star += epsilon_isotope
+            total_epsilon_error_squared += d_epsilon_isotope ** 2
+
+            results[isotope] = {
+                '[X/H]': isotope_xh,
+                '[X/H] error': d_log_eps_isotope_star,
+                'Relative to Solar': relative_abundance,
+                'Relative error': relative_abundance * d_log_eps_isotope_star,
+                'Epsilon': epsilon_isotope,
+                'Epsilon error': d_epsilon_isotope
+            }
+        
+        # Consistency check
+        log_eps_mg_from_isotopes = np.log10(total_epsilon_star)
+        d_log_eps_mg_from_isotopes = (1 / (total_epsilon_star * np.log(10))) * np.sqrt(total_epsilon_error_squared)
+        log_eps_mg_expected = log_eps_mg_star
+        consistent = np.isclose(log_eps_mg_from_isotopes, log_eps_mg_expected, atol=1e-4)
+
+        results['Consistency Check'] = {
+            'log ε(Mg) from isotopes': log_eps_mg_from_isotopes,
+            'log ε(Mg) error': d_log_eps_mg_from_isotopes,
+            'Expected log ε(Mg)': log_eps_mg_expected,
+            'Consistent': consistent
+        }
+
+        return results
+
     
-    #Do the same for the errors
-    #calculate the log abundances
-    log_solar_mg = errors[1]+7.53
-    log_solar_i_24 = log_solar_mg * (mg_24/100)
-    log_solar_i_25 = log_solar_mg * (mg_25/100)
-    log_solar_i_26 = log_solar_mg * (mg_26/100)
-    #convert to Mg/H
-    mg_24_H_is_err = log_solar_i_24 - (7.53*0.7899)
-    mg_25_H_is_err = log_solar_i_25 - (7.53*0.1000)
-    mg_26_H_is_err = log_solar_i_26 - (7.53*0.1101)
+    mg_h = Mg_lbl_abundance
+    solar_log_eps_mg = 7.53
+    isotope_fractions_star = {'24Mg': mg_24/100, '25Mg': mg_25/100, '26Mg': mg_26/100}
+    isotope_fractions_solar = {'24Mg': 0.7899, '25Mg': 0.1000, '26Mg': 0.1101}
+    isotope_fractions_errors_star = {'24Mg': errors[2]/100, '25Mg': errors[3]/100, '26Mg': errors[4]/100}
+    
+    results = calculate_mg_isotope_abundances(mg_h, solar_log_eps_mg, isotope_fractions_star,
+                                              isotope_fractions_solar,isotope_fractions_errors_star)
+
+    for iso in ['24Mg', '25Mg', '26Mg']:
+        r = results[iso]
+        print(f"{iso}: [X/H] = {r['[X/H]']:.4f}, Relative = {r['Relative to Solar']:.4f}, ε = {r['Epsilon']:.4e}")
+
+    check = results['Consistency Check']
+    print(f"\nConsistency Check:")
+    print(f"  log ε(Mg) from isotopes = {check['log ε(Mg) from isotopes']:.4f}")
+    print(f"  Expected log ε(Mg) = {check['Expected log ε(Mg)']:.4f}")
+    print(f"  Consistent: {check['Consistent']}")
+    
+    mg_24_H_is=results['24Mg']['[X/H]']
+    mg_24_H_is_err=results['24Mg']['[X/H] error']
+    mg_25_H_is=results['25Mg']['[X/H]']
+    mg_25_H_is_err=results['25Mg']['[X/H] error']
+    mg_26_H_is=results['26Mg']['[X/H]']
+    mg_26_H_is_err=results['26Mg']['[X/H] error']
+
+    """Old calculation method"""
+    # #calculate the log abundances
+    # log_solar_mg = Mg_lbl_abundance+7.53
+    # print(f"log_solar_mg={log_solar_mg}")
+    # log_solar_i_24 = log_solar_mg * np.log10(mg_24/100)
+    # print(f"mg24={mg_24/100}")
+    # print(f"log_solar_i24={log_solar_i_24}")
+    # print(f"{log_solar_i_24/log_solar_mg}") #correct to here
+    # log_solar_i_25 = log_solar_mg * np.log10(mg_25/100)
+    # log_solar_i_26 = log_solar_mg * np.log10(mg_26/100)
+    # #convert to Mg/H
+    # # mg_24_H_is = log_solar_i_24 - (7.53*0.7899)
+    # mg_24_H_is = log_solar_i_24 - (7.53 + np.log10(0.7899))
+    # print(f"mg24H={mg_24_H_is}")
+    # mg_25_H_is = log_solar_i_25 - (7.53*0.1000)
+    # mg_26_H_is = log_solar_i_26 - (7.53*0.1101) 
+    
+    # print(f"the ratio of the global and isotope={mg_24_H_is/Mg_lbl_abundance}")
+    # #Do the same for the errors
+    # #calculate the log abundances
+    # log_solar_mg = errors[1]+7.53
+    # log_solar_i_24 = log_solar_mg * (mg_24/100)
+    # log_solar_i_25 = log_solar_mg * (mg_25/100)
+    # log_solar_i_26 = log_solar_mg * (mg_26/100)
+    # #convert to Mg/H
+    # mg_24_H_is_err = log_solar_i_24 - (7.53*0.7899)
+    # mg_25_H_is_err = log_solar_i_25 - (7.53*0.1000)
+    # mg_26_H_is_err = log_solar_i_26 - (7.53*0.1101)
     
     #line by line
     #Convert the line by line anundances
-    log_solar_mg_lbl = MgH['[X/H]'].values[0] + 7.53
-    log_solar_i_24_lbl = log_solar_mg_lbl * (mg_24/100)
-    log_solar_i_25_lbl = log_solar_mg_lbl * (mg_25/100)
-    log_solar_i_26_lbl = log_solar_mg_lbl * (mg_26/100)
-    #convert to Mg/H
-    mg_24_H_is_lbl = log_solar_i_24_lbl - (7.53*0.7899)
-    mg_25_H_is_lbl = log_solar_i_25_lbl - (7.53*0.1000)
-    mg_26_H_is_lbl = log_solar_i_26_lbl - (7.53*0.1101)
-    #covert to feh
-    log_solar_mg_lbl = (MgH['[X/H]'].values[0]-feh) + 7.53
-    log_solar_i_24_lbl = log_solar_mg_lbl * (mg_24/100)
-    log_solar_i_25_lbl = log_solar_mg_lbl * (mg_25/100)
-    log_solar_i_26_lbl = log_solar_mg_lbl * (mg_26/100)
-    #convert to Mg/H
-    mg_24_fe_is_lbl = log_solar_i_24_lbl - (7.53*0.7899)
-    mg_25_fe_is_lbl = log_solar_i_25_lbl - (7.53*0.1000)
-    mg_26_fe_is_lbl = log_solar_i_26_lbl - (7.53*0.1101)
-    #do the same for the errors
-    #calculate the log abundances
-    log_solar_mg = MgH['e[X/H]'].values[0]+7.53
-    log_solar_i_24 = log_solar_mg * (mg_24/100)
-    log_solar_i_25 = log_solar_mg * (mg_25/100)
-    log_solar_i_26 = log_solar_mg * (mg_26/100)
-    #convert to Mg/H
-    mg_24_H_is_lbl_err = log_solar_i_24 - (7.53*0.7899)
-    mg_25_H_is_lbl_err = log_solar_i_25 - (7.53*0.1000)
-    mg_26_H_is_lbl_err = log_solar_i_26 - (7.53*0.1101)
+    # log_solar_mg_lbl = MgH['[X/H]'].values[0] + 7.53
+    # log_solar_i_24_lbl = log_solar_mg_lbl * (mg_24/100)
+    # log_solar_i_25_lbl = log_solar_mg_lbl * (mg_25/100)
+    # log_solar_i_26_lbl = log_solar_mg_lbl * (mg_26/100)
+    # #convert to Mg/H
+    # mg_24_H_is_lbl = log_solar_i_24_lbl - (7.53*0.7899)
+    # mg_25_H_is_lbl = log_solar_i_25_lbl - (7.53*0.1000)
+    # mg_26_H_is_lbl = log_solar_i_26_lbl - (7.53*0.1101)
+    # #covert to feh
+    # log_solar_mg_lbl = (MgH['[X/H]'].values[0]-feh) + 7.53
+    # log_solar_i_24_lbl = log_solar_mg_lbl * (mg_24/100)
+    # log_solar_i_25_lbl = log_solar_mg_lbl * (mg_25/100)
+    # log_solar_i_26_lbl = log_solar_mg_lbl * (mg_26/100)
+    # #convert to Mg/H
+    # mg_24_fe_is_lbl = log_solar_i_24_lbl - (7.53*0.7899)
+    # mg_25_fe_is_lbl = log_solar_i_25_lbl - (7.53*0.1000)
+    # mg_26_fe_is_lbl = log_solar_i_26_lbl - (7.53*0.1101)
+    # #do the same for the errors
+    # #calculate the log abundances
+    # log_solar_mg = MgH['e[X/H]'].values[0]+7.53
+    # log_solar_i_24 = log_solar_mg * (mg_24/100)
+    # log_solar_i_25 = log_solar_mg * (mg_25/100)
+    # log_solar_i_26 = log_solar_mg * (mg_26/100)
+    # #convert to Mg/H
+    # mg_24_H_is_lbl_err = log_solar_i_24 - (7.53*0.7899)
+    # mg_25_H_is_lbl_err = log_solar_i_25 - (7.53*0.1000)
+    # mg_26_H_is_lbl_err = log_solar_i_26 - (7.53*0.1101)
 
     
     # Create a new row for the structured DataFrame
@@ -261,9 +361,9 @@ for star_name in star_list:
         's': round(abundances[0], 4), 'd_s': round(errors[0], 4),
         'mg': round(abundances[1], 4), 'd_mg': round(errors[1], 4),
         # 'mg_fe': round(abundances[1]-feh, 4), 'd_mg_fe': round(errors[1]-feh, 4),
-        'mg_fe24': round(mg_24_H_is-feh, 4), 'd_mg_fe24': round( mg_24_H_is_err, 4),
-        'mg_fe25': round(mg_25_H_is-feh, 4), 'd_mg_fe25': round( mg_25_H_is_err, 4),
-        'mg_fe26': round(mg_26_H_is-feh, 4), 'd_mg_fe26': round( mg_26_H_is_err, 4),
+        # 'mg_fe24': round(mg_24_H_is-feh, 4), 'd_mg_fe24': round( mg_24_H_is_err, 4),
+        # 'mg_fe25': round(mg_25_H_is-feh, 4), 'd_mg_fe25': round( mg_25_H_is_err, 4),
+        # 'mg_fe26': round(mg_26_H_is-feh, 4), 'd_mg_fe26': round( mg_26_H_is_err, 4),
         'i_24': round(abundances[2], 4), 'd_i_24': round(errors[2], 4),
         'i_25': round(abundances[3], 4), 'd_i_25': round(errors[3], 4),
         'i_26': round(abundances[4], 4), 'd_i_26': round(errors[4], 4),
@@ -279,14 +379,14 @@ for star_name in star_list:
         'mg24': round(mg_24_H_is,4), 'd_mg24': round(mg_24_H_is_err,4),
         'mg25': round(mg_25_H_is,4), 'd_mg25': round(mg_25_H_is_err,4),
         'mg26': round(mg_26_H_is,4), 'd_mg26': round(mg_26_H_is_err,4),
-        'MgH': MgH['[X/H]'].values[0], 'd_MgH': MgH['e[X/H]'].values[0], #The lbl tests with H
-        'MgH24': round(mg_24_H_is_lbl,4), 'd_MgH24': round(mg_24_H_is_lbl_err,4),
-        'MgH25': round(mg_25_H_is_lbl,4), 'd_MgH25': round(mg_25_H_is_lbl_err,4),
-        'MgH26': round(mg_26_H_is_lbl,4), 'd_MgH26': round(mg_26_H_is_lbl_err,4),
-        'MgFe': MgH['[X/H]'].values[0]-feh, 'd_MgFe': MgH['e[X/H]'].values[0], #The lbl tests with Fe
-        'MgFe24': round(mg_24_fe_is_lbl,4), 'd_MgFe24': round(mg_24_H_is_lbl_err,4),
-        'MgFe25': round(mg_25_fe_is_lbl,4), 'd_MgFe25': round(mg_25_H_is_lbl_err,4),
-        'MgFe26': round(mg_26_fe_is_lbl,4), 'd_MgFe26': round(mg_26_H_is_lbl_err,4),
+        # 'MgH': MgH['[X/H]'].values[0], 'd_MgH': MgH['e[X/H]'].values[0], #The lbl tests with H
+        # 'MgH24': round(mg_24_H_is_lbl,4), 'd_MgH24': round(mg_24_H_is_lbl_err,4),
+        # 'MgH25': round(mg_25_H_is_lbl,4), 'd_MgH25': round(mg_25_H_is_lbl_err,4),
+        # 'MgH26': round(mg_26_H_is_lbl,4), 'd_MgH26': round(mg_26_H_is_lbl_err,4),
+        # 'MgFe': MgH['[X/H]'].values[0]-feh, 'd_MgFe': MgH['e[X/H]'].values[0], #The lbl tests with Fe
+        # 'MgFe24': round(mg_24_fe_is_lbl,4), 'd_MgFe24': round(mg_24_H_is_lbl_err,4),
+        # 'MgFe25': round(mg_25_fe_is_lbl,4), 'd_MgFe25': round(mg_25_H_is_lbl_err,4),
+        # 'MgFe26': round(mg_26_fe_is_lbl,4), 'd_MgFe26': round(mg_26_H_is_lbl_err,4),
     }
     
     # Append the new row to the structured DataFrame with star_name as the index
@@ -294,7 +394,7 @@ for star_name in star_list:
 
 # print(final_df)
 #save the final_df to a csv file
-final_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv')
+final_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/weighted_avg_iso_abund_paper_New_hd_18884.csv')
 
 #%% Plot the things here to not haveto look later
 # ----------------------------------------------------------------------------------------------
@@ -711,7 +811,7 @@ def isotope_regions(star_name,regions):
         #Create a dataframe with the name of the best fit file
         best_fit = fit_pass.loc[fit_pass['chi_squared'].idxmin()]['filename']
         # print(f'Best fit for region {region} is {best_fit}')
-        """#Open the best fit file for all but giants"""
+        """Open the best fit file for all but giants"""
         model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/{best_fit}', sep="     ", header=None, skiprows = [0,1])
         """Open for giants"""
         # model_spectra = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests/{best_fit}', sep="     ", header=None, skiprows = [0,1])
@@ -1460,3 +1560,116 @@ fig.subplots_adjust(hspace=0.3)  # Increase spacing
 #Save figure
 plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Analysis/{star_name}_Model_Mg24_Mg25_Mg26.png', dpi=300, bbox_inches='tight')
 
+
+#%% Print the plot with Mg against Mg24
+import pandas as pd
+import matplotlib.pyplot as plt
+import astropy.io.fits as fits
+import numpy as np
+import scipy
+
+vpass = 'New'
+star_list = ['hd_11695','hd_18884','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407']
+# # star_list = ['hd_11695']
+element = ["Eu", "Ba", "Mg"]
+
+def element_plots_XH_new(star_name):
+    """Create a plot for Eu, Ba, Mg vs Mg"""
+    # Initialize empty DataFrames with star_name as the first column
+    Eu_values = pd.DataFrame(columns=['star_name', '[Eu/H]', 'e[Eu/H]'])
+    Ba_values = pd.DataFrame(columns=['star_name', '[Ba/H]', 'e[Ba/H]'])
+    Mg_values = pd.DataFrame(columns=['star_name', '[Mg/H]', 'e[Mg/H]'])
+    
+    for star_name in star_list:
+        # Open the lbl abundances
+        file_path = f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt'
+        elements = pd.read_csv(file_path, delimiter=' ')
+
+        # Extract [X/H] and e[X/H] for each element and store them in a DataFrame
+        eu_row = elements[elements['element'] == 'Eu_2'][['[X/H]', 'e[X/H]']].copy()
+        ba_row = elements[elements['element'] == 'Ba'][['[X/H]', 'e[X/H]']].copy()
+        mg_row = elements[elements['element'] == 'Mg'][['[X/H]', 'e[X/H]']].copy()
+
+        # Add the star_name column
+        eu_row.insert(0, 'star_name', star_name)
+        ba_row.insert(0, 'star_name', star_name)
+        mg_row.insert(0, 'star_name', star_name)
+
+        # Rename columns to reflect the element name
+        eu_row.columns = ['star_name', '[Eu/H]', 'e[Eu/H]']
+        ba_row.columns = ['star_name', '[Ba/H]', 'e[Ba/H]']
+        mg_row.columns = ['star_name', '[Mg/H]', 'e[Mg/H]']
+
+        # Append to the main DataFrames
+        Eu_values = pd.concat([Eu_values, eu_row], ignore_index=True)
+        Ba_values = pd.concat([Ba_values, ba_row], ignore_index=True)
+        Mg_values = pd.concat([Mg_values, mg_row], ignore_index=True)
+        
+        # # Find the stars with the Mg/H values less than 0.25 and add then to a seperate variable
+        # if Mg_values['[Mg/H]'] < 0.25:
+        #     Mg_small = Mg_values          
+            
+
+    #Open the isotope mg abundance file
+    # isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_New.csv', delimiter=',')
+    #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
+    iso_mg = isotope[['Unnamed: 0','mg', 'd_mg', 'mg24', 'd_mg24', 'mg25', 'd_mg25', 'mg26', 'd_mg26']]
+    
+    #Make a variable when the mg values are less than 0.25
+    small_mg = iso_mg[np.logical_and(-0.25 < iso_mg['mg'], iso_mg['mg'] < 0.25)]
+    #for the related stars in the small_mg variable, find the Mg values
+    small_mg_values = Mg_values[Mg_values['star_name'].isin(small_mg['Unnamed: 0'])]
+    small_eu_values = Eu_values[Eu_values['star_name'].isin(small_mg['Unnamed: 0'])]
+    small_ba_values = Ba_values[Ba_values['star_name'].isin(small_mg['Unnamed: 0'])]
+    
+    # #Plot Mg vs mg24
+    # print(f"Mg vs mg24: {scipy.stats.pearsonr(iso_mg['mg24'], Mg_values['[Mg/H]'])}")
+    # plt.errorbar(iso_mg['mg24'], Mg_values['[Mg/H]'], yerr=Mg_values['e[Mg/H]'], xerr=iso_mg['d_mg24'], fmt='o', elinewidth=0.5)
+    # # plt.errorbar(small_mg['mg24'], small_mg_values['[Mg/H]'], yerr=small_mg_values['e[Mg/H]'], xerr=small_mg['d_mg24'], fmt='o', elinewidth=0.5, color='orange')
+    # plt.xlabel('IS[$^{24}$Mg/H]',fontsize=12)
+    # plt.ylabel('[Mg/H]',fontsize=12)
+    
+    # #Plot Mg vs mg25
+    # print(f"Mg vs mg25: {scipy.stats.pearsonr(iso_mg['mg25'], Mg_values['[Mg/H]'])}")
+    # plt.errorbar(iso_mg['mg25'], Mg_values['[Mg/H]'], yerr=Mg_values['e[Mg/H]'], xerr=iso_mg['d_mg25'], fmt='o', elinewidth=0.5)
+    # # plt.errorbar(small_mg['mg24'], small_mg_values['[Mg/H]'], yerr=small_mg_values['e[Mg/H]'], xerr=small_mg['d_mg24'], fmt='o', elinewidth=0.5, color='orange')
+    # plt.xlabel('IS[$^{25}$Mg/H]',fontsize=12)
+    # plt.ylabel('[Mg/H]',fontsize=12)
+
+    # #Plot Mg vs mg26
+    # print(f"Mg vs mg25: {scipy.stats.pearsonr(iso_mg['mg26'], Mg_values['[Mg/H]'])}")
+    # plt.errorbar(iso_mg['mg26'], Mg_values['[Mg/H]'], yerr=Mg_values['e[Mg/H]'], xerr=iso_mg['d_mg25'], fmt='o', elinewidth=0.5)
+    # # plt.errorbar(small_mg['mg24'], small_mg_values['[Mg/H]'], yerr=small_mg_values['e[Mg/H]'], xerr=small_mg['d_mg24'], fmt='o', elinewidth=0.5, color='orange')
+    # plt.xlabel('IS[$^{26}$Mg/H]',fontsize=12)
+    # plt.ylabel('[Mg/H]',fontsize=12)
+    
+    # Plot the elements vs each Mg and the isotope mg, mg24, mg25, mg26
+    fig, ax = plt.subplots(3, 1, figsize=(12,20), constrained_layout=True)
+    #increase the space between the plots
+    fig.subplots_adjust(hspace=0.35, wspace=0.35)
+    
+    print(f"Mg vs mg24: {scipy.stats.pearsonr(iso_mg['mg24'], Mg_values['[Mg/H]'])}")
+    ax[0].errorbar(iso_mg['mg24'], Mg_values['[Mg/H]'], yerr=Mg_values['e[Mg/H]'], xerr=iso_mg['d_mg24'], fmt='o', elinewidth=0.5)
+    # ax[1].errorbar(small_mg['mg24'], small_mg_values['[Mg/H]'], yerr=small_mg_values['e[Mg/H]'], xerr=small_mg['d_mg24'], fmt='o', elinewidth=0.5, color='orange')
+    ax[0].set_xlabel('IS[$^{24}$Mg/H]',fontsize=12)
+    ax[0].set_ylabel('[Mg/H]',fontsize=12)
+    
+    #Plot Mg vs mg25
+    print(f"Mg vs mg25: {scipy.stats.pearsonr(iso_mg['mg25'], Mg_values['[Mg/H]'])}")
+    ax[1].errorbar(iso_mg['mg25'], Mg_values['[Mg/H]'], yerr=Mg_values['e[Mg/H]'], xerr=iso_mg['d_mg25'], fmt='o', elinewidth=0.5)
+    # ax[2].errorbar(small_mg['mg24'], small_mg['mg25'], yerr=small_mg['d_mg25'], xerr=small_mg['d_mg24'], fmt='o', elinewidth=0.5, color='orange')
+    ax[1].set_xlabel('IS[$^{25}$Mg/H]',fontsize=12)
+    ax[1].set_ylabel('[Mg/H]',fontsize=12)
+    
+    #Plot Mg vs mg26
+    print(f"Mg vs mg26: {scipy.stats.pearsonr(iso_mg['mg24'], Mg_values['[Mg/H]'])}")
+    ax[2].errorbar(iso_mg['mg26'], Mg_values['[Mg/H]'], yerr=Mg_values['e[Mg/H]'], xerr=iso_mg['d_mg26'], fmt='o', elinewidth=0.5)
+    # ax[3].errorbar(small_mg['mg24'], small_mg['mg26'], yerr=small_mg['d_mg26'], xerr=small_mg['d_mg24'], fmt='o', elinewidth=0.5, color='orange')
+    ax[2].set_xlabel('IS[$^{26}$Mg/H]',fontsize=12)
+    ax[2].set_ylabel('[Mg/H]',fontsize=12)
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Mg_vs_mg_iso_new_calc.png', dpi=300, bbox_inches='tight')
+
+element_plots_XH_new(star_list)
+# %%

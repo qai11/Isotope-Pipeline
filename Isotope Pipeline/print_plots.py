@@ -1575,7 +1575,7 @@ def region_plots(region, spectrum, star_teff,ax):
         #Plot the box where the fitting region is
         ax[0].fill_between([lw, uw], 0.35, 1, facecolor = '#CCDBFD', alpha = 0.3)
         #set a plot title
-        ax[0].set_title('Region 1', fontsize=12)
+        ax[0].set_title('Region 1', fontsize=16)
 
         #plot mg24 lines
         # ax[0].axvline(x=5134.208, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.2)
@@ -1605,7 +1605,7 @@ def region_plots(region, spectrum, star_teff,ax):
         #Plot the box where the fitting region is
         ax[1].fill_between([lw, uw], 0.26, 1, facecolor = '#CCDBFD', alpha = 0.3)
          #set a plot title
-        ax[1].set_title('Region 2', fontsize=12)
+        ax[1].set_title('Region 2', fontsize=16)
         
         #mg24
         ax[1].axvline(x=5138.710, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.2)
@@ -1632,7 +1632,7 @@ def region_plots(region, spectrum, star_teff,ax):
         #Plot the box where the fitting region is
         ax[2].fill_between([lw, uw], 0.45, 1, facecolor = '#CCDBFD', alpha = 0.3)
         #set a plot title
-        ax[2].set_title('Region 3', fontsize=12)
+        ax[2].set_title('Region 3', fontsize=16)
         
         #mg24
         ax[2].axvline(x=5140.229, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.2)
@@ -1657,7 +1657,7 @@ def region_plots(region, spectrum, star_teff,ax):
         ax[3].ticklabel_format(style='plain', axis='x')
 
         #set a plot title
-        ax[3].set_title('Region 4', fontsize=12)
+        ax[3].set_title('Region 4', fontsize=16)
         
         #mg24
         ax[3].axvline(x=5134.208, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.2)
@@ -1680,7 +1680,7 @@ def region_plots(region, spectrum, star_teff,ax):
         ax[4].set_ylim(0.3,1.01)#Plot the box where the fitting region is
         ax[4].fill_between([lw, uw], 0.37, 1, facecolor = '#CCDBFD', alpha = 0.3)
         #set a plot title
-        ax[4].set_title('Region 5', fontsize=12)
+        ax[4].set_title('Region 5', fontsize=16)
         
         #mg24
         ax[4].axvline(x=5135.111, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.2)
@@ -1704,7 +1704,7 @@ def region_plots(region, spectrum, star_teff,ax):
         #Plot the box where the fitting region is
         ax[5].fill_between([lw, uw], 0.41, 1, facecolor = '#CCDBFD', alpha = 0.3)
         #set a plot title
-        ax[5].set_title('Region 6', fontsize=12)
+        ax[5].set_title('Region 6', fontsize=16)
         
         #mg24
         ax[5].axvline(x=5136.123, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.2)
@@ -1728,7 +1728,7 @@ def region_plots(region, spectrum, star_teff,ax):
         #Plot the box where the fitting region is
         ax[6].fill_between([lw, uw], 0.45, 1, facecolor = '#CCDBFD', alpha = 0.3)
         #set a plot title
-        ax[6].set_title('Region 7', fontsize=12)
+        ax[6].set_title('Region 7', fontsize=16)
         
         #mg24
         ax[6].axvline(x=5136.439, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.2)
@@ -1752,7 +1752,7 @@ def region_plots(region, spectrum, star_teff,ax):
         #Plot the box where the fitting region is
         ax[7].fill_between([lw, uw], 0.33, 1, facecolor = '#CCDBFD', alpha = 0.3)
         #set a plot title
-        ax[7].set_title('Region 8', fontsize=12)
+        ax[7].set_title('Region 8', fontsize=16)
         
         #mg24
         ax[7].axvline(x=5138.486, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.2)
@@ -1777,7 +1777,7 @@ def region_plots(region, spectrum, star_teff,ax):
         #Plot the box where the fitting region is
         ax[8].fill_between([lw, uw], 0.5, 1, facecolor = '#CCDBFD', alpha = 0.3)
         #set a plot title
-        ax[8].set_title('Region 9', fontsize=12)
+        ax[8].set_title('Region 9', fontsize=16)
         
         #mg24
         ax[8].axvline(x=5141.234, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.2)
@@ -1801,7 +1801,7 @@ def region_plots(region, spectrum, star_teff,ax):
         #Plot the box where the fitting region is
         ax[9].fill_between([lw, uw], 0.5, 1, facecolor = '#CCDBFD', alpha = 0.3)
         #set a plot title
-        ax[9].set_title('Region 10', fontsize=12)
+        ax[9].set_title('Region 10', fontsize=16)
         
         #mg24
         ax[9].axvline(x=5133.174, ymin=0, linestyle='-.', color='black',lw=1,alpha=0.2)
@@ -1906,9 +1906,10 @@ def ten_regions(star_list,save_name):
             star_mh = star_params['FEH'].values
             
             region_plots(i, spectrum, star_teff,ax)
+            ax[i-1].tick_params(axis='both', labelsize=14)
             
-            ax[i-1].set_xlabel('Wavelength ($\AA$)',fontsize=12)
-            ax[i-1].set_ylabel('Normalized Flux',fontsize=12)
+            ax[i-1].set_xlabel('Wavelength ($\AA$)',fontsize=16)
+            ax[i-1].set_ylabel('Normalized Flux',fontsize=16)
             
             
         cmap=plt.cm.viridis
@@ -1919,11 +1920,12 @@ def ten_regions(star_list,save_name):
     fig.subplots_adjust(right=0.8,wspace=0.2)
     cbar_ax = fig.add_axes([0.85, 0.15, 0.05, 0.7])
     cbar = fig.colorbar(sm, cax=cbar_ax)
-    # cbar.set_label('Effective Temperature (K)', rotation=270, labelpad=15)
+    # cbar.set_label('$T_{eff}$ (K)', fontsize=20)  # Adjust fontsize here
+    cbar.ax.tick_params(labelsize=16)  # Change the fontsize for the color bar numbers
 
     # plt.xlabel('Wavelength $\AA$',fontsize=12)
     # plt.ylabel('Normalized Flux',fontsize=12)
-    plt.colorbar(sm, cax=cbar_ax).set_label('$T_{eff}$ (K)',fontsize=12)
+    plt.colorbar(sm, cax=cbar_ax).set_label('$T_{eff}$ (K)',fontsize=20)
     plt.savefig(f'/home/users/qai11/Documents/quin-masters-code/Masters_Figures/Analysis/MgH_regions/MgH_regions_{save_name}.png', dpi=300, bbox_inches='tight')
 
     # plt.clf()
@@ -1937,8 +1939,8 @@ def ten_regions(star_list,save_name):
     # star_pos -= 0.2
 ten_regions(star_list,'all_stars')
 
-star = ['hd_156098','hd_11695']
-ten_regions(star,'giant_dwarf')
+# star = ['hd_156098','hd_11695']
+# ten_regions(star,'giant_dwarf')
 
     
 
