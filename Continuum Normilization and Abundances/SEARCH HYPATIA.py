@@ -35,7 +35,7 @@ stars = [
 ]
 
 # elements: use Hypatia element naming for ions (Ba II, Eu II)
-elements = ["Ba_II", "Eu_II"]
+elements = ["Ba_II", "Eu_II","Y_II"]
 
 # 1) fetch catalog list and build mapping id -> author (year) + DOI
 cat_resp = requests.get(f"{API_BASE}/catalog")

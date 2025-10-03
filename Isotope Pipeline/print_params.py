@@ -454,12 +454,15 @@ for star_name in star_list:
 #%% '''Caculate the final abundances from the line by line abundances'''
 import pandas as pd
 
-# Define the list of stars and elements
-star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-    'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-    'hd_102870','hd_45588','hd_156098']
+# # Define the list of stars and elements
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098'] #Alll stars
+
+star_list = ['hd_11695','hd_18884','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407'] #ISAM stars
 # star_list = ['hd_11695']
-element = ["Eu", "Ba", "Mg"]
+element = ["Eu", "Ba", "Mg","Y"]
 
 # Iterate over each star and element
 for star_name in star_list:
@@ -514,7 +517,7 @@ for star_name in star_list:
             }, ignore_index=True)
 
     # Save the dataframe to a txt file for the current star
-    new_abund_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt', sep=' ', index=False)
+    new_abund_df.to_csv(f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}_with_Y.txt', sep=' ', index=False)
 
     print(f"Data for {star_name} saved successfully.")
     # Put the information into a latex format
