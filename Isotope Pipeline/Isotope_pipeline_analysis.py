@@ -354,6 +354,14 @@ for star_name in star_list:
     # mg_24_H_is_lbl_err = log_solar_i_24 - (7.53*0.7899)
     # mg_25_H_is_lbl_err = log_solar_i_25 - (7.53*0.1000)
     # mg_26_H_is_lbl_err = log_solar_i_26 - (7.53*0.1101)
+    
+    """Calculate the Mg/Fe abundances"""
+    mg_24_fe_is = mg_24_H_is - feh
+    mg_25_fe_is = mg_25_H_is - feh
+    mg_26_fe_is = mg_26_H_is - feh
+    mg_24_fe_is_err = mg_24_H_is_err
+    mg_25_fe_is_err = mg_25_H_is_err
+    mg_26_fe_is_err = mg_26_H_is_err
 
     
     # Create a new row for the structured DataFrame
@@ -1862,4 +1870,166 @@ def element_plots_XH_new(star_name):
 
 element_plots_XH_new(star_list)
 
+# %% Do the same plot but for Mg/Fe vs isotopes
+vpass = 24
+import pandas as pd
+import matplotlib.pyplot as plt
+import astropy.io.fits as fits
+import numpy as np
+import scipy
+
+# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
+#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
+#     'hd_102870','hd_45588','hd_156098']
+star_list = ['hd_11695','hd_18884','hd_18907','hd_22049','hd_23249','hd_128621',
+    'hd_10700','hd_100407']
+# # star_list = ['hd_11695']
+element = ["Eu", "Ba", "Mg"]
+
+
+def element_plots_XFe_new(star_name):
+    """Create a plot for Eu, Ba, Mg vs Mg"""
+    # Initialize empty DataFrames with star_name as the first column
+    Eu_values = pd.DataFrame(columns=['star_name', '[Eu/Fe]', 'e[Eu/Fe]'])
+    Ba_values = pd.DataFrame(columns=['star_name', '[Ba/Fe]', 'e[Ba/Fe]'])
+    Mg_values = pd.DataFrame(columns=['star_name', '[Mg/Fe]', 'e[Mg/Fe]'])
+    star_teff = pd.DataFrame(columns=['star_name', 'TEFF'])
+    
+    for star_name in star_list:
+        teff = pd.read_csv('/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv')
+        
+        star_teff_value = teff.loc[teff['ID2'] == star_name, 'TEFF'].values[0]
+        # Append to the star_teff DataFrame
+        star_teff_row = pd.DataFrame({'star_name': [star_name], 'TEFF': [star_teff_value]})
+        
+        # print(star_teff)
+        # Open the lbl abundances
+        file_path = f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt'
+        elements = pd.read_csv(file_path, delimiter=' ')
+
+        # Extract [X/H] and e[X/H] for each element and store them in a DataFrame
+        eu_row = elements[elements['element'] == 'Eu_2'][['[X/Fe]', 'e[X/Fe]']].copy()
+        ba_row = elements[elements['element'] == 'Ba'][['[X/Fe]', 'e[X/Fe]']].copy()
+        mg_row = elements[elements['element'] == 'Mg'][['[X/Fe]', 'e[X/Fe]']].copy()
+
+        # Add the star_name column
+        eu_row.insert(0, 'star_name', star_name)
+        ba_row.insert(0, 'star_name', star_name)
+        mg_row.insert(0, 'star_name', star_name)
+
+        # Rename columns to reflect the element name
+        eu_row.columns = ['star_name', '[Eu/Fe]', 'e[Eu/Fe]']
+        ba_row.columns = ['star_name', '[Ba/Fe]', 'e[Ba/Fe]']
+        mg_row.columns = ['star_name', '[Mg/Fe]', 'e[Mg/Fe]']
+
+        # Append to the main DataFrames
+        Eu_values = pd.concat([Eu_values, eu_row], ignore_index=True)
+        Ba_values = pd.concat([Ba_values, ba_row], ignore_index=True)
+        Mg_values = pd.concat([Mg_values, mg_row], ignore_index=True)
+        
+        # # Find the stars with the Mg/H values less than 0.25 and add then to a seperate variable
+        # if Mg_values['[Mg/H]'] < 0.25:
+        #     Mg_small = Mg_values          
+            
+
+    #Open the isotope mg abundance file
+    # isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
+    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_New.csv', delimiter=',')
+    #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
+    iso_mg = isotope[['Unnamed: 0','mg', 'd_mg', 'mg24', 'd_mg24', 'mg25', 'd_mg25', 'mg26', 'd_mg26','MgFe'
+                      ,'d_MgFe','MgFe24', 'd_MgFe24','MgFe25', 'd_MgFe25','MgFe26', 'd_MgFe26']]
+    # print(f"star {iso_mg['Unnamed: 0']} with Mg/H {iso_mg['mg']}")
+    # print(f"star {Mg_values['star_name']} with Mg/H {Mg_values['[Mg/H]']}")
+    # #Make a variable when the mg values are less than 0.25
+    # small_mg = iso_mg[np.logical_and(-0.25 < iso_mg['mg'], iso_mg['mg'] < 0.25)]
+    # #for the related stars in the small_mg variable, find the Mg values
+    # small_mg_values = Mg_values[Mg_values['star_name'].isin(small_mg['Unnamed: 0'])]
+    # small_eu_values = Eu_values[Eu_values['star_name'].isin(small_mg['Unnamed: 0'])]
+    # small_ba_values = Ba_values[Ba_values['star_name'].isin(small_mg['Unnamed: 0'])]
+    
+    #Make the plot for X/H and mg from IS.
+    #Plot the elements vs each Mg and the isotope mg, mg24, mg25, mg26
+    fig, ax = plt.subplots(4, 2, figsize=(9, 12), constrained_layout=True)
+    # increase the space between the plots
+    # fig.subplots_adjust(hspace=0.35, wspace=0.35)
+
+    #plot Mg vs Eu
+    print(f"mg vs Eu: {scipy.stats.pearsonr(Eu_values['[Eu/Fe]'], iso_mg['MgFe'])}")
+    ax[0, 0].errorbar(Eu_values['[Eu/Fe]'], iso_mg['MgFe'], yerr=iso_mg['d_MgFe'], xerr=Eu_values['e[Eu/Fe]'], fmt='o', elinewidth=0.5)
+    ax[0, 0].set_ylabel('[Mg/Fe]', fontsize=12)
+    ax[0, 0].set_xlabel('[Eu/Fe]', fontsize=12)
+    ax[0, 0].set_ylim(-0.3, 0.6)
+    ax[0, 0].set_xlim(-0.2, 0.5)
+    
+    
+    #plot Mg vs Ba
+    print(f"mg vs Ba: {scipy.stats.pearsonr(Ba_values['[Ba/Fe]'], iso_mg['MgFe'])}")
+    ax[0, 1].errorbar(Ba_values['[Ba/Fe]'], iso_mg['MgFe'], yerr=iso_mg['d_MgFe'], xerr=Ba_values['e[Ba/Fe]'], fmt='o', elinewidth=0.5)
+    ax[0, 1].set_ylabel('[Mg/Fe]', fontsize=12)
+    ax[0, 1].set_xlabel('[Ba/Fe]', fontsize=12)
+    ax[0, 1].set_ylim(-0.3, 0.6)
+
+    
+    
+    # Plot mg24 vs Eu
+    print(f"mg24 vs Eu: {scipy.stats.pearsonr(Eu_values['[Eu/Fe]'], iso_mg['MgFe24'])}")
+    ax[1, 0].errorbar(Eu_values['[Eu/Fe]'], iso_mg['MgFe24'], yerr=iso_mg['d_MgFe24'], xerr=Eu_values['e[Eu/Fe]'], fmt='o', elinewidth=0.5)
+    # ax[0, 0].errorbar(small_eu_values['[Eu/Fe]'], small_mg['MgFe24'], yerr=small_mg['d_mg24'], xerr=small_eu_values['e[Eu/Fe]'], fmt='o', elinewidth=0.5, color='orange')
+    ax[1, 0].set_ylabel('[$^{24}$Mg/Fe]', fontsize=12)
+    ax[1, 0].set_xlabel('[Eu/Fe]', fontsize=12)
+    ax[1, 0].set_ylim(-0.2, 0.05)
+    ax[1, 0].set_xlim(-0.2, 0.5)
+
+
+    # Plot mg25 vs Eu
+    print(f"mg25 vs Eu: {scipy.stats.pearsonr(Eu_values['[Eu/Fe]'], iso_mg['MgFe25'])}")
+    ax[2, 0].errorbar(Eu_values['[Eu/Fe]'], iso_mg['MgFe25'], yerr=iso_mg['d_MgFe25'], xerr=Eu_values['e[Eu/Fe]'], fmt='o', elinewidth=0.5)
+    # ax[1, 0].errorbar(small_eu_values['[Eu/H]'], small_mg['mg25'], yerr=small_mg['d_mg25'], xerr=small_eu_values['e[Eu/H]'], fmt='o', elinewidth=0.5, color='orange')
+    ax[2, 0].set_xlabel('[Eu/Fe]', fontsize=12)
+    ax[2, 0].set_ylabel('[$^{25}$Mg/Fe]', fontsize=12)
+    # ax[2, 0].set_ylim(-0.5, 0.5)
+    ax[2, 0].set_xlim(-0.2, 0.5)
+
+
+    # Plot mg26 vs Eu
+    print(f"mg26 vs Eu: {scipy.stats.pearsonr(Eu_values['[Eu/Fe]'], iso_mg['MgFe26'])}")
+    ax[3, 0].errorbar(Eu_values['[Eu/Fe]'], iso_mg['MgFe26'], yerr=iso_mg['d_MgFe26'], xerr=Eu_values['e[Eu/Fe]'], fmt='o', elinewidth=0.5)
+    # ax[2, 0].errorbar(small_eu_values['[Eu/H]'], small_mg['mg26'], yerr=small_mg['d_mg26'], xerr=small_eu_values['e[Eu/H]'], fmt='o', elinewidth=0.5, color='orange')
+    ax[3, 0].set_xlabel('[Eu/Fe]', fontsize=12)
+    ax[3, 0].set_ylabel('[$^{26}$Mg/Fe]', fontsize=12)
+    ax[3, 0].set_ylim(-0.3, 0.7)
+    ax[3, 0].set_xlim(-0.2, 0.5)
+
+
+    # Plot mg24 vs Ba
+    print(f"mg24 vs Ba: {scipy.stats.pearsonr(Ba_values['[Ba/Fe]'], iso_mg['MgFe24'])}")
+    ax[1, 1].errorbar(Ba_values['[Ba/Fe]'], iso_mg['MgFe24'], yerr=iso_mg['d_MgFe24'], xerr=Ba_values['e[Ba/Fe]'], fmt='o', elinewidth=0.5)
+    # ax[0, 1].errorbar(small_ba_values['[Ba/H]'], small_mg['mg24'], yerr=small_mg['d_mg24'], xerr=small_ba_values['e[Ba/H]'], fmt='o', elinewidth=0.5, color='orange')
+    ax[1, 1].set_ylabel('[$^{24}$Mg/Fe]', fontsize=12)
+    ax[1, 1].set_xlabel('[Ba/Fe]', fontsize=12)
+    ax[1, 1].set_ylim(-0.2, 0.05)
+
+
+    # Plot mg25 vs Ba
+    print(f"mg25 vs Ba: {scipy.stats.pearsonr(Ba_values['[Ba/Fe]'], iso_mg['MgFe25'])}")
+    ax[2,1].errorbar(Ba_values['[Ba/Fe]'], iso_mg['MgFe25'], yerr=iso_mg['d_MgFe25'], xerr=Ba_values['e[Ba/Fe]'], fmt='o', elinewidth=0.5)
+    # ax[1,1].errorbar(small_ba_values['[Ba/H]'], small_mg['mg25'], yerr=small_mg['d_mg25'], xerr=small_ba_values['e[Ba/H]'], fmt='o', elinewidth=0.5, color='orange')
+    ax[2,1].set_xlabel('[Ba/Fe]', fontsize=12)
+    ax[2,1].set_ylabel('[$^{25}$Mg/Fe]', fontsize=12)
+    # ax[2, 1].set_ylim(-0.5, 0.5)
+
+
+    # Plot mg26 vs Ba
+    print(f"mg26 vs Ba: {scipy.stats.pearsonr(Ba_values['[Ba/Fe]'], iso_mg['MgFe26'])}")
+    ax[3, 1].errorbar(Ba_values['[Ba/Fe]'], iso_mg['MgFe26'], yerr=iso_mg['d_MgFe26'], xerr=Ba_values['e[Ba/Fe]'], fmt='o', elinewidth=0.5)
+    # ax[2, 1].errorbar(small_ba_values['[Ba/H]'], small_mg['mg26'], yerr=small_mg['d_mg26'], xerr=small_ba_values['e[Ba/H]'], fmt='o', elinewidth=0.5, color='orange')
+    ax[3, 1].set_xlabel('[Ba/Fe]', fontsize=12)
+    ax[3, 1].set_ylabel('[$^{26}$Mg/Fe]', fontsize=12)
+    ax[3, 1].set_ylim(-0.3, 0.7)
+
+
+    # Save the plot
+    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_X_Fe_new_calc.png', dpi=300, bbox_inches='tight')
+
+element_plots_XFe_new(star_list)
 # %%
