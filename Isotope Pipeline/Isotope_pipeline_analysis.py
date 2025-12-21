@@ -2356,6 +2356,7 @@ import matplotlib.pyplot as plt
 import astropy.io.fits as fits
 import numpy as np
 import scipy
+from matplotlib.colors import Normalize
 
 # star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
 #     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
@@ -2372,9 +2373,9 @@ element = ["Eu", "Ba", "Mg"]
 def single_el_vs_params_Fe(star_name):
     """Create a plot for Eu, Ba, Mg vs Mg"""
     # Initialize empty DataFrames with star_name as the first column
-    Eu_values = pd.DataFrame(columns=['star_name', '[Eu/H]', 'e[Eu/H]'])
-    Ba_values = pd.DataFrame(columns=['star_name', '[Ba/H]', 'e[Ba/H]'])
-    Mg_values = pd.DataFrame(columns=['star_name', '[Mg/H]', 'e[Mg/H]'])
+    Eu_values = pd.DataFrame(columns=['star_name', '[Eu/Fe]', 'e[Eu/Fe]'])
+    Ba_values = pd.DataFrame(columns=['star_name', '[Ba/Fe]', 'e[Ba/Fe]'])
+    Mg_values = pd.DataFrame(columns=['star_name', '[Mg/Fe]', 'e[Mg/Fe]'])
     Eu_values_H = pd.DataFrame(columns=['star_name', '[Eu/H]', 'e[Eu/H]'])
     Ba_values_H = pd.DataFrame(columns=['star_name', '[Ba/H]', 'e[Ba/H]'])
     Mg_values_H = pd.DataFrame(columns=['star_name', '[Mg/H]', 'e[Mg/H]'])
@@ -2382,7 +2383,12 @@ def single_el_vs_params_Fe(star_name):
         
     
     #Open masters stars csv
-    star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
+    try:
+        "Uni computer"
+        star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
+    except:
+        "Mac"
+        star_info = pd.read_csv(f'/Users/quin/Isotope-Pipeline/Masters_stars.csv', sep=',')
     #remove the 10th row
     star_info = star_info.drop(10)
     #reset index
@@ -2400,22 +2406,30 @@ def single_el_vs_params_Fe(star_name):
         #make a filter to only take the stars in the star_list and override the star_info variable
         star_info = star_info[star_info['ID2'].isin(star_list)]
         # Open the lbl abundances
-        file_path = f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt'
-        elements = pd.read_csv(file_path, delimiter=' ')
+        try:
+            "Uni machine"
+            file_path = f'/home/users/qai11/Documents/Fixed_fits_files/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt'
+            elements = pd.read_csv(file_path, delimiter=' ')
+        except:
+            "USB"
+            file_path = f'/Volumes/QUIN-USB/690/lbl_abundances/{star_name}/good_lbl/summary_abundances_{star_name}.txt'
+            elements = pd.read_csv(file_path, delimiter=' ')
+        
 
         # Extract [X/H] and e[X/H] for each element and store them in a DataFrame
-        eu_row = elements[elements['element'] == 'Eu_2'][['[X/H]', 'e[X/H]']].copy()
-        ba_row = elements[elements['element'] == 'Ba'][['[X/H]', 'e[X/H]']].copy()
-        mg_row = elements[elements['element'] == 'Mg'][['[X/H]', 'e[X/H]']].copy()
+        eu_row = elements[elements['element'] == 'Eu_2'][['[X/Fe]', 'e[X/Fe]']].copy()
+        ba_row = elements[elements['element'] == 'Ba'][['[X/Fe]', 'e[X/Fe]']].copy()
+        mg_row = elements[elements['element'] == 'Mg'][['[X/Fe]', 'e[X/Fe]']].copy()
         #EUH
         eu_row_H = elements[elements['element'] == 'Eu_2'][['[X/H]', 'e[X/H]']].copy()
         ba_row_H = elements[elements['element'] == 'Ba'][['[X/H]', 'e[X/H]']].copy()
         mg_row_H = elements[elements['element'] == 'Mg'][['[X/H]', 'e[X/H]']].copy()
         
         #Take away feh from each X/H value
-        eu_row['[X/H]'] = eu_row['[X/H]'] - feh
-        ba_row['[X/H]'] = ba_row['[X/H]'] - feh
-        mg_row['[X/H]'] = mg_row['[X/H]'] - feh
+        # eu_row['[X/H]'] = eu_row['[X/H]'] - feh
+        # ba_row['[X/H]'] = ba_row['[X/H]'] - feh
+        # mg_row['[X/H]'] = mg_row['[X/H]'] - feh
+
         
         # Add the star_name column
         eu_row.insert(0, 'star_name', star_name)
@@ -2442,9 +2456,14 @@ def single_el_vs_params_Fe(star_name):
         Mg_values_H = pd.concat([Mg_values_H, mg_row_H], ignore_index=True)
         
     #Open the isotope mg abundance file
-    isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_vpass_{vpass}.csv', delimiter=',')
+    try:
+        "Uni machine"
+        isotope = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/Isotope_abund_files/weighted_avg_iso_abund_paper_New.csv', delimiter=',')
+    except:
+        "MAc machine"
+        isotope = pd.read_csv(f'/Users/quin/Desktop/2024_Data/Isotope_abund_files/weighted_avg_iso_abund_paper_New.csv', delimiter=',')
     #Extract the mg, d_mg, mg24, mg_24_err, mg25, d_mg25, mg26, d_mg26 columns
-    iso_mg = isotope[['Unnamed: 0','mg','d_mg']]
+    iso_mg = isotope[['Unnamed: 0','mg','d_mg','MgFe','d_MgFe']]
     
     #Make a variable when the mg values are less than 0.25
     small_mg = iso_mg[np.logical_and(-0.25 < iso_mg['mg'], iso_mg['mg'] < 0.25)]
@@ -2466,13 +2485,13 @@ def single_el_vs_params_Fe(star_name):
     norm = Normalize(vmin=np.nanmin(star_teff), vmax=np.nanmax(star_teff))
     #Plot Eu vs Mg
     # print(scipy.stats.pearsonr(Mg_values['[Mg/Fe]'], Eu_values['[Eu/Fe]']))
-    print(f"Eu vs Mg: {scipy.stats.pearsonr(Mg_values['[Mg/Fe]'], Eu_values['[Eu/Fe]'])}")
-    sc01 = ax[0,0].scatter(Mg_values['[Mg/Fe]'], Eu_values['[Eu/Fe]'], c=star_teff, cmap='viridis', s=50)
-    ax[0,0].errorbar(Mg_values['[Mg/Fe]'], Eu_values['[Eu/Fe]'], yerr=Eu_values['e[Eu/Fe]'], xerr=Mg_values['e[Mg/Fe]'], fmt='none', elinewidth=0.5)
+    print(f"Eu vs Mg: {scipy.stats.pearsonr(iso_mg['MgFe'], Eu_values['[Eu/Fe]'])}")
+    sc01 = ax[0,0].scatter(iso_mg['MgFe'], Eu_values['[Eu/Fe]'], c=star_teff, cmap='viridis', s=50)
+    ax[0,0].errorbar(iso_mg['MgFe'], Eu_values['[Eu/Fe]'], yerr=Eu_values['e[Eu/Fe]'], xerr=iso_mg['d_MgFe'], fmt='none', elinewidth=0.5)
     # ax[0,0].errorbar(small_mg_values['[Mg/Fe]'], small_eu_values['[Eu/Fe]'], yerr=small_eu_values['e[Eu/Fe]'], xerr=small_mg_values['e[Mg/Fe]'], fmt='o', elinewidth=0.5,color='orange')
     ax[0,0].set_xlabel('[Mg/Fe]',fontsize=12)
     ax[0,0].set_ylabel('[Eu/Fe]',fontsize=12)
-    ax[0,0].set_ylim(-0.4,1.25)
+    ax[0,0].set_ylim(-0.2,0.5)
     cbar = fig.colorbar(sc01, ax=ax)
     cbar.set_label('Teff (K)', fontsize=12)
     
@@ -2483,12 +2502,12 @@ def single_el_vs_params_Fe(star_name):
     # ax[0,1].errorbar(small_ba_values['[Ba/Fe]'], small_eu_values['[Eu/Fe]'], yerr=small_eu_values['e[Eu/Fe]'], xerr=small_ba_values['e[Ba/Fe]'], fmt='o', elinewidth=0.5,color='orange')
     ax[0,1].set_xlabel('[Ba/Fe]',fontsize=12)
     ax[0,1].set_ylabel('[Eu/Fe]',fontsize=12)
-    ax[0,1].set_ylim(-0.4,1.25)
+    ax[0,1].set_ylim(-0.2,0.5)
       
     #Plot Ba vs Mg
-    print(f"Mg vs Ba: {scipy.stats.pearsonr(Mg_values['[Mg/Fe]'], Ba_values['[Ba/Fe]'])}")
-    ax[0,2].scatter(Mg_values['[Mg/Fe]'], Ba_values['[Ba/Fe]'], c=star_teff, cmap='viridis', s=50)
-    ax[0,2].errorbar(Mg_values['[Mg/Fe]'], Ba_values['[Ba/Fe]'], yerr=Ba_values['e[Ba/Fe]'], xerr=Mg_values['e[Mg/Fe]'], fmt='none', elinewidth=0.5)
+    print(f"Mg vs Ba: {scipy.stats.pearsonr(iso_mg['MgFe'], Ba_values['[Ba/Fe]'])}")
+    ax[0,2].scatter(iso_mg['MgFe'], Ba_values['[Ba/Fe]'], c=star_teff, cmap='viridis', s=50)
+    ax[0,2].errorbar(iso_mg['MgFe'], Ba_values['[Ba/Fe]'], yerr=Ba_values['e[Ba/Fe]'], xerr=iso_mg['d_MgFe'], fmt='none', elinewidth=0.5)
     # ax[0,2].errorbar(small_mg_values['[Mg/Fe]'], small_ba_values['[Ba/Fe]'], yerr=small_ba_values['e[Ba/Fe]'], xerr=small_mg_values['e[Mg/Fe]'], fmt='o', elinewidth=0.5,color='orange')
     ax[0,2].set_xlabel('[Mg/Fe]',fontsize=12)
     ax[0,2].set_ylabel('[Ba/Fe]',fontsize=12)
@@ -2500,7 +2519,7 @@ def single_el_vs_params_Fe(star_name):
     # ax[1,0].errorbar(small_star_teff['TEFF'], small_eu_values['[Eu/Fe]'], yerr=small_eu_values['e[Eu/Fe]'], fmt='o', elinewidth=0.5,color='orange')
     ax[1,0].set_xlabel('$T_{eff}$',fontsize=12)
     ax[1,0].set_ylabel('[Eu/Fe]',fontsize=12)
-    ax[1,0].set_ylim(-0.4,1.25)
+    ax[1,0].set_ylim(-0.2,0.5)
     
     #Plot Ba vs Teff
     print(f"Ba vs Teff: {scipy.stats.pearsonr(star_info['TEFF'], Ba_values['[Ba/Fe]'])}")
@@ -2518,7 +2537,7 @@ def single_el_vs_params_Fe(star_name):
     # ax[2,0].errorbar(small_star_logg['LOGG'], small_eu_values['[Eu/Fe]'], yerr=small_eu_values['e[Eu/Fe]'], fmt='o', elinewidth=0.5,color='orange')
     ax[2,0].set_xlabel('$\log g (cm/s^{2}$)',fontsize=12)
     ax[2,0].set_ylabel('[Eu/Fe]',fontsize=12)
-    ax[2,0].set_ylim(-0.4,1.25)
+    ax[2,0].set_ylim(-0.2,0.5)
     
     #Plot Ba vs logg
     print(f"Ba vs logg: {scipy.stats.pearsonr(star_info['LOGG'], Ba_values['[Ba/Fe]'])}")
@@ -2545,10 +2564,46 @@ def single_el_vs_params_Fe(star_name):
     ax[2,2].set_ylabel('[Mg/Fe]',fontsize=12)
     
     #Save the plot
-    plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_vFe_coloured_params.png', dpi=300, bbox_inches='tight')
+    try:
+        plt.savefig(f'/home/users/qai11/Documents/Isotope-Pipeline/Paper_Figures/Results/Element_fits_vFe_coloured_params.png', dpi=300, bbox_inches='tight')
+    except:
+        plt.savefig(f'/Users/quin/Isotope-Pipeline/Paper_Figures/Results/Element_fits_vFe_coloured_params_V2.png', dpi=300, bbox_inches='tight')
+    
+    """Code below checks the values from the isotope subtraction and fron the lbl values.
+    Note: The MgFe from the isotopes are slightly differnt from the lbl MgFe values, 
+    likely due to the different methods of calculation. The lbl might be more robust but I want to be
+    Consistent with the calculation or this doesnt work"""
+    # plt.figure()
+    # plt.errorbar(Mg_values['[Mg/Fe]'],iso_mg['MgFe'], yerr=iso_mg['d_MgFe'], xerr=Mg_values['e[Mg/Fe]'], fmt='o', elinewidth=0.5)
+    # plt.xlabel('[Mg/Fe]')
+    # plt.ylabel('[Mg isotope/Fe]')
+    
+    # plt.figure()
+    # plt.errorbar(Mg_values_H['[Mg/H]'],iso_mg['mg'], yerr=iso_mg['d_mg'], xerr=Mg_values_H['e[Mg/H]'], fmt='o', elinewidth=0.5)
+    # plt.xlabel('[Mg/H]')
+    # plt.ylabel('[Mg isotope/H]')
+    
+    # plt.figure()
+    # plt.errorbar(Eu_values['[Eu/Fe]'],iso_mg['MgFe'], yerr=iso_mg['d_MgFe'], xerr=Eu_values['e[Eu/Fe]'], fmt='o', elinewidth=0.5)
+    # plt.xlabel('[Eu/Fe]')
+    # plt.ylabel('[Mg isotope/Fe]')
+    
+    # plt.figure()
+    # plt.errorbar(Eu_values['[Eu/Fe]'],Mg_values['[Mg/Fe]'], yerr=Mg_values['e[Mg/Fe]'], xerr=Eu_values['e[Eu/Fe]'], fmt='o', elinewidth=0.5)
+    # plt.xlabel('[Eu/Fe]')
+    # plt.ylabel('[Mg/Fe]')
+    
+    # print(f"Mg Fe values difference {Mg_values['[Mg/Fe]'] - iso_mg['MgFe']}")
+    # print(f"Mg H values difference {Mg_values_H['[Mg/H]'] - iso_mg['mg']}")
+    # # print(f"Mg H minus Feh {Mg_values_H - feh}")
 
+    # print(f'Mg/H:{Mg_values_H['[Mg/H]']}')
+    # print(f'Mgiso/H:{iso_mg['mg']}')
 
-
+    # print(f'Mg/Fe:{Mg_values['[Mg/Fe]']}')
+    # print(f'Mgiso/Fe:{iso_mg['MgFe']}')
+    
 single_el_vs_params_Fe(star_list) 
 
 # %%
+
