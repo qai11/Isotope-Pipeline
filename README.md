@@ -122,6 +122,25 @@ git push -uf origin main
 ## Usage
 See miscellaneous files.
 
+If using this program please cite the paper 
+
+@ARTICLE{2025arXiv251022487A,
+       author = {{Aicken Davies}, Quin and {Worley}, C. Clare},
+        title = "{Magnesium Isotopic Detection in Cool Stars: Tracing Nucleosynthetic Signatures from MgH Features}",
+      journal = {arXiv e-prints},
+     keywords = {Solar and Stellar Astrophysics},
+         year = 2025,
+        month = oct,
+          eid = {arXiv:2510.22487},
+        pages = {arXiv:2510.22487},
+          doi = {10.48550/arXiv.2510.22487},
+archivePrefix = {arXiv},
+       eprint = {2510.22487},
+ primaryClass = {astro-ph.SR},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2025arXiv251022487A},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
 <!-- ## Support
 Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc. -->
 
