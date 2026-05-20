@@ -46,6 +46,28 @@ Every project is different, so consider which of these sections apply to yours. 
 
 Reduction and Isotope pipeline for High resolution Spectra.
 
+## Usage
+See miscellaneous files.
+
+If using this program please cite the paper 
+
+@ARTICLE{2026A&A...708A.338A,
+       author = {{Aicken Davies}, Q. and {Worley}, C.~C.},
+        title = "{Magnesium isotopic detection in cool stars: Tracing nucleosynthetic signatures from MgH features}",
+      journal = {\aap},
+     keywords = {methods: observational, techniques: spectroscopic, stars: abundances, stars: fundamental parameters, Solar and Stellar Astrophysics},
+         year = 2026,
+        month = apr,
+       volume = {708},
+          eid = {A338},
+        pages = {A338},
+          doi = {10.1051/0004-6361/202557759},
+archivePrefix = {arXiv},
+       eprint = {2510.22487},
+ primaryClass = {astro-ph.SR},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2026A&A...708A.338A},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
 
 ## Description
 Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
@@ -119,27 +141,9 @@ git branch -M main
 git push -uf origin main
 ```
 
-## Usage
-See miscellaneous files.
 
-If using this program please cite the paper 
 
-@ARTICLE{2025arXiv251022487A,
-       author = {{Aicken Davies}, Quin and {Worley}, C. Clare},
-        title = "{Magnesium Isotopic Detection in Cool Stars: Tracing Nucleosynthetic Signatures from MgH Features}",
-      journal = {arXiv e-prints},
-     keywords = {Solar and Stellar Astrophysics},
-         year = 2025,
-        month = oct,
-          eid = {arXiv:2510.22487},
-        pages = {arXiv:2510.22487},
-          doi = {10.48550/arXiv.2510.22487},
-archivePrefix = {arXiv},
-       eprint = {2510.22487},
- primaryClass = {astro-ph.SR},
-       adsurl = {https://ui.adsabs.harvard.edu/abs/2025arXiv251022487A},
-      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
-}
+
 
 <!-- ## Support
 Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc. -->
