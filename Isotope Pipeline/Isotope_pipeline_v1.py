@@ -4,17 +4,16 @@
 # Isotope       #
 # Optimisation  #
 #################
-# From https://github.com/madeleine-mckenzie/RAtIO/blob/main/RAtIO.py
+#Original pipeline before major edits from https://github.com/madeleine-mckenzie/RAtIO/blob/main/RAtIO.py
 """
 Title: Isotope_pipeline_V1.py
 Author: Quin Aicken Davies
 Date: May 2024
 
-Description: With Failure of Isotope_pipeline_V1.py, this script is a rework of the original pipeline.
-Initially based on RATIO.py by Madeline Mckenzie, This work improves on the original with addition of automation
+Description: With Failure of the original Isotope_pipeline, this script is a rework.
+Initially based on RATIO.py by Madeline Mckenzie, This work improves on the original with addition of efficiency, automation, fitting method adjustments,
 and extention to more isotope regions."""
 #%%
-#from my_imports import *
 from scipy.stats import chisquare
 from scipy import interpolate
 from os import listdir
@@ -39,70 +38,11 @@ import ispec
 from ispec.spectrum import __convolve_spectrum
 
 def velocity_correction(wavelength, rv):
-    ''' 
-    Transforming the wavelengths in velocity space
-
-    Lets hope my algebra is right. Should take the velocity and scale it depending on the rv_correction array that should be defined at the top of the notebook.
-
-    Parameters
-    ----------
-    wavelength : array
-        The array you want to scale
-    rv : int
-        The radial velocity correction
-
-    Returns
-    -------
-    arr
-        The wavelength in the rest frame
-    '''
-
     return wavelength * (1+(-rv/300000))
 
 def call_pymoogi(filename):
     #https://github.com/madamow/pymoogi/blob/master/README.md
     os.system('echo q | pymoogi ' + filename)
-
-# def get_region(r):
-#     if r == 0:
-#         lw = 5134.42
-#         uw = 5140.46
-#     elif r == 1:
-#         lw = 5134.42
-#         uw = 5134.85
-#     elif r == 2:
-#         lw = 5138.55
-#         uw = 5138.95
-#     elif r == 3:
-#         lw = 5140.04
-#         uw = 5140.46
-#     elif r == 4:
-#         lw = 5134.0
-#         uw = 5134.4
-#     elif r == 5:
-#         lw = 5134.9
-#         uw = 5135.3
-#     elif r == 6:
-#         lw = 5135.9
-#         uw = 5136.3
-#     elif r == 7:
-#         lw = 5136.2
-#         uw = 5136.6
-#     elif r == 8:
-#         lw = 5138.2
-#         uw = 5138.6
-#     elif r == 9:
-#         lw = 5141.0
-#         uw = 5141.45
-#     elif r == 10:
-#         lw = 5133.0
-#         uw = 5133.4
-#     else:
-#         print('wavelength region error')
-#         lw = 0
-#         uw = 1
-#     return lw, uw
-
 
 def interp_smooth(raw, smooth):
     """Perform an interpolation to align the smoothed model flux with the raw spectrum."""
@@ -119,13 +59,11 @@ def interp_smooth(raw, smooth):
     return raw
 
 def make_temp_file(filename):
-    # will need these files in your directory - wont make them apparently...
     f  = open(filename, "a+") 
     f.write('')
     f.close() 
 
 def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wavelength_region, par,star_name,linelist,vsini,Fe,CN,CC,C):
-    # I doubt I'll ever want to change these so initialise them here
     standard_out = 'out1'
     summary_out  = 'out2'
 
@@ -133,44 +71,6 @@ def generate_parameter_string(raw_spec_filename, in_filename, out_filename, wave
     make_temp_file(standard_out)
     make_temp_file(summary_out)
     make_temp_file(out_filename)
-    #par inputs the percentage ratios of the isotopes
-    # print(str(par['i_24']))
-    # print(str(par['i_25']))
-    # print(str(par['i_26']))
-    # print(str(par['mg']))
-    # print(str(par['rv']))
-    # print(wavelength_region)
-    #t4070g040m18.newmod
-    # par_string = "synth\n" +\
-    # "standard_out   '" + standard_out +"'\n"                    + \
-    # "summary_out    '" + summary_out +"'\n"                     + \
-    # "smoothed_out   '" + out_filename +"'\n"                    + \
-    # f"model_in       '{star_name}_atmosphere.moog'\n"                          + \
-    # f"lines_in       '{linelist}'\n"                           + \
-    # "observed_in    '" + raw_spec_filename +"'\n"               + \
-    # "atmosphere    1\n"                                         + \
-    # "molecules     2\n"                                         + \
-    # "lines         2\n"                                         + \
-    # "flux/int      0\n"                                         + \
-    # "plotpars      1\n"                                         + \
-    # wavelength_region + " 0.15 1.05\n"                          + \
-    # str(par['rv']) + "      0.000   0.000    1.00\n"                   + \
-    # "d          0.047 0.0 0.0 "+ str(par['s']) +" 0.0\n"        + \
-    # "abundances   3    1\n"                                     + \
-    # "6            0.000001\n"                                  + \
-    # "12           " + str(par['mg']) + "\n"                     + \
-    # "22           0.20000\n"                                    + \
-    # "isotopes      5    1\n"                                    + \
-    # "607.01214     1.0\n"                                       + \
-    # "606.01212     3.0\n"                                       + \
-    # "112.00124     "+ str(par['i_24']) +"\n"                    + \
-    # "112.00125     "+ str(par['i_25']) +"\n"                    + \
-    # "112.00126     "+ str(par['i_26']) +"\n"                    + \
-    # "obspectrum 5\n"                                            + \
-    # "synlimits\n"                                               + \
-    # wavelength_region + " 0.01 5.0\n"                           + \
-    # "plot 2\n"                                                  + \
-    # "damping 2\n"
     #  smooth-type  FWHM-Gauss  vsini     LimbDarkeningCoeff    FWHM-Macro     FWHM-Loren
     par_string = "synth\n" +\
     "standard_out   '" + standard_out +"'\n"                    + \
@@ -226,24 +126,6 @@ def change_s(d, increase=True):
     else:
         return None
 
-#Disabled for lbl Mg use instead
-# def change_mg(d, increase=True):
-#     change_by = 0.02
-#     ll = -1 # lower limit 
-#     ul = 1.5 # upper limit
-
-#     # if changing the values is within the limits for that parameter
-#     if increase and d['mg'] + change_by <= ul:
-#         d['mg'] += change_by
-#         d['mg'] = round(d['mg'], 2)
-#         return d
-#     elif not increase and d['mg'] - change_by >= ll:
-#         d['mg'] -= change_by
-#         d['mg'] = round(d['mg'], 2)
-#         return d
-#     else:
-#         return None
-
 def change_24(d,mg24_ub,Mg24_step, increase=True):
     change_by = Mg24_step
     ll = 0.1 # lower limit 
@@ -292,24 +174,6 @@ def change_26(d,mg26_ub,Mg26_step, increase=True):
         return d
     else:
         return None
-    
-#Disabled as corrected in parameters pipeline.
-# def change_rv(d, increase=True):
-#     change_by = 1
-#     ll =-5 # lower limit 
-#     ul = 5 # upper limit
-
-#     # if changing the values is within the limits for that parameter
-#     if increase and d['rv'] + change_by <= ul:
-#         d['rv'] += change_by
-#         d['rv'] = round(d['rv'], 2)
-#         return d
-#     elif not increase and d['rv'] - change_by >= ll:
-#         d['rv'] -= change_by
-#         d['rv'] = round(d['rv'], 2)
-#         return d
-#     else:
-#         return None
     
 def get_chi_squared(raw, out_filename, region, guess,vsini):
     """Grab the Chi squared to compare to previous models."""
@@ -420,10 +284,6 @@ def generate_neighbours(guess, region,mg24_ub,mg25_ub,mg26_ub,Mg24_step,Mg25_ste
     new_guesses.append(change_s(guess.copy(), True))  # increase 
     new_guesses.append(change_s(guess.copy(), False)) # decrease 
 
-    #replaced by lbl Mg abundance use. Can reenable: WARNING: doesn't always work.
-    # new_guesses.append(change_mg(guess.copy(), True))  # increase 
-    # new_guesses.append(change_mg(guess.copy(), False)) # decrease 
-
     # only optimise for these for the individual regions, not the whole thing
     if not region == -1:
         new_guesses.append(change_24(guess.copy(),mg24_ub,Mg24_step, True))  # increase 
@@ -434,9 +294,6 @@ def generate_neighbours(guess, region,mg24_ub,mg25_ub,mg26_ub,Mg24_step,Mg25_ste
 
         new_guesses.append(change_26(guess.copy(),mg26_ub,Mg26_step, True))  # increase 
         new_guesses.append(change_26(guess.copy(),mg26_ub,Mg26_step, False)) # decrease 
-
-    #new_guesses.append(change_rv(guess.copy(), True))  # increase 
-    #new_guesses.append(change_rv(guess.copy(), False)) # decrease 
 
     # Strip the none values
     new_guesses = [i for i in new_guesses if i != None]
@@ -561,19 +418,6 @@ def calc_ratio(i_24, i_25, i_26):
     
     return str(round(i24_ratio,2)) + '_' + str(round(i25_ratio,2)) + '_' + str(round(i26_ratio,2))
 
-
-# def calc_moog(r_24, r_25, r_26):
-#     i24=1/(0.01*r_24)
-#     i25=1/(0.01*r_25)
-#     i26=1/(0.01*r_26)
-#     return [i24, i25, i26]
-
-# def calc_moog_string(r_24, r_25, r_26):
-#     i24=1/(0.01*r_24)
-#     i25=1/(0.01*r_25)
-#     i26=1/(0.01*r_26)
-#     return str(round(i24,2)) + '_' + str(round(i25,2)) + '_' + str(round(i26,2))
-
 def initial_guess(MgH,Mg24_step):
     s = 0
     mg = 0
@@ -594,27 +438,8 @@ def initial_guess(MgH,Mg24_step):
               f's = {s}, mg = {mg}, i_24 = {i_24}, i_25 = {i_25}, i_26 = {i_26}, rv = {rv}')
     else:
         fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}_pass_{vpass}_coarse.csv', sep=',')
-        # except:
-        #     fit_pass = pd.read_csv(f'/home/users/qai11/Documents/Fixed_fits_files/{star_name}/moog_tests_paper/all_fits_region_{region}.csv', sep=',')
-        
         #Create a dataframe with the name of the best fit file
         best_fit = fit_pass.loc[fit_pass['chi_squared'].idxmin()]
-        
-        # # Extract The macroturbulence value from the filename
-        # s_block = best_fit.split('_')[1]  # 's41'
-        # s_value = float(s_block.lstrip('s')[:-1] + '.' + s_block[-1])
-        
-        # #Extract the mg isotope values from the filename
-        # i_block = best_fit.split('_')[3:6]  # ['i20', '64', '130']
-
-        # # Remove 'i' from the first element and apply decimal for input back into the IS
-        # # All numbers get a decimal 1 digit from the right
-        # def convert(s):
-        #     s = s.lstrip('i')  # remove 'i' if present
-        #     return float(s[:-1] + '.' + s[-1])  # insert decimal one digit from end
-
-        # # Apply to all three parts
-        # converted = [convert(val) for val in i_block]
         
         # initial guess for the parameters
         s = best_fit['s']
@@ -625,20 +450,7 @@ def initial_guess(MgH,Mg24_step):
         rv = 0
         print('Using the first pass best fit as the initial guess for fine: ', 
               f's = {s}, mg = {mg}, i_24 = {i_24}, i_25 = {i_25}, i_26 = {i_26}, rv = {rv}')
-    # New guess after first pass.
-    # s = 8.9
-    # mg = MgH
-    # i_24 = 0.8
-    # i_25 = 15
-    # i_26 = 3.6
-    # rv = 0
-    #region best fit first pass
-    # s = 8.9
-    # mg = 0.03
-    # i_24 = 3.7
-    # i_25 = 5.5
-    # i_26 = 15
-    # rv = 0
+    
     # return the guess as a dictionary
     return {'s'    : s, 
             'mg'   : mg, 
@@ -646,46 +458,15 @@ def initial_guess(MgH,Mg24_step):
             'i_25' : i_25, 
             'i_26' : i_26, 
             'rv'   : rv}
+    
+star_list = []
 
-#OLD INPUTS
-# vpass = 1
-# star_name = 'hd_157244'
-# linelist = 'quinlinelist.in'
-# # region = 4
-# regions = [1,3,4,5,10]
-# vsini = 5.4
-# for region in regions:
-#     csv_out = model_finder(star_name,linelist,region,vsini)
-#     print(csv_out)
-
-#     csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}.csv')
-
-#%%
-# star_list = ['hd_11695','hd_18884']
-# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-#     'hd_10700','hd_100407','hd_160691','moon','hd_128620','hd_146233','hd_165499','hd_2151',
-#     'hd_102870','hd_45588','hd_156098']
-# star_list = ['moon','hd_18907']
-
-'''all stars below 5300K'''
-# star_list = ['hd_11695','hd_18884','hd_157244','hd_18907','hd_22049','hd_23249','hd_128621',
-#     'hd_10700','hd_100407'] 
-'''giants which play up'''
-# star_list = ['hd_18884','hd_157244'] 
-star_list = ['hd_157244']
-'''Test star'''
-# star_list = ['hd_10700']
-#Pass for testing purposes
 vpass = 37
-#23 is all regions for testing again
 #name of the linelist it should look for
 linelist = 'quinlinelist.in'
 for star_name in star_list:
     #open masters stars csv which is a list of stars with regions, abudnaces and vsini
     star_info = pd.read_csv(f'/home/users/qai11/Documents/Isotope-Pipeline/Masters_stars.csv', sep=',')
-    #get the star regions
-    # regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
-    # print(regions)
     #extract the vsini
     vsini = star_info[star_info['ID2'] == star_name]['VSINI'].values[0]
     Fe = star_info[star_info['ID2'] == star_name]['Fe'].values[0]
@@ -699,15 +480,9 @@ for star_name in star_list:
     MgH = summary_abundances.loc[summary_abundances['element']=='Mg',['[X/H]','e[X/H]']]
     #The solar stuff: https://www.aanda.org/articles/aa/pdf/2021/09/aa40445-21.pdf#page=21.70
     MgH = MgH['[X/H]'].values[0] 
-    # MgH = 0.51
-    # for region in regions:
-    #     csv_out = model_finder(star_name,linelist,region,vsini,MgH,Fe,CN,CC)
-    #     csv_out.to_csv(f'all_fits_region_{region}_pass_{vpass}.csv')
-    # Run a coarse and then fine search for the best fit
-    # regions = [1]
-    # regions = [1]
-    # regions = [3,4]
-    regions = [5,8,10]
+    #get the star regions
+    regions = star_info[star_info['ID2'] == star_name]['regions'].apply(ast.literal_eval).values[0]
+    
     if star_name == 'hd_157244' or 'hd_18884':
         print('Running a coarse and fine search for the giants')
         """Run a larger bound and stepsize for the giants"""
